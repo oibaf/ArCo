@@ -98,8 +98,19 @@
 			</xsl:variable>	    
 		    <xsl:variable name="sheetVersion" select="record/metadata/schede/*/@version" />
 		    <xsl:variable name="cp-name" select="''" />
+					<!-- variable culturalPropertyComponent -->	
 			<xsl:variable name="culturalPropertyComponent" select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI, '-component')" />		
-			<xsl:variable name="culturalProperty" select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI)" />
+					<!-- variable culturalProperty -->	
+			<xsl:variable name="culturalProperty">
+				<xsl:choose>
+					<xsl:when test="$sheetType='MODI'">
+						<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(record/metadata/schede/MODI/OG/AMB)), '/', $itemURI)" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI)" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
 			<xsl:variable name="objectOfDescription">
 				<xsl:choose>
 					<xsl:when test="record/metadata/schede/*/OG/OGT/OGTP and ($sheetVersion='4.00_ICCD0' or $sheetVersion='4.00')">
@@ -786,6 +797,27 @@
 				                            <xsl:value-of select="$author" />
 				                    	</xsl:attribute>
 									</arco-cd:hasAuthor>
+									<arco-cd:hasPreferredAuthor>
+										<xsl:attribute name="rdf:resource">
+				                    		<xsl:variable name="author">
+					                            <xsl:choose>
+					                                <xsl:when test="./AUTS and (not(starts-with(lower-case(normalize-space(./AUTS)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUTS)), 'n.r')))">
+					                                    <xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(concat(./AUTN, '-', ./AUTS)))" />
+					                                </xsl:when>
+					                                <xsl:when test="./AUTA and (not(starts-with(lower-case(normalize-space(./AUTA)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUTA)), 'n.r')))">
+					                                    <xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(concat(./AUTN, '-', ./AUTA)))" />
+					                                </xsl:when>
+					                                <xsl:when test="./AUTB and (not(starts-with(lower-case(normalize-space(./AUTB)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUTB)), 'n.r')))">
+					                                    <xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(concat(./AUTN, '-', ./AUTB)))" />
+					                                </xsl:when>
+					                                <xsl:otherwise>
+					                                    <xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AUTN))" />
+					                                </xsl:otherwise>
+					                            </xsl:choose>
+				                            </xsl:variable>
+				                            <xsl:value-of select="$author" />
+				                    	</xsl:attribute>
+									</arco-cd:hasPreferredAuthor>
 									<dc:creator>
 										<xsl:attribute name="rdf:resource">
 				                    		<xsl:variable name="author">
@@ -855,6 +887,11 @@
 								<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AAUN))" />
 							</xsl:attribute>
 						</arco-cd:hasAuthor>
+						<arco-cd:hasPreferredAuthor>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AAUN))" />
+							</xsl:attribute>
+						</arco-cd:hasPreferredAuthor>
 						<dc:creator>
 							<xsl:attribute name="rdf:resource">
 								<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AAUN))" />
@@ -903,6 +940,34 @@
 								</xsl:choose>
 		                    </xsl:attribute>
 						</arco-cd:hasAuthor>
+						<arco-cd:hasPreferredAuthor>
+							<xsl:attribute name="rdf:resource">
+		                    	<xsl:variable name="author">
+									<xsl:choose>
+										<xsl:when test="./AUFN and ./AUFS and not(starts-with(lower-case(normalize-space(./AUFS)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUFS)), 'n.r'))">
+											<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(concat(./AUFN, '-', ./AUFS)))" />
+										</xsl:when>
+										<xsl:when test="./AUFB and ./AUFS and (not(starts-with(lower-case(normalize-space(./AUFS)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUFS)), 'n.r')))">
+											<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(concat(./AUFB, '-', ./AUFS)))" />
+										</xsl:when>
+										<xsl:when test="./AUFB">
+											<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AUFB))" />
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AUFN))" />
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+								<xsl:choose>
+									<xsl:when test="./AUFS">
+										<xsl:value-of select="concat($author, '-', arco-fn:urify(normalize-space(./AUFS)))" />
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="$author" />
+									</xsl:otherwise>
+								</xsl:choose>
+		                    </xsl:attribute>
+						</arco-cd:hasPreferredAuthor>
 						<dc:creator>
 							<xsl:attribute name="rdf:resource">
 		                    	<xsl:variable name="author">
@@ -1005,6 +1070,24 @@
 								</xsl:choose>
                             </xsl:attribute>
 						</arco-cd:hasAuthor>
+						<arco-cd:hasPreferredAuthor>
+							<xsl:attribute name="rdf:resource">
+								<xsl:choose>
+									<xsl:when test="./AUFN and (./AUFS and (not(starts-with(lower-case(normalize-space(./AUFS)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUFS)), 'n.r'))))">
+										<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(concat(./AUFN, '-', ./AUFS)))" />
+		                            </xsl:when>
+		                            <xsl:when test="./AUFN">
+		                            	<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AUFN))" />
+		                            </xsl:when>
+		                            <xsl:when test="./AUFB and (./AUFS and (not(starts-with(lower-case(normalize-space(./AUFS)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUFS)), 'n.r'))))">
+		                                <xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(concat(./AUFB, '-', ./AUFS)))" />
+		                            </xsl:when>
+		                            <xsl:otherwise> 
+		                            	<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AUFB))" />
+									</xsl:otherwise>
+								</xsl:choose>
+                            </xsl:attribute>
+						</arco-cd:hasPreferredAuthor>
 						<dc:creator>
 							<xsl:attribute name="rdf:resource">
 								<xsl:choose>
@@ -1891,8 +1974,8 @@
 						</clvapit:hasGeometry>
 					</xsl:if>
 				</xsl:for-each>
-				<!-- Geometry for geocoding -->
-				<xsl:if test="record/metadata/schede/harvesting/geocoding/*">
+				<!-- Geometry for geocoding|puntoPrincipale -->
+				<xsl:if test="record/metadata/schede/harvesting/*[name()='geocoding' or name()='puntoPrincipale']/*">
 					<clvapit:hasGeometry>
 						<xsl:attribute name="rdf:resource">
 			                <xsl:value-of select="concat($NS, 'Geometry/', $itemURI, '-geometry-point')" />
@@ -3376,17 +3459,38 @@
 			<!-- Property related to cultural property -->
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-                    <xsl:value-of select="$culturalProperty" />
+					<xsl:choose>
+						<xsl:when test="$sheetType='MODI'">
+							<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(record/metadata/schede/MODI/OG/AMB)), '/', $itemURI)" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI)" />
+						</xsl:otherwise>
+					</xsl:choose>
                 </xsl:attribute>
-				<rdf:type>
+                <rdf:type>
 					<xsl:attribute name="rdf:resource">
-                        <xsl:value-of select="arco-fn:getPropertyType($sheetType)" />
+						 <xsl:choose>
+							<xsl:when test="$sheetType='MODI'">
+								<xsl:value-of select="arco-fn:getPropertyType(record/metadata/schede/MODI/OG/AMB)" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="arco-fn:getPropertyType($sheetType)" />
+							</xsl:otherwise>
+						</xsl:choose>
                     </xsl:attribute>
 				</rdf:type>
 				<!-- rdf:type of cultural property -->
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-                        <xsl:value-of select="arco-fn:getSpecificPropertyType($sheetType)" />
+                        <xsl:choose>
+							<xsl:when test="$sheetType='MODI'">
+								<xsl:value-of select="arco-fn:getSpecificPropertyType(record/metadata/schede/MODI/OG/AMB)" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="arco-fn:getSpecificPropertyType($sheetType)" />
+							</xsl:otherwise>
+						</xsl:choose>
                     </xsl:attribute>
 				</rdf:type>
 				<!-- rdfs:comment of cultural property -->

@@ -153,7 +153,16 @@
 			</xsl:otherwise>
 	</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="culturalProperty" select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI)" />
+	<xsl:variable name="culturalProperty">
+		<xsl:choose>
+			<xsl:when test="$sheetType='MODI'">
+				<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(record/metadata/schede/MODI/OG/AMB)), '/', $itemURI)" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI)" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>	
 	
 	<xsl:template name="address-area">
 		<xsl:param name="ctx" />
@@ -408,11 +417,6 @@
 		<xsl:if test="record/metadata/schede/BNM/SM/SMA/SMAZ and starts-with(lower-case(normalize-space(record/metadata/schede/BNM/SM/SMA/SMAZ)), 'presente')">
 			<arco-mp:zoning>
             	<xsl:value-of select="true()" />
-			</arco-mp:zoning>
-		</xsl:if>
-		<xsl:if test="not(record/metadata/schede/BNM/SM/SMA/SMAZ) or record/metadata/schede/BNM/SM/SMA/SMAZ and not(starts-with(lower-case(normalize-space(record/metadata/schede/BNM/SM/SMA/SMAZ)), 'presente'))">
-			<arco-mp:zoning>
-            	<xsl:value-of select="false()" />
 			</arco-mp:zoning>
 		</xsl:if>
 		</xsl:if>

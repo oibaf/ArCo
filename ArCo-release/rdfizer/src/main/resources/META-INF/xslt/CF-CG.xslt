@@ -769,7 +769,7 @@
 					</clvapit:hasGeometry>
 				</xsl:for-each>
 			</xsl:if>
-			<xsl:if test="record/metadata/schede/harvesting/geocoding/*">
+			<xsl:if test="record/metadata/schede/harvesting/*[name()='geocoding' or name()='puntoPrincipale']/*">
 				<clvapit:hasGeometry>
 					<xsl:attribute name="rdf:resource">
 						<xsl:value-of select="concat($NS, 'Geometry/', $idCF, '-geometry-point')" />
@@ -1547,8 +1547,9 @@
 			</xsl:for-each>
 		</xsl:if>
 		
-		<!-- Geometry of site as an individual for geocoding -->
-		<xsl:if test="record/metadata/schede/harvesting/geocoding/*">
+		<!-- Geometry of site as an individual for geocoding|puntoPrincipale -->
+		<xsl:if test="record/metadata/schede/harvesting/*[name()='geocoding' or name()='puntoPrincipale']/*">
+			<xsl:variable name="xy" select="record/metadata/schede/harvesting/puntoPrincipale|record/metadata/schede/harvesting[not(puntoPrincipale)]/geocoding"/>
 		    <rdf:Description>
 		        <xsl:attribute name="rdf:about">
 		            <xsl:value-of select="concat($NS, 'Geometry/', $idCF, '-geometry-point')" />
@@ -1590,7 +1591,7 @@
 		        <clvapit:serialization rdf:datatype= "http://www.openlinksw.com/schemas/virtrdf#Geometry">
 		            <!-- xsl:text disable-output-escaping="yes">&lt;![CDATA[ &lt;http://www.opengis.net/def/crs/OGC/1.3/CRS84&gt; </xsl:text-->
 		            <xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
-		            <xsl:value-of select="normalize-space(concat('POINT(', record/metadata/schede/harvesting/geocoding/x, ' ', record/metadata/schede/harvesting/geocoding/y, ')'))" />
+		            <xsl:value-of select="normalize-space(concat('POINT(', $xy/x, ' ', $xy/y, ')'))" />
 		            <xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 		        </clvapit:serialization>
 		        <arco-location:hasCoordinates>
@@ -1599,7 +1600,7 @@
 		            </xsl:attribute>
 		        </arco-location:hasCoordinates>
 		    </rdf:Description>
-			<!-- geometry coordinates for geocoding as an individual -->
+			<!-- geometry coordinates for geocoding|puntoPrincipale as an individual -->
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
 					<xsl:value-of select="concat($NS, 'Coordinates/', $idCF, '-geometry-', 'coordinates')" />
@@ -1618,10 +1619,10 @@
 					<xsl:value-of select="concat('Coordinate del contenitore fisico: ', $idCF)" />
 				</l0:name>
 				<arco-location:long>
-					<xsl:value-of select="normalize-space(record/metadata/schede/harvesting/geocoding/x)" />
+					<xsl:value-of select="normalize-space($xy/x)" />
 				</arco-location:long>
 				<arco-location:lat>
-					<xsl:value-of select="normalize-space(record/metadata/schede/harvesting/geocoding/y)" />
+					<xsl:value-of select="normalize-space($xy/y)" />
 				</arco-location:lat>
 			</rdf:Description>
 		</xsl:if>
