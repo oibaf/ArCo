@@ -201,6 +201,14 @@ public class Preprocessor {
     public void commit() { if (pd!=null) pd.commit(); }
 	public void close() { if (pd!=null) pd.close();	}
 
+	public void preprocessMultimediaRecord(String syscode, Document xml, XPath xpath) throws XPathExpressionException {
+		String ftan = getFTANFromEMM(xpath, xml);
+		String link = getLinkEMMFromEMM(xpath, xml);
+		logger.trace(syscode + " - " + ftan + " - " + link);
+		if (validateField(ftan) && validateField(link)) {
+			this.ftan2URL.put(ftan, link);
+		}
+	}
 	private void preprocessMultimediaRecord(Path f) {
 
 		if (this.countMultimediaRecords.get()!=0 && (this.countMultimediaRecords.get() % 10000) == 0) {
@@ -212,8 +220,8 @@ public class Preprocessor {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document xml = db.parse(f.toFile());
-
-			// Get XPath
+			preprocessMultimediaRecord(FilenameUtils.getBaseName(f.toFile().getName()), xml, XPathFactory.newInstance().newXPath());
+			/*// Get XPath
 			XPathFactory xpf = XPathFactory.newInstance();
 			XPath xpath = xpf.newXPath();
 
@@ -224,7 +232,7 @@ public class Preprocessor {
 
 			if (validateField(ftan) && validateField(link)) {
 				this.ftan2URL.put(ftan, link);
-			}
+			}*/
 
 		} catch (SAXException | IOException | ParserConfigurationException | XPathExpressionException e) {
 			e.printStackTrace();
@@ -237,7 +245,22 @@ public class Preprocessor {
 	private boolean validateField(String field) {
 		return field != null && field.trim().length() > 0;
 	}
+	public void preprocessRecord(String syscode, Document xml, XPath xpath) throws XPathExpressionException {
+		String uriObjectOfDescription = getObjectOfDescription(xpath, xml);
+		String uniqueIdentifier = getUniqueIdentifier(xpath, xml);
+		String catalogueRecordIdentifier = getCatalogueRecordIdentifier(xpath, xml);
 
+		List<String> uris = uniqueIdentifier2URIs.get(uniqueIdentifier);
+
+		if (uris == null) {
+			uris = new ArrayList<>();
+			uris.add(uriObjectOfDescription);
+            uniqueIdentifier2URIs.put(uniqueIdentifier, uris);
+		}
+		else if (!uris.contains(uriObjectOfDescription)) uris.add(uriObjectOfDescription);
+		catalogueRecordIdentifier2URI.put(catalogueRecordIdentifier, uriObjectOfDescription);
+		
+	}
 	private void preprocessRecord(Path f) {
 
 		if (this.countRecords.get()!=0 && (this.countRecords.get() % 10000) == 0) {
@@ -250,8 +273,8 @@ public class Preprocessor {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document xml = db.parse(f.toFile());
-
-			// Get XPath
+			preprocessRecord(FilenameUtils.getBaseName(f.toFile().getName()), xml, XPathFactory.newInstance().newXPath());
+			/*// Get XPath
 			XPathFactory xpf = XPathFactory.newInstance();
 			XPath xpath = xpf.newXPath();
 
@@ -268,7 +291,7 @@ public class Preprocessor {
 			}
 			else if (!uris.contains(uriObjectOfDescription)) uris.add(uriObjectOfDescription);
 			catalogueRecordIdentifier2URI.put(catalogueRecordIdentifier, uriObjectOfDescription);
-
+			*/
 		} catch (SAXException | IOException | ParserConfigurationException | XPathExpressionException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -277,7 +300,9 @@ public class Preprocessor {
 		}
 
 	}
-
+	public void preprocessContenitoreFisico(String syscode, Document xml, XPath xpath) throws XPathExpressionException {
+		this.contenitoreFisicoSystemRecordCode2CCF.put(syscode, getCCF(xpath, xml));
+	}
 	private void preprocessContenitoreFisico(Path f) {
 
 		if (this.countCFRecords.get()!=0 && (this.countCFRecords.get() % 10000) == 0) {
@@ -290,14 +315,14 @@ public class Preprocessor {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document xml = db.parse(f.toFile());
-
-			// Get XPath
+			preprocessContenitoreFisico(FilenameUtils.getBaseName(f.toFile().getName()), xml, XPathFactory.newInstance().newXPath());
+			/*// Get XPath
 			XPathFactory xpf = XPathFactory.newInstance();
 			XPath xpath = xpf.newXPath();
 
 			this.contenitoreFisicoSystemRecordCode2CCF.put(FilenameUtils.getBaseName(f.toFile().getName()),
 					getCCF(xpath, xml));
-
+			*/
 		} catch (SAXException | IOException | ParserConfigurationException | XPathExpressionException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -307,6 +332,9 @@ public class Preprocessor {
 
 	}
 
+	public void preprocessContenitoreGiuridico(String syscode, Document xml, XPath xpath) throws XPathExpressionException {
+		this.contenitoreGiuridicoSystemRecordCode2CCG.put(syscode, getCCG(xpath, xml));
+	}
 	private void preprocessContenitoreGiuridico(Path f) {
 
 		if (this.countCGRecords.get()!=0 && (this.countCGRecords.get() % 10000) == 0) {
@@ -319,8 +347,8 @@ public class Preprocessor {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document xml = db.parse(f.toFile());
-
-			// Get XPath
+			preprocessContenitoreGiuridico(FilenameUtils.getBaseName(f.toFile().getName()), xml, XPathFactory.newInstance().newXPath());
+			/*// Get XPath
 			XPathFactory xpf = XPathFactory.newInstance();
 			XPath xpath = xpf.newXPath();
 
@@ -328,7 +356,7 @@ public class Preprocessor {
 
 			this.contenitoreGiuridicoSystemRecordCode2CCG.put(FilenameUtils.getBaseName(f.toFile().getName()),
 					getCCG(xpath, xml));
-
+			*/
 		} catch (SAXException | IOException | ParserConfigurationException | XPathExpressionException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -337,21 +365,25 @@ public class Preprocessor {
 		}
 
 	}
-
+	public void preprocessEntiBase(String syscode, Document xml, XPath xpath) throws XPathExpressionException {
+		String codiceEnte = getCodiceEnte(xpath, xml);
+		String nomeEnte = getNomeEnte(xpath, xml);
+		//System.out.println(syscode + " => " + codiceEnte + " => " + nomeEnte);//logger.trace("{} {} -> {}", f.toFile().getName(), codiceEnte, nomeEnte);
+		this.codiceEnteToNomeEnte.put(codiceEnte, nomeEnte);
+	}
 	private void preprocessEntiBase(Path f) {
 		// TODO
 		if (this.countEntiBaseRecords.get()!=0 && (this.countEntiBaseRecords.get() % 10000) == 0) {
 			logger.info("Processed " + this.countEntiBaseRecords + " enti base records");
 		}
-
 		this.countEntiBaseRecords.incrementAndGet();
 
 		try {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document xml = db.parse(f.toFile());
-
-			// Get XPath
+			preprocessEntiBase(FilenameUtils.getBaseName(f.toFile().getName()), xml, XPathFactory.newInstance().newXPath());
+			/*// Get XPath
 			XPathFactory xpf = XPathFactory.newInstance();
 			XPath xpath = xpf.newXPath();
 
@@ -361,29 +393,32 @@ public class Preprocessor {
 			logger.trace("{} {} -> {}", f.toFile().getName(), codiceEnte, nomeEnte);
 
 			this.codiceEnteToNomeEnte.put(codiceEnte, nomeEnte);
-
+			*/
 		} catch (SAXException | IOException | ParserConfigurationException | XPathExpressionException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			logger.info("Error while processing " + f.toFile().getAbsolutePath() + " " + e.getMessage());
-
 		}
-
 	}
 
+	public void preprocessEntiCompleto(String syscode, Document xml, XPath xpath) throws XPathExpressionException {
+		String codiceEnte = getCodiceEnte(xpath, xml);
+		String nomeEnte = getNomeEnte(xpath, xml);
+		//System.out.println(syscode + " => " + codiceEnte + " => " + nomeEnte);//logger.trace("{} {} -> {}", f.toFile().getName(), codiceEnte, nomeEnte);
+		this.codiceEnteToNomeEnte.put(codiceEnte, nomeEnte);
+	}
 	private void preprocessEntiCompleto(Path f) {
 		if (this.countEntiCompletoRecords.get()!=0 && (this.countEntiCompletoRecords.get() % 10000) == 0) {
 			logger.info("Processed " + this.countEntiCompletoRecords + " enti completo records");
 		}
-
 		this.countEntiCompletoRecords.incrementAndGet();
 
 		try {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document xml = db.parse(f.toFile());
-
-			// Get XPath
+			preprocessEntiCompleto(FilenameUtils.getBaseName(f.toFile().getName()), xml, XPathFactory.newInstance().newXPath());
+			/*// Get XPath
 			XPathFactory xpf = XPathFactory.newInstance();
 			XPath xpath = xpf.newXPath();
 
@@ -393,14 +428,12 @@ public class Preprocessor {
 			logger.trace("{} {} -> {}", f.toFile().getName(), codiceEnte, nomeEnte);
 
 			this.codiceEnteToNomeEnte.put(codiceEnte, nomeEnte);
-
+			*/
 		} catch (SAXException | IOException | ParserConfigurationException | XPathExpressionException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			logger.info("Error while processing " + f.toFile().getAbsolutePath() + " " + e.getMessage());
-
 		}
-
 	}
 
 	private String getFTANFromEMM(XPath xpath, Document xml) throws XPathExpressionException {
@@ -454,7 +487,7 @@ public class Preprocessor {
 	}
 
 	private String getNomeEnte(XPath xpath, Document xml) throws XPathExpressionException {
-		return (String) xpath.evaluate("/administrativeDataRecord/metadata/ente/nomeEnte", xml, XPathConstants.STRING);
+		return (String) xpath.evaluate("normalize-space(/administrativeDataRecord/metadata/ente/nomeEnte)", xml, XPathConstants.STRING);
 	}
 
 	private String getSheetVersion(XPath xpath, Document xml) throws XPathExpressionException {
