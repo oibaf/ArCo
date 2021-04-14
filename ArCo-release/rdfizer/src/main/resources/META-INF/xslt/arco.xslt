@@ -6698,7 +6698,7 @@
 							</arco-cd:hasPreviousOwner>
 							<arco-core:hasAgentRole>
 								<xsl:attribute name="rdf:resource">
-									<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, position(), '-previous- owner')" />
+									<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, position(), '-previous-owner')" />
 								</xsl:attribute>
 							</arco-core:hasAgentRole>
 						</xsl:if>
@@ -6767,7 +6767,7 @@
 					<xsl:if test=". and (not(starts-with(lower-case(normalize-space(.)), 'nr')) and not(starts-with(lower-case(normalize-space(.)), 'n.r')))">
 						<rdf:Description>
 							<xsl:attribute name="rdf:about">
-								<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, position(), '-previous- owner')" />
+								<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, position(), '-previous-owner')" />
 							</xsl:attribute>
 							<rdf:type>
 								<xsl:attribute name="rdf:resource">
@@ -13555,7 +13555,7 @@
 						<xsl:if test="./ISRM">
 							<arco-dd:hasMeasurementCollection>
 								<xsl:attribute name="rdf:resource">
-					 	   			<xsl:value-of select="concat($NS, 'MeasurementCollection/', $itemURI, '-inscription-measurement-collection', position())" />
+					 	   			<xsl:value-of select="concat($NS, 'MeasurementCollection/', $itemURI, '-inscription-measurement-collection-', position())" />
 								</xsl:attribute>
 			            	</arco-dd:hasMeasurementCollection>
 						</xsl:if>
@@ -13582,10 +13582,10 @@
 						</xsl:if>
 					</rdf:Description>
 					<!-- Measurement collection as individual -->
-					<xsl:for-each select="record/metadata/schede/*/DA/ISR/ISRM">
+					<xsl:for-each select="ISRM">
 						<rdf:Description>
 				 			<xsl:attribute name="rdf:about">
-				            	<xsl:value-of select="concat($NS, 'MeasurementCollection/', $itemURI, '-foundation-measurement-collection', position())" />
+				            	<xsl:value-of select="concat($NS, 'MeasurementCollection/', $itemURI, '-inscription-measurement-collection-', position())" />
 				            </xsl:attribute>
 				 	        <rdf:type>
 								<xsl:attribute name="rdf:resource">
