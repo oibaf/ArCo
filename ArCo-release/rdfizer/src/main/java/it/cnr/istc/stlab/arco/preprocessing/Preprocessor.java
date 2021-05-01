@@ -257,9 +257,11 @@ public class Preprocessor {
 			uris.add(uriObjectOfDescription);
             uniqueIdentifier2URIs.put(uniqueIdentifier, uris);
 		}
-		else if (!uris.contains(uriObjectOfDescription)) uris.add(uriObjectOfDescription);
+		else if (!uris.contains(uriObjectOfDescription)) {
+			uris.add(uriObjectOfDescription);
+            uniqueIdentifier2URIs.put(uniqueIdentifier, uris); // need this!
+		}
 		catalogueRecordIdentifier2URI.put(catalogueRecordIdentifier, uriObjectOfDescription);
-		
 	}
 	private void preprocessRecord(Path f) {
 
