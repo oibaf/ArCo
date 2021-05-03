@@ -130,6 +130,9 @@
 					<xsl:value-of select="'https://w3id.org/italia/onto/COV/Organization'" />
 				</xsl:attribute>
 			</rdf:type>
+			<skos:prefLabel>
+				<xsl:value-of select="administrativeDataRecord/metadata/ente/nomeEnte" />
+			</skos:prefLabel>
 			<rdfs:label>
 				<xsl:value-of select="administrativeDataRecord/metadata/ente/nomeEnte" />
 			</rdfs:label>

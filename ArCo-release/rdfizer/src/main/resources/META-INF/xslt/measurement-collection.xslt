@@ -42,7 +42,7 @@
 		<xsl:otherwise>
 			<xsl:variable name="accc-space">
 				<xsl:choose>
-					<xsl:when test="record/metadata/schede/*/AC/ACC[1]/ACCC">
+					<xsl:when test="record/metadata/schede/*/AC/ACC/ACCC">
 						<xsl:value-of select="record/metadata/schede/*/AC/ACC[1]/ACCC" />
 					</xsl:when>
 					<xsl:otherwise>
@@ -57,6 +57,9 @@
 			<xsl:variable name="acc" select="translate($acc-nospace, '/', '_')" />
 				<xsl:choose>
 					<xsl:when test="record/metadata/schede/*/AC/ACC/ACCC">
+						<xsl:value-of select="$accc" />
+					</xsl:when>
+					<xsl:when test="record/metadata/schede/*/CD/ACC/ACCC">
 						<xsl:value-of select="$accc" />
 					</xsl:when>
 					<xsl:otherwise>

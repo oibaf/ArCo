@@ -513,10 +513,18 @@
 					<xsl:value-of select="$author" />
 				</xsl:attribute>
 				<rdf:type>
-					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
-					</xsl:attribute>
-				</rdf:type>
+					<xsl:choose>
+						<xsl:when test="($sheetVersion='4.00' or $sheetVersion='4.00_ICCD0') and lower-case(normalize-space(record/metadata/schede/*/AU/AUT/AUTP))='p'">
+							<xsl:value-of select="'https://w3id.org/italia/onto/CPV/Person'" />
+						</xsl:when>
+						<xsl:when test="($sheetVersion='4.00' or $sheetVersion='4.00_ICCD0') and lower-case(normalize-space(record/metadata/schede/*/AU/AUT/AUTP))='e'">
+							<xsl:value-of select="'https://w3id.org/italia/onto/COV/Organization'" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
+						</xsl:otherwise>
+						</xsl:choose>
+					</rdf:type>
 				<arco-catalogue:isDescribedByCatalogueRecord>
 					<xsl:attribute name="rdf:resource">
 						<xsl:value-of select="concat($NS, 'CatalogueRecord', $sheetType, '/', $idAuthor)" />
@@ -553,7 +561,7 @@
 						<xsl:value-of select="normalize-space(record/metadata/schede/*/AU/AUT/AUTF)" />
 					</arco-cd:signature>
 				</xsl:if>
-				<xsl:if test="not($sheetVersion='4.00_ICCD0') and record/metadata/schede/*/AU/AUT/AUTE">
+				<xsl:if test="not($sheetVersion='4.00_ICCD0' or $sheetVersion='4.00_ICCD0') and record/metadata/schede/*/AU/AUT/AUTE">
 					<arco-cd:alternativeName>
 						<xsl:value-of select="normalize-space(record/metadata/schede/*/AU/AUT/AUTE)" />
 					</arco-cd:alternativeName>
