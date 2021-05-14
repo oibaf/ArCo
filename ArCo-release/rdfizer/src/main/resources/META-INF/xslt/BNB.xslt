@@ -1945,21 +1945,20 @@
 		</rdf:Description>
 	</xsl:for-each>
 									<!-- Font style as individual -->
-	<xsl:if test="record/metadata/schede/BNB/SB/SBE/SBEC and (not(starts-with(lower-case(normalize-space(record/metadata/schede/BNB/SB/SBE/SBEC)), 'nr')) and not(starts-with(lower-case(normalize-space(record/metadata/schede/BNB/SB/SBE/SBEC)), 'n.r')))">
+	<xsl:for-each select="record/metadata/schede/BNB/SB/SBE/SBEC[not(starts-with(lower-case(normalize-space()), 'nr') or starts-with(lower-case(normalize-space()), 'n.r')) and not(.=../preceding-sibling::SBE/SBEC)]">
 		<rdf:Description>
 			<xsl:attribute name="rdf:about">
-	           	<xsl:value-of select="concat($NS, 'FontStyle/', arco-fn:urify(normalize-space(record/metadata/schede/BNB/SB/SBE/SBEC)))" />
+				<xsl:value-of select="concat($NS, 'FontStyle/', arco-fn:urify(normalize-space()))" />
 			</xsl:attribute>
 			<rdf:type rdf:resource="https://w3id.org/arco/ontology/denotative-description/FontStyle" />
 			<rdfs:label>
-				<xsl:value-of select="normalize-space(record/metadata/schede/BNB/SB/SBE/SBEC)" />
+				<xsl:value-of select="normalize-space()" />
 			</rdfs:label>
 			<l0:name>
-				<xsl:value-of select="normalize-space(record/metadata/schede/BNB/SB/SBE/SBEC)" />
+				<xsl:value-of select="normalize-space()" />
 			</l0:name>
 		</rdf:Description>
-	</xsl:if>
-
+	</xsl:for-each>
 
 						<!-- Specimen Harvesting as individual -->
 	<xsl:if test="record/metadata/schede/BNB/LR">

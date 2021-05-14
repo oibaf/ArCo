@@ -158,8 +158,8 @@
 		
 							<!-- cultural property component -->
 					
-			<xsl:if test="record/metadata/schede/*/OG/OGT/OGTP and ($sheetVersion='4.00_ICCD0' or $sheetVersion='4.00')">
-			<!--	<rdf:Description>
+		<!--	<xsl:if test="record/metadata/schede/*/OG/OGT/OGTP and ($sheetVersion='4.00_ICCD0' or $sheetVersion='4.00')">
+				<rdf:Description>
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of select="$culturalProperty" />
 					</xsl:attribute>
@@ -168,7 +168,7 @@
 							<xsl:value-of select="$culturalPropertyComponent" />
 						</xsl:attribute>
 					</arco-arco:hasCulturalPropertyComponent>
-				</rdf:Description> -->
+				</rdf:Description>
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of select="$culturalPropertyComponent" />
@@ -187,13 +187,13 @@
 							<xsl:value-of select="arco-fn:getSpecificPropertyType($sheetType)" />
 						</xsl:attribute>
 					</rdf:type>
-				<!-- <arco-arco:isCulturalPropertyComponentOf>
+					<arco-arco:isCulturalPropertyComponentOf>
 						<xsl:attribute name="rdf:resource">
 							<xsl:value-of select="$culturalProperty" />
 						</xsl:attribute>
-					</arco-arco:isCulturalPropertyComponentOf> -->
+					</arco-arco:isCulturalPropertyComponentOf>
 				</rdf:Description>
-			</xsl:if>
+			</xsl:if> -->
 					<!-- description of catalogue record -->
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
@@ -203,7 +203,7 @@
 				<arco-catalogue:describesCulturalProperty>
 					<xsl:attribute name="rdf:resource">
                         <xsl:value-of
-						select="$objectOfDescription" />
+						select="$culturalProperty" />
                     </xsl:attribute>
 				</arco-catalogue:describesCulturalProperty>
 				<arco-catalogue:lastUpdateDate>
@@ -213,8 +213,22 @@
 					<!-- cultural property direct relations -->
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-					<xsl:value-of select="$objectOfDescription" />
+					<xsl:value-of select="$culturalProperty" />
 				</xsl:attribute>
+				<xsl:if test="record/metadata/schede/*/OG/OGT/OGTP and ($sheetVersion='4.00_ICCD0' or $sheetVersion='4.00')">
+					<xsl:if test="record/metadata/schede/*/RV/RVE/RVEL">
+						<arco-arco:isCulturalPropertyComponentOf>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', record/metadata/schede/*/CD/NCT/NCTR, record/metadata/schede/*/CD/NCT/NCTN, record/metadata/schede/*/CD/NCT/NCTS, '-0')" />
+							</xsl:attribute>
+						</arco-arco:isCulturalPropertyComponentOf>
+					</xsl:if>
+					<rdf:type>
+						<xsl:attribute name="rdf:resource">
+							<xsl:value-of select="'https://w3id.org/arco/ontology/arco/CulturalPropertyComponent'" />
+						</xsl:attribute>
+					</rdf:type>
+				</xsl:if>
 				<xsl:if test="$sheetType='MODI'">
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
@@ -298,7 +312,7 @@
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable>
-							<xsl:for-each select="$rels[not(.=$objectOfDescription)]"><!-- context lost  -->
+							<xsl:for-each select="$rels[not(.=$culturalProperty)]"><!-- context lost  -->
 							<xsl:choose>
 								<xsl:when test="$create-rel-work-situation='true'">
 									<arco-cd:hasRelatedWorkSituation>
@@ -529,7 +543,7 @@
 					</arco-location:hasTimeIndexedTypedLocation>
 				</xsl:if>
 				<!-- alternative locations -->
-				<xsl:for-each select="record/metadata/schede/*/LA[PRV]">
+				<xsl:for-each select="record/metadata/schede/*/LA">
 					<arco-location:hasTimeIndexedTypedLocation>
 						<xsl:attribute name="rdf:resource">
 							<xsl:value-of select="concat($NS, 'TimeIndexedTypedLocation/', $itemURI, '-alternative-', position())" />
@@ -3500,7 +3514,7 @@
 			<!-- Property related to cultural property -->
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-					<xsl:value-of select="$objectOfDescription" />
+					<xsl:value-of select="$culturalProperty" />
                 </xsl:attribute>
                 <rdf:type>
 					<xsl:attribute name="rdf:resource">
@@ -3549,8 +3563,8 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:for-each>
-					<xsl:if test="record/metadata/schede/*/SGT/SGTI">
-						<xsl:value-of select="concat(' ', record/metadata/schede/*/SGT/SGTI)" />
+					<xsl:if test="record/metadata/schede/*/OG/SGT/SGTI">
+						<xsl:value-of select="concat(' ', string-join(record/metadata/schede/*/OG/SGT/SGTI,', '))" />
 					</xsl:if>
 				</rdfs:comment>
 				<!-- hasCulturalPropertyType -->

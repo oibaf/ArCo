@@ -163,7 +163,7 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 
 	<rdf:Description>
 	<xsl:attribute name="rdf:about">
-			<xsl:value-of select="$objectOfDescription" />
+			<xsl:value-of select="$culturalProperty" />
 	</xsl:attribute>
 				<!-- xsl:variable name="sheetType" select="record/metadata/schede/*/CD/TSK/text()"></xsl:variable -->
 			

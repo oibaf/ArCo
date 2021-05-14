@@ -1277,13 +1277,18 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
+					<xsl:variable name="ogtp">
+						<xsl:if test="record/metadata/schede/*/OG/OGT/OGTP and ($sheetVersion='4.00_ICCD0' or $sheetVersion='4.00')">
+							<xsl:value-of select="concat(normalize-space(record/metadata/schede/*/OG/OGT/OGTP), ' - ')" />
+						</xsl:if>
+					</xsl:variable>
 					<xsl:variable name="tmp-label">
 						<xsl:choose>
 							<xsl:when test="record/metadata/schede/*/OG/OGD/OGDN">
-								<xsl:value-of select="concat($ogdn, normalize-space(record/metadata/schede/*/OG/OGT/OGTD), $ogtt, $ctg, ')')" />
+								<xsl:value-of select="concat($ogtp, $ogdn, normalize-space(record/metadata/schede/*/OG/OGT/OGTD), $ogtt, $ctg, ')')" />
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:value-of select="concat(normalize-space(record/metadata/schede/*/OG/OGT/OGTD), $ogtt, $ctg)" />
+								<xsl:value-of select="concat($ogtp, normalize-space(record/metadata/schede/*/OG/OGT/OGTD), $ogtt, $ctg)" />
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
@@ -1405,8 +1410,13 @@
 		</xsl:if>
 		<!-- FF -->
 		<xsl:if test="$sheetType='FF'">
+			<xsl:variable name="ogtp">
+				<xsl:if test="record/metadata/schede/*/OG/OGT/OGTP and ($sheetVersion='4.00_ICCD0' or $sheetVersion='4.00')">
+					<xsl:value-of select="concat(normalize-space(record/metadata/schede/*/OG/OGT/OGTP), ' - ')" />
+				</xsl:if>
+			</xsl:variable>
 			<xsl:variable name="tmp-label"><!-- molteplicità OGD eg:ICCD13124957 -->
-				<xsl:value-of select="normalize-space(string-join(record/metadata/schede/*/OG/OGD/OGDN,', '))" />
+				<xsl:value-of select="concat($ogtp, normalize-space(string-join(record/metadata/schede/*/OG/OGD/OGDN,', ')))" />
 			</xsl:variable>
 			<rdfs:label xml:lang="it">
 				<xsl:value-of select="concat($tmp-label, $author-string, $cultural-context, $date-string)" />
@@ -1455,19 +1465,10 @@
 		<rdf:RDF>
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-					<xsl:value-of select="$objectOfDescription" />
+					<xsl:value-of select="$culturalProperty" />
 				</xsl:attribute>
 				<xsl:call-template name="label"/>
 			</rdf:Description>
-			<!-- labels of cultural property component -->
-			<xsl:if test="record/metadata/schede/*/OG/OGT/OGTP and ($sheetVersion='4.00_ICCD0' or $sheetVersion='4.00')">
-				<rdf:Description>
-					<xsl:attribute name="rdf:about">
-						<xsl:value-of select="$culturalPropertyComponent" />
-					</xsl:attribute>
-					<xsl:call-template name="label"/>
-				</rdf:Description>
-			</xsl:if>			
 		</rdf:RDF>
 	</xsl:template>
 </xsl:stylesheet>

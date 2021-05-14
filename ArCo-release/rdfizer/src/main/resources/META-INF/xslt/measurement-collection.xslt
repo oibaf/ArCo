@@ -115,7 +115,7 @@
 							and not(starts-with(lower-case(normalize-space(./VMCE)), 'intera')))">
 						<rdf:Description>
 							<xsl:attribute name="rdf:about">
-								<xsl:value-of select="$objectOfDescription" />
+								<xsl:value-of select="$culturalProperty" />
 							</xsl:attribute>
 							<arco-core:hasPart>
 								<xsl:attribute name="rdf:resource">
@@ -227,7 +227,7 @@
 					<xsl:otherwise>
 						<rdf:Description>
 							<xsl:attribute name="rdf:about">
-								<xsl:value-of select="$objectOfDescription" />
+								<xsl:value-of select="$culturalProperty" />
 							</xsl:attribute>
 							<arco-dd:hasMeasurementCollection>
 								<xsl:attribute name="rdf:resource">

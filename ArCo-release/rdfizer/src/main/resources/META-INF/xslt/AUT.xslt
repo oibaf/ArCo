@@ -673,5 +673,5 @@
 			</xsl:if>
 		</xsl:if>
 	</rdf:RDF>
-	</xsl:template>								
+	</xsl:template>
 </xsl:stylesheet>

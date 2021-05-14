@@ -72,7 +72,7 @@ public class Converter {
 	private Processor proc;
 	private List<XSLTConverter> exps;
 	private CataloguingEntityFinder cataloguingEntityFinder;
-
+	public void customizeXsltProcessor(Processor proc) {};
 	public Converter() {
 
 		init();
@@ -200,7 +200,7 @@ public class Converter {
 		proc.registerExtensionFunction(ContenitoreFisicoFinder.getInstance());
 		proc.registerExtensionFunction(ContenitoreGiuridicoFinder.getInstance());
 		proc.registerExtensionFunction(CodiceEnteToNomeEnte.getInstance());
-
+		customizeXsltProcessor(proc);
 		XsltCompiler comp = proc.newXsltCompiler();
 
 		ClassLoader loader = Converter.class.getClassLoader();
@@ -224,7 +224,7 @@ public class Converter {
 
 					try {
 						System.out.println("-- " + path.toString());
-						exp = comp.compile(new StreamSource(Files.newInputStream(path)));
+						exp = comp.compile(xslt2source(path));//exp = comp.compile(new StreamSource(Files.newInputStream(path)));
 						exps.add(new XSLTConverter(path.toString(), exp));
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -237,19 +237,19 @@ public class Converter {
 		}
 
 	}
-
+	public StreamSource xslt2source(Path path) throws Exception {return new StreamSource(Files.newInputStream(path));}
 	public void addXSTLConverter(Path path) {
 		XsltExecutable exp;
 		XsltCompiler comp = proc.newXsltCompiler();
 		try {
 			System.out.println("-- " + path.toString());
-			exp = comp.compile(new StreamSource(Files.newInputStream(path)));
+			exp = comp.compile(xslt2source(path));//exp = comp.compile(new StreamSource(Files.newInputStream(path)));
 			exps.add(new XSLTConverter(path.toString(), exp));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	public void prepareTransformer(XsltTransformer trans, String name) {}
 	public static final String defaultPrefix = "https://w3id.org/arco/resource/";
 	public static final String defaultSourcePrefix = "https://catalogo.beniculturali.it/detail/$(PROPERTYTYPE)/$(IDENTIFIER)";
     public Model convert(String item, InputStream sourceXml) throws Exception {
@@ -269,7 +269,7 @@ public class Converter {
 			ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
 			Serializer out = proc.newSerializer(byteArrayOut);
 			XsltTransformer trans = exp.executable.load();
-
+			prepareTransformer(trans, exp.name);
 			// System.out.println(exp.name);
 			trans.setParameter(new QName("item"), new XdmAtomicValue(item));
 			trans.setParameter(new QName("NS"), new XdmAtomicValue(prefix));

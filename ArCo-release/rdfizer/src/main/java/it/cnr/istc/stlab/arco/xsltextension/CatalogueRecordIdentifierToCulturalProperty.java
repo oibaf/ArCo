@@ -43,7 +43,7 @@ public class CatalogueRecordIdentifierToCulturalProperty implements ExtensionFun
 		String url = catalogueRecordIdentifier2URI.get(arg);
 		logger.trace("Result " + url);
 		if (url == null || url.length() == 0) {
-			logger.info("Empty sequence return");
+			logger.info("Empty sequence return @" + arg);
 			return XdmEmptySequence.getInstance();
 		} else {
 			return XdmValue.makeValue(url);

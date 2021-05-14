@@ -459,28 +459,24 @@ public class Preprocessor {
 	}
 
 	private String getObjectOfDescription(XPath xpath, Document xml) throws XPathExpressionException {
-		String OGTP = (String) xpath.evaluate("/record/metadata/schede/*/OG/OGT/OGTP", xml, XPathConstants.STRING);
-		String sheetVersion = getSheetVersion(xpath, xml);
-		if (((OGTP != null) && OGTP.length() > 0)
-				&& (sheetVersion.equalsIgnoreCase("4.00_ICCD0") || sheetVersion.equalsIgnoreCase("4.00"))) {
-			return getCulturalPropertyComponentURI(xpath, xml);
-		} else {
-
+		//String OGTP = (String) xpath.evaluate("/record/metadata/schede/*/OG/OGT/OGTP", xml, XPathConstants.STRING);
+		//String sheetVersion = getSheetVersion(xpath, xml);
+		//if (((OGTP != null) && OGTP.length() > 0)
+		//		&& (sheetVersion.equalsIgnoreCase("4.00_ICCD0") || sheetVersion.equalsIgnoreCase("4.00"))) {
+		//	return getCulturalPropertyComponentURI(xpath, xml);
+		//} else {
 			return getCulturalPropertyURI(xpath, xml);
-		}
-
+		//}
 	}
 
 	private String getCCF(XPath xpath, Document xml) throws XPathExpressionException {
 		String CCF = (String) xpath.evaluate("/record/metadata/schede/CF/CD/CCF", xml, XPathConstants.STRING);
 		return CCF;
-
 	}
 
 	private String getCCG(XPath xpath, Document xml) throws XPathExpressionException {
 		String CCF = (String) xpath.evaluate("/record/metadata/schede/CG/CD/CCG", xml, XPathConstants.STRING);
 		return CCF;
-
 	}
 
 	private String getCodiceEnte(XPath xpath, Document xml) throws XPathExpressionException {
