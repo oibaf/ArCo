@@ -80,7 +80,6 @@
 	xmlns:ar-MeasurementCollection="https://w3id.org/arco/resource/MeasurementCollection/"
 	xmlns:ar-CISNameInTime="https://w3id.org/arco/resource/CISNameInTime/"
 	xmlns:ar-Measurement="https://w3id.org/arco/resource/Measurement/"
-	xmlns:arco-ip="https://w3id.org/arco/ontology/imnatural-specimen-description//"
 
 	xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0"
 	exclude-result-prefixes="xsl php">
@@ -179,7 +178,7 @@
 		<xsl:if test="record/metadata/schede/BNPL/SP/SPN">
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Specimen'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Specimen'" />
 		        </xsl:attribute>
 			</rdf:type>
 			<arco-spe:isClassifiedByCurrentTaxon>
@@ -494,7 +493,7 @@
 		    </xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-        	       	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//PlanetologicSpecies'" />
+        	       	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/PlanetologicSpecies'" />
             	</xsl:attribute>
 			</rdf:type>	
 			<rdfs:label xml:lang="en">
@@ -518,7 +517,7 @@
 		    	</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-        	    	   	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//PlanetologicGroup'" />
+        	    	   	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/PlanetologicGroup'" />
      	       		</xsl:attribute>
 				</rdf:type>	
 				<rdfs:label xml:lang="it">
@@ -543,7 +542,7 @@
 		    	</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-        	    	   	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//PlanetologicClass'" />
+        	    	   	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/PlanetologicClass'" />
      	       		</xsl:attribute>
 				</rdf:type>	
 				<rdfs:label xml:lang="it">
@@ -568,7 +567,7 @@
 		    	</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-        	    	   	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//PlanetologicGenus'" />
+        	    	   	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/PlanetologicGenus'" />
      	       		</xsl:attribute>
 				</rdf:type>	
 				<rdfs:label xml:lang="it">
@@ -588,7 +587,7 @@
 		    </xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-        	       	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//PlanetologicSpecies'" />
+        	       	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/PlanetologicSpecies'" />
             	</xsl:attribute>
 			</rdf:type>	
 			<rdfs:label xml:lang="en">
@@ -612,7 +611,7 @@
 		    	</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-        	    	   	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//PlanetologicGroup'" />
+        	    	   	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/PlanetologicGroup'" />
      	       		</xsl:attribute>
 				</rdf:type>	
 				<rdfs:label xml:lang="it">
@@ -637,7 +636,7 @@
 		    	</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-        	    	   	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//PlanetologicClass'" />
+        	    	   	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/PlanetologicClass'" />
      	       		</xsl:attribute>
 				</rdf:type>	
 				<rdfs:label xml:lang="it">
@@ -662,7 +661,7 @@
 		    	</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-        	    	   	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//PlanetologicGenus'" />
+        	    	   	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/PlanetologicGenus'" />
      	       		</xsl:attribute>
 				</rdf:type>	
 				<rdfs:label xml:lang="it">
@@ -813,7 +812,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-	            	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Label'" />
+	            	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Label'" />
 	            </xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -850,7 +849,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-	            	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Label'" />
+	            	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Label'" />
 	            </xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -938,7 +937,7 @@
 					<xsl:value-of select="concat('Misura del bene culturale ', $itemURI, ': ', record/metadata/schede/BNPL/SP/SPO/SPOB)" />
 				</l0:name>
 				<arco-dd:hasMeasurementType>
-					<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/natural-specimen-description//', 'delta18O')" />
+					<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/natural-specimen-description/', 'delta18O')" />
 				</arco-dd:hasMeasurementType>
 				<arco-dd:hasValue>
 					<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/', $itemURI, '-delta-18-o', '-', arco-fn:urify(normalize-space(record/metadata/schede/BNPL/SP/SPO/SPOB)))" />
@@ -972,7 +971,7 @@
 					<xsl:value-of select="concat('Misura del bene culturale ', $itemURI, ': ', record/metadata/schede/BNPL/SP/SPO/SPOA)" />
 				</l0:name>
 				<arco-dd:hasMeasurementType>
-					<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/natural-specimen-description//', 'delta17O')" />
+					<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/natural-specimen-description/', 'delta17O')" />
 				</arco-dd:hasMeasurementType>
 				<arco-dd:hasValue>
 					<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/', $itemURI, '-delta-17-o', '-', arco-fn:urify(normalize-space(record/metadata/schede/BNPL/SP/SPO/SPOA)))" />
@@ -1040,7 +1039,7 @@
 					<xsl:value-of select="concat('Misura del bene culturale ', $itemURI, ': ', record/metadata/schede/BNPL/SP/SPC/SPCS)" />
 				</l0:name>
 				<arco-dd:hasMeasurementType>
-					<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/natural-specimen-description//', 'ShockStage')" />
+					<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/natural-specimen-description/', 'ShockStage')" />
 				</arco-dd:hasMeasurementType>
 				<arco-dd:hasValue>
 					<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/', $itemURI, '-shok-stage', '-', arco-fn:urify(normalize-space(record/metadata/schede/BNPL/SP/SPC/SPCS)))" />
@@ -1185,7 +1184,7 @@
 					<xsl:value-of select="concat('Misura del bene culturale ', $itemURI, ': ', ./RPOB)" />
 				</l0:name>
 				<arco-dd:hasMeasurementType>
-					<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/natural-specimen-description//', 'delta18O')" />
+					<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/natural-specimen-description/', 'delta18O')" />
 				</arco-dd:hasMeasurementType>
 				<arco-dd:hasValue>
 					<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/', $itemURI, '-delta-18-o', '-', arco-fn:urify(normalize-space(./RPOB)))" />
@@ -1219,7 +1218,7 @@
 					<xsl:value-of select="concat('Misura del bene culturale ', $itemURI, ': ', ./RPOA)" />
 				</l0:name>
 				<arco-dd:hasMeasurementType>
-					<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/natural-specimen-description//', 'delta17O')" />
+					<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/natural-specimen-description/', 'delta17O')" />
 				</arco-dd:hasMeasurementType>
 				<arco-dd:hasValue>
 					<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/', $itemURI, '-delta-17-o', '-', arco-fn:urify(normalize-space(./RPOA)))" />
@@ -1287,7 +1286,7 @@
 					<xsl:value-of select="concat('Misura del bene culturale ', $itemURI, ': ', (.))" />
 				</l0:name>
 				<arco-dd:hasMeasurementType>
-					<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/natural-specimen-description//', 'ShockStage')" />
+					<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/natural-specimen-description/', 'ShockStage')" />
 				</arco-dd:hasMeasurementType>
 				<arco-dd:hasValue>
 					<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/', $itemURI, '-shok-stage', '-', arco-fn:urify(normalize-space(.)))" />
@@ -1446,7 +1445,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-		            	 <xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Specimen'" />
+		            	 <xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Specimen'" />
 	    	        </xsl:attribute>
 				</rdf:type>
 				<rdfs:label xml:lang="en">
@@ -1657,7 +1656,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-		            	 <xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//MainMass'" />
+		            	 <xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/MainMass'" />
 	    	        </xsl:attribute>
 				</rdf:type>
 				<rdfs:label xml:lang="en">
@@ -1804,7 +1803,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-	            	 <xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//WeatheringGrade'" />
+	            	 <xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/WeatheringGrade'" />
 	            </xsl:attribute>
 			</rdf:type>
 			<rdfs:label>
@@ -1823,7 +1822,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Texture'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Texture'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -1868,7 +1867,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-	            		<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//TextureType'" />
+	            		<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/TextureType'" />
 		            </xsl:attribute>
 				</rdf:type>
 				<rdfs:label>
@@ -1886,7 +1885,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-	            		<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Chondrule'" />
+	            		<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Chondrule'" />
 		            </xsl:attribute>
 				</rdf:type>
 				<rdfs:label xml:lang="it">
@@ -1916,7 +1915,7 @@
             		</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//ChondruleType'" />
+							<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/ChondruleType'" />
 						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label>
@@ -1937,7 +1936,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Texture'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Texture'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -1982,7 +1981,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-	            		<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//TextureType'" />
+	            		<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/TextureType'" />
 		            </xsl:attribute>
 				</rdf:type>
 				<rdfs:label>
@@ -2000,7 +1999,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-	            		<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Chondrule'" />
+	            		<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Chondrule'" />
 		            </xsl:attribute>
 				</rdf:type>
 				<rdfs:label xml:lang="it">
@@ -2030,7 +2029,7 @@
             		</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//ChondruleType'" />
+							<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/ChondruleType'" />
 						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label>
@@ -2052,7 +2051,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//MineralPresence'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/MineralPresence'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2088,7 +2087,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Mineral'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Mineral'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label>
@@ -2106,7 +2105,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//MineralPresence'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/MineralPresence'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2142,7 +2141,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Mineral'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Mineral'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label>
@@ -2160,7 +2159,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//MineralPresence'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/MineralPresence'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2196,7 +2195,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Mineral'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Mineral'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label>
@@ -2214,7 +2213,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//MineralPresence'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/MineralPresence'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2247,7 +2246,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Mineral'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Mineral'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label>
@@ -2265,7 +2264,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//MineralPresence'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/MineralPresence'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2298,7 +2297,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Mineral'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Mineral'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label>
@@ -2317,7 +2316,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//MineralPresence'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/MineralPresence'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2353,7 +2352,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Mineral'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Mineral'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label>
@@ -2371,7 +2370,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//MineralPresence'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/MineralPresence'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2407,7 +2406,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Mineral'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Mineral'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label>
@@ -2425,7 +2424,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//MineralPresence'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/MineralPresence'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2461,7 +2460,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Mineral'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Mineral'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label>
@@ -2479,7 +2478,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//MineralPresence'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/MineralPresence'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2512,7 +2511,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Mineral'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Mineral'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label>
@@ -2530,7 +2529,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//MineralPresence'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/MineralPresence'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2563,7 +2562,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//Mineral'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Mineral'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label>
@@ -2584,7 +2583,7 @@
 			</xsl:attribute>		
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//ChondrulePresence'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/ChondrulePresence'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2618,7 +2617,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//AgeInterpretation'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/AgeInterpretation'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2653,7 +2652,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//AgeInterpretation'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/AgeInterpretation'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2688,7 +2687,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//AgeInterpretation'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/AgeInterpretation'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2723,7 +2722,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//AgeInterpretation'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/AgeInterpretation'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2759,7 +2758,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//AgeInterpretation'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/AgeInterpretation'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2794,7 +2793,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//AgeInterpretation'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/AgeInterpretation'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2829,7 +2828,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//AgeInterpretation'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/AgeInterpretation'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2864,7 +2863,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//AgeInterpretation'" />
+		        	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/AgeInterpretation'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2901,7 +2900,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-					<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//TypeSpecimenIdentification'" />
+					<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/TypeSpecimenIdentification'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -2982,7 +2981,7 @@
 		        </xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-	        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//TypeOfTypeSpecimen'" />
+	        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/TypeOfTypeSpecimen'" />
 	            	</xsl:attribute>
 				</rdf:type>
 				<rdfs:label>
@@ -3020,7 +3019,7 @@
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-					<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//TypeSpecimenIdentification'" />
+					<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/TypeSpecimenIdentification'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label xml:lang="it">
@@ -3110,7 +3109,7 @@
 		        </xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-	        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description//TypeOfTypeSpecimen'" />
+	        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/TypeOfTypeSpecimen'" />
 	            	</xsl:attribute>
 				</rdf:type>
 				<rdfs:label>
