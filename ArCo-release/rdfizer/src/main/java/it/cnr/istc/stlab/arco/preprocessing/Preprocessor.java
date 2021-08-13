@@ -18,6 +18,13 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -202,11 +209,18 @@ public class Preprocessor {
 	public void close() { if (pd!=null) pd.close();	}
 
 	public void preprocessMultimediaRecord(String syscode, Document xml, XPath xpath) throws XPathExpressionException {
-		String ftan = getFTANFromEMM(xpath, xml);
-		String link = getLinkEMMFromEMM(xpath, xml);
-		logger.trace(syscode + " - " + ftan + " - " + link);
-		if (validateField(ftan) && validateField(link)) {
-			this.ftan2URL.put(ftan, link);
+		String link = getLinkEMMFromEMM(xpath, xml); if (validateField(link)){
+			String ftan = getFieldFromEMM(xpath, xml, "FTAN"); if (validateField(ftan)) {logger.trace(syscode + " - " + ftan + " - " + link);
+				this.ftan2URL.put(ftan, link);}
+			String regn = getFieldFromEMM(xpath, xml, "REGN"); if (validateField(regn)) {logger.trace(syscode + " - " + regn + " - " + link);//System.out.println(""+syscode+" regn:"+regn);
+				this.ftan2URL.put(regn, link);}
+			String dran = getFieldFromEMM(xpath, xml, "DRAN"); if (validateField(dran)) {logger.trace(syscode + " - " + dran + " - " + link);//System.out.println(""+syscode+" dran:"+dran);
+				this.ftan2URL.put(dran, link);}
+			String vdcn = getFieldFromEMM(xpath, xml, "VDCN"); if (validateField(vdcn)) {logger.trace(syscode + " - " + vdcn + " - " + link);//System.out.println(""+syscode+" vdcn:"+vdcn);
+				this.ftan2URL.put(vdcn, link);}
+			String fnti = getFieldFromEMM(xpath, xml, "FNTI"); if (validateField(fnti)) {logger.trace(syscode + " - " + fnti + " - " + link);//System.out.println(""+syscode+" fnti:"+fnti);
+				this.ftan2URL.put(fnti, link);
+			}
 		}
 	}
 	private void preprocessMultimediaRecord(Path f) {
@@ -442,6 +456,10 @@ public class Preprocessor {
 		return (String) xpath.evaluate("//FTAN", xml, XPathConstants.STRING);
 	}
 
+	private String getFieldFromEMM(XPath xpath, Document xml, String field) throws XPathExpressionException {
+		return (String) xpath.evaluate("//" + field, xml, XPathConstants.STRING);
+	}
+
 	private String getLinkEMMFromEMM(XPath xpath, Document xml) throws XPathExpressionException {
 		return (String) xpath.evaluate("//linkEmm", xml, XPathConstants.STRING);
 	}
@@ -530,11 +548,92 @@ public class Preprocessor {
 
 	}
 
+	public static final String CATALOGUE_RECORDS = "c";
+	public static final String MULTIMEDIA_RECORDS = "m";
+	public static final String CONTENITORI_FISICI = "f";
+	public static final String CONTENITORI_GIURIDICI = "g";
+	public static final String ENTI_BASE = "e";
+	public static final String ENTI_COMPLETO = "ec";
+	public static final String BASE_URI = "b";
+
 	public static void main(String[] args) throws MalformedURLException, IOException {
+
+//		mvn exec:java -Dexec.mainClass="it.cnr.istc.stlab.arco.preprocessing.Preprocessor" -Dexec.args="CATALOGUE_RECORDS MULTIMEDIA_RECORDS CONTENITORI_FISICI_RECORDS  CONTENITORI_GIURIDICI_RECORDS ARCO_RESOURCES_BASE_URI"
+
+		Options options = new Options();
+
+		options.addOption(Option.builder(CATALOGUE_RECORDS).argName("path").hasArg().required(true)
+				.desc("The path to the folder containing a dump of XML files of the catalogue records.")
+				.longOpt("catalogue-records").build());
+
+		options.addOption(Option.builder(MULTIMEDIA_RECORDS).argName("path").hasArg().required(true).desc(
+				"The path to the folder containing a dump of XML files of the multimedia records (multimedia entities - EMM).")
+				.longOpt("multimedia-records").build());
+
+		options.addOption(Option.builder(CONTENITORI_FISICI).argName("path").hasArg().required(true).desc(
+				"The path to the folder containing a dump of XML files of the records of the ICCD contenitori fisici.")
+				.longOpt("contenitori-fisici").build());
+
+		options.addOption(Option.builder(CONTENITORI_GIURIDICI).argName("path").hasArg().required(true).desc(
+				"The path to the folder containing a dump of XML files of the records of the ICCD contenitori giuridici.")
+				.longOpt("contenitori-giuridici").build());
+
+		options.addOption(Option.builder(ENTI_BASE).argName("path").hasArg().required(false)
+				.desc("The path to the folder containing a dump of XML files of the records of the ICCD 'enti-base'.")
+				.longOpt("enti-base").build());
+
+		options.addOption(Option.builder(ENTI_COMPLETO).argName("path").hasArg().required(false).desc(
+				"The path to the folder containing a dump of XML files of the records of the ICCD 'enti-completo'.")
+				.longOpt("enti-base").build());
+		
+		options.addOption(Option.builder(BASE_URI).argName("URI").hasArg().required(false).desc(
+				"The base URI for the ArCo's resources (e.g. https://w3id.org/arco/resource/).")
+				.longOpt("enti-base").build());
+
+		CommandLine commandLine = null;
+
+		CommandLineParser cmdLineParser = new DefaultParser();
+		try {
+			commandLine = cmdLineParser.parse(options, args);
+
+			if (!commandLine.hasOption(CATALOGUE_RECORDS) || !commandLine.hasOption(MULTIMEDIA_RECORDS)
+					|| !commandLine.hasOption(CONTENITORI_FISICI) || !commandLine.hasOption(CONTENITORI_GIURIDICI)
+					|| !commandLine.hasOption(BASE_URI)) {
+				printOptions(options);
+			}
+
+			String cr = commandLine.getOptionValue(CATALOGUE_RECORDS);
+			String mr = commandLine.getOptionValue(MULTIMEDIA_RECORDS);
+			String cf = commandLine.getOptionValue(CONTENITORI_FISICI);
+			String cg = commandLine.getOptionValue(CONTENITORI_GIURIDICI);
+			String bu = commandLine.getOptionValue(BASE_URI);
+
+			Preprocessor p = new Preprocessor(cr, mr, cf, cg, bu);
+
+			if (commandLine.hasOption(ENTI_BASE)) {
+				p.setEnti_baseFolder(commandLine.getOptionValue(ENTI_BASE));
+			}
+
+			if (commandLine.hasOption(ENTI_COMPLETO)) {
+				p.setEnti_baseFolder(commandLine.getOptionValue(ENTI_COMPLETO));
+			}
+
 		logger.info("ArCo Preprocessor");
-		Preprocessor p = new Preprocessor(args[0], args[1], args[2], args[3], args[4]);
+		//Preprocessor p = new Preprocessor(args[0], args[1], args[2], args[3], args[4]);
 		p.run();
 		PreprocessedData.getInstance().close();
+
+		} catch (ParseException e) {
+			printOptions(options);
+		}
+
+	}
+
+	private static void printOptions(Options options) {
+		HelpFormatter formatter = new HelpFormatter();
+		formatter.printHelp(
+				"mvn exec:java -Dexec.mainClass=\"it.cnr.istc.stlab.arco.preprocessing.Preprocessor\" -Dexec.args=\"[ARGS]\"",
+				options);
 	}
 
 }

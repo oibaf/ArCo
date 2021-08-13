@@ -1,0 +1,8 @@
+@prefix owlunit: <https://w3id.org/owlunit/ontology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+<https://w3id.org/arco/test/testsuite.ttl> a owlunit:TestSuite .
+<https://w3id.org/arco/test/testsuite.ttl>  <https://w3id.org/owlunit/ontology/hasTestCase> <https://w3id.org/arco/test/CQ/CQ_BNB1.owl> .
+<https://w3id.org/arco/test/CQ/CQ_BNB1.owl> rdf:type <https://w3id.org/owlunit/ontology/CompetencyQuestionVerification> .
+<https://w3id.org/arco/test/testsuite.ttl>  <https://w3id.org/owlunit/ontology/hasTestCase> <https://w3id.org/arco/test/CQ/CQ_BNB1111.owl> .
+<https://w3id.org/arco/test/CQ/CQ_BNB1111.owl> rdf:type <https://w3id.org/owlunit/ontology/CompetencyQuestionVerification> .

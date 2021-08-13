@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -41,6 +42,9 @@ public class Harvester {
 			authorityFiles;
 	private AtomicInteger c = new AtomicInteger(0);
 
+	private Calendar from = null;
+	private Calendar to = null;
+
 	private static final Logger logger = LoggerFactory.getLogger(OAIHarvester.class);
 
 	public Harvester(String listIdentifierURL, String outputDirectory) throws ParserConfigurationException {
@@ -61,18 +65,46 @@ public class Harvester {
 
 	}
 
+	public void setFrom(Calendar from) {
+		this.from = from;
+	}
+
+	public void setTo(Calendar to) {
+		this.to = to;
+	}
+
 	public void setLimit(long limit) {
 		this.limit = limit;
 	}
 
-	private static String getResumptionToken(String postfix) {
-		return System.currentTimeMillis() + ":0:oai_dc:00010101000000:99991231235959:null" + postfix;
+	private static String getResumptionToken(String postfix, Calendar from, Calendar to, boolean depub) {
+
+		String depubString = "null";
+
+		if (depub) {
+			depubString = "DEPUBBLICATO";
+		}
+
+		if (from == null || to == null) {
+
+			return System.currentTimeMillis() + ":0:oai_dc:00010101000000:99991231235959:" + depubString + postfix;
+		} else {
+			return System.currentTimeMillis() + ":0:oai_dc:" + getStringDate(from) + "000000:" + getStringDate(to)
+					+ "235959:" + depubString + postfix;
+		}
+
 	}
 
-	public List<String> downloadRecords(String folder, String postfixList, String postfixRecord, boolean download)
-			throws IOException {
+	private static String getStringDate(Calendar c) {
+		return String.format("%d%02d%02d", c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+	}
 
-		String nextToken = getResumptionToken(postfixList);
+	public List<String> downloadRecords(String folder, String postfixList, String postfixRecord, boolean download,
+			Calendar from, Calendar to) throws IOException {
+
+		String nextToken = getResumptionToken(postfixList, from, to, false);
+		
+		//TODO
 
 		AtomicInteger chunk = new AtomicInteger(0);
 		List<String> downloadedRecords = new ArrayList<>();
@@ -132,29 +164,37 @@ public class Harvester {
 			TransformerException {
 
 		if (records) {
-			downloadRecords(recordsDirectory, "", "/xml", true);
+			logger.info("Download records");
+			downloadRecords(recordsDirectory, "", "/xml", true, from, to);
 			downloaded = 0;
 		}
 		if (multimedia_records) {
-			downloadRecords(multimediaRecordsDirectory, "/entita_multimediale", "/xml/entita_multimediale", true);
+			logger.info("Download multimedia records");
+			downloadRecords(multimediaRecordsDirectory, "/entita_multimediale", "/xml/entita_multimediale", true, from,
+					to);
 			downloaded = 0;
 		}
 		if (contenitoriFisici) {
-			downloadRecords(contenitoriFisiciDirectory, "/contenitori_fisici", "/xml/contenitori_fisici", true);
+			logger.info("Download contenitori fisici");
+			downloadRecords(contenitoriFisiciDirectory, "/contenitori_fisici", "/xml/contenitori_fisici", true, from,
+					to);
 			downloaded = 0;
 		}
 		if (contenitoriGiuridici) {
-			downloadRecords(contenitoriGiuridiciDirectory, "/contenitori_giuridici", "/xml/contenitori_giuridici",
-					true);
+			logger.info("Download contenitori giuridici");
+			downloadRecords(contenitoriGiuridiciDirectory, "/contenitori_giuridici", "/xml/contenitori_giuridici", true,
+					from, to);
 			downloaded = 0;
 		}
 		if (altreNormative) {
-			downloadRecords(altreNormativeDirectory, "/altre_normative", "/xml/altre_normative", true);
+			logger.info("Download altre normative");
+			downloadRecords(altreNormativeDirectory, "/altre_normative", "/xml/altre_normative", true, from, to);
 			downloaded = 0;
 		}
 
 		if (authorityFiles) {
-			downloadRecords(authorityFilesDirectory, "/authorities", "/xml/authorities", true);
+			logger.info("Download authority file");
+			downloadRecords(authorityFilesDirectory, "/authorities", "/xml/authorities", true, from, to);
 		}
 
 	}
@@ -226,8 +266,6 @@ public class Harvester {
 		return result;
 
 	}
-
-	
 
 	private List<String> getRecords(Document d)
 			throws IOException, SAXException, XPathExpressionException, TransformerException {
