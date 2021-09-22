@@ -201,6 +201,11 @@
 					<xsl:value-of select="'https://w3id.org/arco/ontology/arco/DemoEthnoAnthropologicalHeritage'" />
 				</xsl:attribute>
 			</rdf:type>
+			<xsl:if test="record/metadata/schede/*/MT/MOF">
+				<arco-cd:methodOfManufacturing>
+					<xsl:value-of select="normalize-space(record/metadata/schede/*/MT/MOF)" />
+				</arco-cd:methodOfManufacturing>
+			</xsl:if>
 			<!-- production realization location for BDM < version 4.00 -->
 			<xsl:for-each select="record/metadata/schede/BDM/AU/LDF">
 				<arco-location:hasTimeIndexedTypedLocation>
@@ -679,11 +684,28 @@
 				</xsl:if>
 				<!-- Regione -->
 				<xsl:if test="./LDFR and (not(starts-with(lower-case(normalize-space(./LDFR)), 'nr')) and not(starts-with(lower-case(normalize-space(./LDFR)), 'n.r')))">
-					<clvapit:hasRegion>
-						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./LDFR))" />
-						</xsl:attribute>
-					</clvapit:hasRegion>
+					<xsl:choose>
+						<xsl:when test="./LDFC and (starts-with(lower-case(normalize-space(./LDFC)), 'firenze') or starts-with(lower-case(normalize-space(./LDFC)), 'siena') or starts-with(lower-case(normalize-space(./LDFC)), 'san severino marche') or starts-with(lower-case(normalize-space(./LDFC)), 'modena'))">		
+							<xsl:choose>
+								<xsl:when test="./LDFR and (starts-with(lower-case(normalize-space(./LDFR)), 'lombardia'))">
+								</xsl:when>
+								<xsl:otherwise>
+									<clvapit:hasRegion>
+										<xsl:attribute name="rdf:resource">
+											<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./LDFR))" />
+										</xsl:attribute>
+									</clvapit:hasRegion>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:otherwise>
+							<clvapit:hasRegion>
+								<xsl:attribute name="rdf:resource">
+        				            <xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./LDFR))" />
+							    </xsl:attribute>
+							</clvapit:hasRegion>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:if>
 				<!-- Provincia -->
 				<xsl:if test="./LDFP and (not(starts-with(lower-case(normalize-space(./LDFP)), 'nr')) and not(starts-with(lower-case(normalize-space(./LDFP)), 'n.r')))">
@@ -1031,11 +1053,28 @@
 				</xsl:if>
 				<!-- Regione -->
 				<xsl:if test="record/metadata/schede/*/OC/OCC/OCCR and (not(starts-with(lower-case(normalize-space(record/metadata/schede/*/OC/OCC/OCCR)), 'nr')) and not(starts-with(lower-case(normalize-space(record/metadata/schede/*/OC/OCC/OCCR)), 'n.r')))">
-					<clvapit:hasRegion>
-						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(record/metadata/schede/*/OC/OCC/OCCR))" />
-						</xsl:attribute>
-					</clvapit:hasRegion>
+					<xsl:choose>
+						<xsl:when test="record/metadata/schede/*/OC/OCC/OCCC and (starts-with(lower-case(normalize-space(record/metadata/schede/*/OC/OCC/OCCC)), 'firenze') or starts-with(lower-case(normalize-space(record/metadata/schede/*/OC/OCC/OCCC)), 'siena') or starts-with(lower-case(normalize-space(record/metadata/schede/*/OC/OCC/OCCC)), 'san severino marche') or starts-with(lower-case(normalize-space(record/metadata/schede/*/OC/OCC/OCCC)), 'modena'))">		
+							<xsl:choose>
+								<xsl:when test="record/metadata/schede/*/OC/OCC/OCCR and (starts-with(lower-case(normalize-space(record/metadata/schede/*/OC/OCC/OCCR)), 'lombardia'))">
+								</xsl:when>
+								<xsl:otherwise>
+									<clvapit:hasRegion>
+										<xsl:attribute name="rdf:resource">
+											<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(record/metadata/schede/*/OC/OCC/OCCR))" />
+										</xsl:attribute>
+									</clvapit:hasRegion>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:otherwise>
+							<clvapit:hasRegion>
+								<xsl:attribute name="rdf:resource">
+									<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(record/metadata/schede/*/OC/OCC/OCCR))" />
+								</xsl:attribute>
+							</clvapit:hasRegion>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:if>
 				<xsl:if test="record/metadata/schede/*/OC/OCT/OCTR">
 					<clvapit:hasRegion>
@@ -3582,10 +3621,12 @@
 						<xsl:value-of select="concat('Scolarità: ', ./ATT/ATTO)" />
 					</arco-core:note>
 				</xsl:if>
-				<xsl:if test="./ATT/ATTM">
-					<arco-core:note>
-						<xsl:value-of select="concat('Mestiere: ', ./ATT/ATTM)" />
-					</arco-core:note>
+				<xsl:if test="./ATT/ATTM and (not(starts-with(lower-case(normalize-space(./ATT/ATTM)), 'nr')) and not(starts-with(lower-case(normalize-space(./ATT/ATTM)), 'n.r')))">
+					<arco-cd:hasProfession>
+						<xsl:attribute name="rdf:resource">
+							<xsl:value-of select="concat($NS, 'Profession/', arco-fn:urify(normalize-space(./ATT/ATTM)))" />
+						</xsl:attribute>
+					</arco-cd:hasProfession>
 				</xsl:if>
 				<xsl:if test="./ATT/ATTB">
 					<arco-core:note>
@@ -3631,6 +3672,25 @@
 					</cpv:dateOfBirth>
 				</xsl:if>
 			</rdf:Description>
+			<!-- profession of user as an individual -->
+			<xsl:if test="./ATT/ATTM and (not(starts-with(lower-case(normalize-space(./ATT/ATTM)), 'nr')) and not(starts-with(lower-case(normalize-space(./ATT/ATTM)), 'n.r')))">
+				<rdf:Description>
+					<xsl:attribute name="rdf:about">
+						<xsl:value-of select="concat($NS, 'Profession/', arco-fn:urify(normalize-space(./ATT/ATTM)))" />
+					</xsl:attribute>
+					<rdf:type>
+						<xsl:attribute name="rdf:resource">
+							<xsl:value-of select="'https://w3id.org/arco/ontology/context-description/Profession'" />
+						</xsl:attribute>
+					</rdf:type>
+					<rdfs:label>
+						<xsl:value-of select="normalize-space(./ATT/ATTM)" />
+					</rdfs:label>
+					<l0:name>
+						<xsl:value-of select="normalize-space(./ATT/ATTM)" />
+					</l0:name>
+				</rdf:Description>
+			</xsl:if>
 			<!-- sex interpretation as individual -->
 			<xsl:if test="./ATT/ATTS">
 				<rdf:Description>
@@ -3834,11 +3894,28 @@
 				</xsl:if>
 				<!-- Regione -->
 				<xsl:if test="./DNA/DNAR and (not(starts-with(lower-case(normalize-space(./DNA/DNAR)), 'nr')) and not(starts-with(lower-case(normalize-space(./DNA/DNAR)), 'n.r')))">
-					<clvapit:hasRegion>
-						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./DNA/DNAR))" />
-						</xsl:attribute>
-					</clvapit:hasRegion>
+					<xsl:choose>
+						<xsl:when test="./DNA/DNAC and (starts-with(lower-case(normalize-space(./DNA/DNAC)), 'firenze') or starts-with(lower-case(normalize-space(./DNA/DNAC)), 'siena') or starts-with(lower-case(normalize-space(./DNA/DNAC)), 'san severino marche') or starts-with(lower-case(normalize-space(./DNA/DNAC)), 'modena'))">	
+							<xsl:choose>
+								<xsl:when test="./DNA/DNAR and (starts-with(lower-case(normalize-space(./DNA/DNAR)), 'lombardia'))">
+								</xsl:when>
+								<xsl:otherwise>
+									<clvapit:hasRegion>
+										<xsl:attribute name="rdf:resource">
+											<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./DNA/DNAR))" />
+										</xsl:attribute>
+									</clvapit:hasRegion>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:otherwise>
+							<clvapit:hasRegion>
+								<xsl:attribute name="rdf:resource">
+									<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./DNA/DNAR))" />
+								</xsl:attribute>
+							</clvapit:hasRegion>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:if>
 				<!-- Provincia -->
 				<xsl:if test="./DNA/DNAP and (not(starts-with(lower-case(normalize-space(./DNA/DNAP)), 'nr')) and not(starts-with(lower-case(normalize-space(./DNA/DNAP)), 'n.r')))">
@@ -4070,11 +4147,28 @@
 				</xsl:if>
 				<!-- Regione -->
 				<xsl:if test="./DML/DMLR and (not(starts-with(lower-case(normalize-space(./DML/DMLR)), 'nr')) and not(starts-with(lower-case(normalize-space(./DML/DMLR)), 'n.r')))">
-					<clvapit:hasRegion>
-						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./DML/DMLR))" />
-						</xsl:attribute>
-					</clvapit:hasRegion>
+					<xsl:choose>
+						<xsl:when test="./DML/DMLC and (starts-with(lower-case(normalize-space(./DML/DMLC)), 'firenze') or starts-with(lower-case(normalize-space(./DML/DMLC)), 'siena') or starts-with(lower-case(normalize-space(./DML/DMLC)), 'san severino marche') or starts-with(lower-case(normalize-space(./DML/DMLC)), 'modena'))">		
+							<xsl:choose>
+								<xsl:when test="./DML/DMLR and (starts-with(lower-case(normalize-space(./DML/DMLR)), 'lombardia'))">
+								</xsl:when>
+								<xsl:otherwise>
+									<clvapit:hasRegion>
+										<xsl:attribute name="rdf:resource">
+											<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./DML/DMLR))" />
+										</xsl:attribute>
+									</clvapit:hasRegion>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:otherwise>
+							<clvapit:hasRegion>
+								<xsl:attribute name="rdf:resource">
+									<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./DML/DMLR))" />
+								</xsl:attribute>
+							</clvapit:hasRegion>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:if>
 				<!-- Provincia -->
 				<xsl:if test="./DML/DMLP and (not(starts-with(lower-case(normalize-space(./DML/DMLP)), 'nr')) and not(starts-with(lower-case(normalize-space(./DML/DMLP)), 'n.r')))">
@@ -4563,7 +4657,134 @@
 					<l0:name>
 						<xsl:value-of select="record/metadata/schede/*/DU/DUS/DUST" />
 					</l0:name>
+					<!-- Edition -->
+					<xsl:if test="record/metadata/schede/*/DU/DUX">
+						<arco-cd:hasEdition>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of select="concat($NS, 'Edition/', $itemURI)" />
+							</xsl:attribute>
+						</arco-cd:hasEdition>
+					</xsl:if>
 				</rdf:Description>
+				<!-- Edition as an individual -->
+				<xsl:if test="record/metadata/schede/*/DU/DUX">
+					<rdf:Description>
+						<xsl:attribute name="rdf:about">
+            				<xsl:value-of select="concat($NS, 'Edition/', $itemURI)" />
+            			</xsl:attribute>
+						<rdf:type>
+							<xsl:attribute name="rdf:resource">
+            					<xsl:value-of select="'https://w3id.org/arco/ontology/context-description/Edition'" />
+	            			</xsl:attribute>
+						</rdf:type>
+						<rdfs:label xml:lang="it">
+							<xsl:value-of select="concat('Edizione del documento audio del bene ', $itemURI)" />
+						</rdfs:label>
+						<l0:name xml:lang="it">
+							<xsl:value-of select="concat('Edizione del documento audio del bene ', $itemURI)" />
+						</l0:name>
+						<rdfs:label xml:lang="en">
+							<xsl:value-of select="concat('Edition of audio documentation of cultural property ', $itemURI)" />
+						</rdfs:label>
+						<l0:name xml:lang="en">
+							<xsl:value-of select="concat('Edition of audio documentation of cultural property ', $itemURI)" />
+						</l0:name>
+						<!-- editor -->
+						<xsl:if test="record/metadata/schede/*/DU/DUX/DUXE">
+							<arco-cd:hasEditor>
+								<xsl:attribute name="rdf:resource">
+            						<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(record/metadata/schede/*/DU/DUX/DUXE))" />
+            					</xsl:attribute>
+							</arco-cd:hasEditor>
+						</xsl:if>
+						<!-- curator -->
+						<xsl:if test="record/metadata/schede/*/DU/DUX/DUXC">
+							<arco-cd:hasCurator>
+								<xsl:attribute name="rdf:resource">
+            						<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(record/metadata/schede/*/DU/DUX/DUXC))" />
+            					</xsl:attribute>
+							</arco-cd:hasCurator>
+						</xsl:if>
+						<!-- time interval -->
+						<xsl:if test="record/metadata/schede/*/DU/DUX/DUXP">
+							<tiapit:atTime>
+								<xsl:attribute name="rdf:resource">
+									<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space(record/metadata/schede/*/DU/DUX/DUXP)))" />
+								</xsl:attribute>
+							</tiapit:atTime>
+						</xsl:if>
+						<xsl:if test="record/metadata/schede/*/DU/DUX/DUXI">
+							<arco-core:note>
+								<xsl:value-of select="concat('Indice: ', normalize-space(record/metadata/schede/*/DU/DUX/DUXI))" />
+							</arco-core:note>
+						</xsl:if>
+						<xsl:if test="record/metadata/schede/*/DU/DUX/DUXZ">
+							<arco-core:note>
+								<xsl:value-of select="normalize-space(record/metadata/schede/*/DU/DUX/DUXZ)" />
+							</arco-core:note>
+						</xsl:if>
+					</rdf:Description>
+					<!-- Time interval as an individual -->
+					<xsl:if test="record/metadata/schede/*/DU/DUX/DUXP">
+						<rdf:Description>
+							<xsl:attribute name="rdf:about">
+								<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space(record/metadata/schede/*/DU/DUX/DUXP)))" />
+							</xsl:attribute>
+							<rdf:type>
+								<xsl:attribute name="rdf:resource">
+									<xsl:value-of select="'https://w3id.org/italia/onto/TI/TimeInterval'" />
+								</xsl:attribute>
+							</rdf:type>
+							<rdfs:label>
+								<xsl:value-of select="normalize-space(record/metadata/schede/*/DU/DUX/DUXP)" />
+							</rdfs:label>
+							<l0:name>
+								<xsl:value-of select="normalize-space(record/metadata/schede/*/DU/DUX/DUXP)" />
+							</l0:name>
+							<tiapit:time>
+								<xsl:value-of select="normalize-space(record/metadata/schede/*/DU/DUX/DUXP)" />
+							</tiapit:time>
+						</rdf:Description>
+					</xsl:if>
+					<!-- editor as an individual -->
+					<xsl:if test="record/metadata/schede/*/DU/DUX/DUXE">
+						<rdf:Description>
+							<xsl:attribute name="rdf:about">
+	            				<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(record/metadata/schede/*/DU/DUX/DUXE))" />
+	            			</xsl:attribute>
+							<rdf:type>
+								<xsl:attribute name="rdf:resource">
+	            					<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
+	            				</xsl:attribute>
+							</rdf:type>
+							<rdfs:label>
+								<xsl:value-of select="normalize-space(record/metadata/schede/*/DU/DUX/DUXE)" />
+							</rdfs:label>
+							<l0:name>
+								<xsl:value-of select="normalize-space(record/metadata/schede/*/DU/DUX/DUXE)" />
+							</l0:name>
+						</rdf:Description>
+					</xsl:if>
+					<!-- curator as an individual -->
+					<xsl:if test="record/metadata/schede/*/DU/DUX/DUXC">
+						<rdf:Description>
+							<xsl:attribute name="rdf:about">
+	            				<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(record/metadata/schede/*/DU/DUX/DUXC))" />
+	            			</xsl:attribute>
+							<rdf:type>
+								<xsl:attribute name="rdf:resource">
+	            					<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
+	            				</xsl:attribute>
+							</rdf:type>
+							<rdfs:label>
+								<xsl:value-of select="normalize-space(record/metadata/schede/*/DU/DUX/DUXC)" />
+							</rdfs:label>
+							<l0:name>
+								<xsl:value-of select="normalize-space(record/metadata/schede/*/DU/DUX/DUXC)" />
+							</l0:name>
+						</rdf:Description>
+					</xsl:if>
+				</xsl:if>
 			</xsl:if>
 			<!-- recording type -->
 			<xsl:if test="record/metadata/schede/*/DU/DUO/DUOT">
@@ -5064,7 +5285,7 @@
 					<!-- Regione -->
 					<xsl:if test="record/metadata/schede/*/DU/DUG/DUGR and (not(starts-with(lower-case(normalize-space(record/metadata/schede/*/DU/DUG/DUGR)), 'nr')) and not(starts-with(lower-case(normalize-space(record/metadata/schede/*/DU/DUG/DUGR)), 'n.r')))">
 						<xsl:choose>
-							<xsl:when test="record/metadata/schede/*/DU/DUG/DUGC and (starts-with(lower-case(normalize-space(record/metadata/schede/*/DU/DUG/DUGC)), 'firenze'))">	
+							<xsl:when test="record/metadata/schede/*/DU/DUG/DUGC and (starts-with(lower-case(normalize-space(record/metadata/schede/*/DU/DUG/DUGC)), 'firenze') or starts-with(lower-case(normalize-space(record/metadata/schede/*/DU/DUG/DUGC)), 'siena') or starts-with(lower-case(normalize-space(record/metadata/schede/*/DU/DUG/DUGC)), 'san severino marche') or starts-with(lower-case(normalize-space(record/metadata/schede/*/DU/DUG/DUGC)), 'modena'))">		
 								<xsl:choose>
 									<xsl:when test="record/metadata/schede/*/DU/DUG/DUGR and (starts-with(lower-case(normalize-space(record/metadata/schede/*/DU/DUG/DUGR)), 'lombardia'))">
 									</xsl:when>
@@ -5740,7 +5961,7 @@
 				<xsl:if test="record/metadata/schede/*/DV/DVU">
 					<arco-dd:hasMeasurementCollection>
 						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="concat($NS, 'MeasurementCollection/Recording', $itemURI)" />
+							<xsl:value-of select="concat($NS, 'MeasurementCollection/VideoRecording', $itemURI)" />
 				        </xsl:attribute>
 					</arco-dd:hasMeasurementCollection>
 				</xsl:if>
@@ -5810,7 +6031,7 @@
 			<xsl:if test="record/metadata/schede/*/DV/DVU">
 				<rdf:Description>
 				 	<xsl:attribute name="rdf:about">
-						<xsl:value-of select="concat($NS, 'MeasurementCollection/Recording', $itemURI)" />
+						<xsl:value-of select="concat($NS, 'MeasurementCollection/VideoRecording', $itemURI)" />
 					</xsl:attribute>
 				 	<rdf:type>
 						<xsl:attribute name="rdf:resource">
@@ -5854,11 +6075,11 @@
 						<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/denotative-description/', 'Duration')" />
 					</arco-dd:hasMeasurementType>
 					<arco-dd:hasValue>
-						<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-duration-', (record/metadata/schede/*/DV/DVU))" />
+						<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-duration-', arco-fn:urify(record/metadata/schede/*/DV/DVU))" />
 					</arco-dd:hasValue>
 				</rdf:Description>
 				<rdf:Description>
-					<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-duration-', (record/metadata/schede/*/DV/DVU))" />
+					<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-duration-', arco-fn:urify(record/metadata/schede/*/DV/DVU))" />
 					<rdf:type rdf:resource="https://w3id.org/italia/onto/MU/Value" />
 					<rdfs:label>
 						<xsl:value-of select="record/metadata/schede/*/DV/DVU" />
@@ -6317,7 +6538,7 @@
 					<!-- Regione -->
 					<xsl:if test="record/metadata/schede/*/DV/DVG/DVGR and (not(starts-with(lower-case(normalize-space(record/metadata/schede/*/DV/DVG/DVGR)), 'nr')) and not(starts-with(lower-case(normalize-space(record/metadata/schede/*/DV/DVG/DVGR)), 'n.r')))">
 						<xsl:choose>
-							<xsl:when test="record/metadata/schede/*/DV/DVG/DVGC and (starts-with(lower-case(normalize-space(record/metadata/schede/*/DV/DVG/DVGC)), 'firenze'))">	
+							<xsl:when test="record/metadata/schede/*/DV/DVG/DVGC and (starts-with(lower-case(normalize-space(record/metadata/schede/*/DV/DVG/DVGC)), 'firenze') or starts-with(lower-case(normalize-space(record/metadata/schede/*/DV/DVG/DVGC)), 'siena') or starts-with(lower-case(normalize-space(record/metadata/schede/*/DV/DVG/DVGC)), 'san severino marche') or starts-with(lower-case(normalize-space(record/metadata/schede/*/DV/DVG/DVGC)), 'modena'))">		
 								<xsl:choose>
 									<xsl:when test="record/metadata/schede/*/DV/DVG/DVGR and (starts-with(lower-case(normalize-space(record/metadata/schede/*/DV/DVG/DVGR)), 'lombardia'))">
 									</xsl:when>
@@ -7214,11 +7435,11 @@
 							<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/denotative-description/', 'PhotoSize')" />
 						</arco-dd:hasMeasurementType>
 						<arco-dd:hasValue>
-							<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-photosize-', (record/metadata/schede/*/DF/DFM/DFME))" />
+							<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-photosize-', arco-fn:urify(record/metadata/schede/*/DF/DFM/DFME))" />
 						</arco-dd:hasValue>
 					</rdf:Description>
 					<rdf:Description>
-						<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-photosize-', (record/metadata/schede/*/DF/DFM/DFME))" />
+						<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-photosize-', arco-fn:urify(record/metadata/schede/*/DF/DFM/DFME))" />
 						<rdf:type rdf:resource="https://w3id.org/italia/onto/MU/Value" />
 						<rdfs:label>
 							<xsl:value-of select="record/metadata/schede/*/DF/DFM/DFME" />
@@ -7248,11 +7469,11 @@
 							<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/denotative-description/', 'PhotoSize')" />
 						</arco-dd:hasMeasurementType>
 						<arco-dd:hasValue>
-							<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-photosize-', (record/metadata/schede/*/DF/DFM/DFMO))" />
+							<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-photosize-', arco-fn:urify(record/metadata/schede/*/DF/DFM/DFMO))" />
 						</arco-dd:hasValue>
 					</rdf:Description>
 					<rdf:Description>
-						<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-photosize-', (record/metadata/schede/*/DF/DFM/DFMO))" />
+						<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-photosize-', arco-fn:urify(record/metadata/schede/*/DF/DFM/DFMO))" />
 						<rdf:type rdf:resource="https://w3id.org/italia/onto/MU/Value" />
 						<rdfs:label>
 							<xsl:value-of select="record/metadata/schede/*/DF/DFM/DFMO" />
@@ -7282,11 +7503,11 @@
 							<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/denotative-description/', 'PhotoSize')" />
 						</arco-dd:hasMeasurementType>
 						<arco-dd:hasValue>
-							<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-photosize-', (record/metadata/schede/*/DF/DFM/DFMG))" />
+							<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-photosize-', arco-fn:urify(record/metadata/schede/*/DF/DFM/DFMG))" />
 						</arco-dd:hasValue>
 					</rdf:Description>
 					<rdf:Description>
-						<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-photosize-', (record/metadata/schede/*/DF/DFM/DFMG))" />
+						<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-photosize-', arco-fn:urify(record/metadata/schede/*/DF/DFM/DFMG))" />
 						<rdf:type rdf:resource="https://w3id.org/italia/onto/MU/Value" />
 						<rdfs:label>
 							<xsl:value-of select="record/metadata/schede/*/DF/DFM/DFMG" />
@@ -7345,11 +7566,11 @@
 						<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/denotative-description/', 'PhotoSize')" />
 					</arco-dd:hasMeasurementType>
 					<arco-dd:hasValue>
-						<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-photosize-', (record/metadata/schede/*/DF/DFC/DFCF))" />
+						<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-photosize-', arco-fn:urify(record/metadata/schede/*/DF/DFC/DFCF))" />
 					</arco-dd:hasValue>
 				</rdf:Description>
 				<rdf:Description>
-					<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-photosize-', (record/metadata/schede/*/DF/DFC/DFCF))" />
+					<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-photosize-', arco-fn:urify(record/metadata/schede/*/DF/DFC/DFCF))" />
 					<rdf:type rdf:resource="https://w3id.org/italia/onto/MU/Value" />
 					<rdfs:label>
 						<xsl:value-of select="record/metadata/schede/*/DF/DFC/DFCF" />
@@ -7706,7 +7927,7 @@
 					<!-- Regione -->
 					<xsl:if test="record/metadata/schede/*/DF/DFG/DFGR and (not(starts-with(lower-case(normalize-space(record/metadata/schede/*/DF/DFG/DFGR)), 'nr')) and not(starts-with(lower-case(normalize-space(record/metadata/schede/*/DF/DFG/DFGR)), 'n.r')))">
 						<xsl:choose>
-							<xsl:when test="record/metadata/schede/*/DF/DFG/DFGC and (starts-with(lower-case(normalize-space(record/metadata/schede/*/DF/DFG/DFGC)), 'firenze'))">	
+							<xsl:when test="record/metadata/schede/*/DF/DFG/DFGC and (starts-with(lower-case(normalize-space(record/metadata/schede/*/DF/DFG/DFGC)), 'firenze') or starts-with(lower-case(normalize-space(record/metadata/schede/*/DF/DFG/DFGC)), 'siena') or starts-with(lower-case(normalize-space(record/metadata/schede/*/DF/DFG/DFGC)), 'san severino marche') or starts-with(lower-case(normalize-space(record/metadata/schede/*/DF/DFG/DFGC)), 'modena'))">		
 								<xsl:choose>
 									<xsl:when test="record/metadata/schede/*/DF/DFG/DFGR and (starts-with(lower-case(normalize-space(record/metadata/schede/*/DF/DFG/DFGR)), 'lombardia'))">
 									</xsl:when>
@@ -8544,11 +8765,11 @@
 						<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/denotative-description/', 'Duration')" />
 					</arco-dd:hasMeasurementType>
 					<arco-dd:hasValue>
-						<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-duration-', (./AIU))" />
+						<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-duration-', arco-fn:urify(./AIU))" />
 					</arco-dd:hasValue>
 				</rdf:Description>
 				<rdf:Description>
-					<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-duration-', (./AIU))" />
+					<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-duration-', arco-fn:urify(./AIU))" />
 					<rdf:type rdf:resource="https://w3id.org/italia/onto/MU/Value" />
 					<rdfs:label>
 						<xsl:value-of select="./AIU" />
@@ -8879,8 +9100,135 @@
 					<l0:name>
 						<xsl:value-of select="./AIS/AIST" />
 					</l0:name>
+					<!-- Edition -->
+					<xsl:if test="./AIX">
+						<arco-cd:hasEdition>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of select="concat($NS, 'Edition/', $itemURI)" />
+							</xsl:attribute>
+						</arco-cd:hasEdition>
+					</xsl:if>
 				</rdf:Description>
-			</xsl:if>			
+				<!-- Edition as an individual -->
+				<xsl:if test="./AIX">
+					<rdf:Description>
+						<xsl:attribute name="rdf:about">
+            				<xsl:value-of select="concat($NS, 'Edition/', $itemURI)" />
+            			</xsl:attribute>
+						<rdf:type>
+							<xsl:attribute name="rdf:resource">
+            					<xsl:value-of select="'https://w3id.org/arco/ontology/context-description/Edition'" />
+	            			</xsl:attribute>
+						</rdf:type>
+						<rdfs:label xml:lang="it">
+							<xsl:value-of select="concat('Edizione del documento audio del bene ', $itemURI)" />
+						</rdfs:label>
+						<l0:name xml:lang="it">
+							<xsl:value-of select="concat('Edizione del documento audio del bene ', $itemURI)" />
+						</l0:name>
+						<rdfs:label xml:lang="en">
+							<xsl:value-of select="concat('Edition of audio documentation of cultural property ', $itemURI)" />
+						</rdfs:label>
+						<l0:name xml:lang="en">
+							<xsl:value-of select="concat('Edition of audio documentation of cultural property ', $itemURI)" />
+						</l0:name>
+						<!-- editor -->
+						<xsl:if test="./AIX/AIXE">
+							<arco-cd:hasEditor>
+								<xsl:attribute name="rdf:resource">
+            						<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AIX/AIXE))" />
+            					</xsl:attribute>
+							</arco-cd:hasEditor>
+						</xsl:if>
+						<!-- curator -->
+						<xsl:if test="./AIX/AIXC">
+							<arco-cd:hasCurator>
+								<xsl:attribute name="rdf:resource">
+            						<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AIX/AIXC))" />
+            					</xsl:attribute>
+							</arco-cd:hasCurator>
+						</xsl:if>
+						<!-- time interval -->
+						<xsl:if test="./AIX/AIXP">
+							<tiapit:atTime>
+								<xsl:attribute name="rdf:resource">
+									<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space(./AIX/AIXP)))" />
+								</xsl:attribute>
+							</tiapit:atTime>
+						</xsl:if>
+						<xsl:if test="./AIX/AIXI">
+							<arco-core:note>
+								<xsl:value-of select="concat('Indice: ', normalize-space(./AIX/AIXI))" />
+							</arco-core:note>
+						</xsl:if>
+						<xsl:if test="./AIX/AIXZ">
+							<arco-core:note>
+								<xsl:value-of select="normalize-space(./AIX/AIXZ)" />
+							</arco-core:note>
+						</xsl:if>
+					</rdf:Description>
+					<!-- Time interval as an individual -->
+					<xsl:if test="./AIX/AIXP">
+						<rdf:Description>
+							<xsl:attribute name="rdf:about">
+								<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space(./AIX/AIXP)))" />
+							</xsl:attribute>
+							<rdf:type>
+								<xsl:attribute name="rdf:resource">
+									<xsl:value-of select="'https://w3id.org/italia/onto/TI/TimeInterval'" />
+								</xsl:attribute>
+							</rdf:type>
+							<rdfs:label>
+								<xsl:value-of select="normalize-space(./AIX/AIXP)" />
+							</rdfs:label>
+							<l0:name>
+								<xsl:value-of select="normalize-space(./AIX/AIXP)" />
+							</l0:name>
+							<tiapit:time>
+								<xsl:value-of select="normalize-space(./AIX/AIXP)" />
+							</tiapit:time>
+						</rdf:Description>
+					</xsl:if>
+					<!-- editor as an individual -->
+					<xsl:if test="./AIX/AIXE">
+						<rdf:Description>
+							<xsl:attribute name="rdf:about">
+	            				<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AIX/AIXE))" />
+	            			</xsl:attribute>
+							<rdf:type>
+								<xsl:attribute name="rdf:resource">
+	            					<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
+	            				</xsl:attribute>
+							</rdf:type>
+							<rdfs:label>
+								<xsl:value-of select="normalize-space(./AIX/AIXE)" />
+							</rdfs:label>
+							<l0:name>
+								<xsl:value-of select="normalize-space(./AIX/AIXE)" />
+							</l0:name>
+						</rdf:Description>
+					</xsl:if>
+					<!-- curator as an individual -->
+					<xsl:if test="./AIX/AIXC">
+						<rdf:Description>
+							<xsl:attribute name="rdf:about">
+	            				<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AIX/AIXC))" />
+	            			</xsl:attribute>
+							<rdf:type>
+								<xsl:attribute name="rdf:resource">
+	            					<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
+	            				</xsl:attribute>
+							</rdf:type>
+							<rdfs:label>
+								<xsl:value-of select="normalize-space(./AIX/AIXC)" />
+							</rdfs:label>
+							<l0:name>
+								<xsl:value-of select="normalize-space(./AIX/AIXC)" />
+							</l0:name>
+						</rdf:Description>
+					</xsl:if>
+				</xsl:if>
+			</xsl:if>
 			<!-- recording location -->
 			<xsl:if test="./AIA">
 				<xsl:variable name="address">
@@ -9026,7 +9374,7 @@
 					<!-- Regione -->
 					<xsl:if test="./AIA/AIAR and (not(starts-with(lower-case(normalize-space(./AIA/AIAR)), 'nr')) and not(starts-with(lower-case(normalize-space(./AIA/AIAR)), 'n.r')))">
 						<xsl:choose>
-							<xsl:when test="./AIA/AIAC and (starts-with(lower-case(normalize-space(./AIA/AIAC)), 'firenze'))">	
+							<xsl:when test="./AIA/AIAC and (starts-with(lower-case(normalize-space(./AIA/AIAC)), 'firenze') or starts-with(lower-case(normalize-space(./AIA/AIAC)), 'siena') or starts-with(lower-case(normalize-space(./AIA/AIAC)), 'san severino marche') or starts-with(lower-case(normalize-space(./AIA/AIAC)), 'modena'))">	
 								<xsl:choose>
 									<xsl:when test="./AIA/AIAR and (starts-with(lower-case(normalize-space(./AIA/AIAR)), 'lombardia'))">
 									</xsl:when>
@@ -9574,11 +9922,28 @@
 					</xsl:if>
 					<!-- Regione -->
 					<xsl:if test="./AIFR and (not(starts-with(lower-case(normalize-space(./AIFR)), 'nr')) and not(starts-with(lower-case(normalize-space(./AIFR)), 'n.r')))">
-						<clvapit:hasRegion>
-							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./AIFR))" />
-							</xsl:attribute>
-						</clvapit:hasRegion>
+						<xsl:choose>
+						<xsl:when test="./AIFC and (starts-with(lower-case(normalize-space(./AIFC)), 'firenze') or starts-with(lower-case(normalize-space(./AIFC)), 'siena') or starts-with(lower-case(normalize-space(./AIFC)), 'san severino marche') or starts-with(lower-case(normalize-space(./AIFC)), 'modena'))">		
+							<xsl:choose>
+								<xsl:when test="./AIFR and (starts-with(lower-case(normalize-space(./AIFR)), 'lombardia'))">
+								</xsl:when>
+								<xsl:otherwise>
+									<clvapit:hasRegion>
+										<xsl:attribute name="rdf:resource">
+            				                 <xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./AIFR))" />
+						    		    </xsl:attribute>
+									</clvapit:hasRegion>
+								</xsl:otherwise>
+							</xsl:choose>					
+						</xsl:when>
+						<xsl:otherwise>
+							<clvapit:hasRegion>
+								<xsl:attribute name="rdf:resource">
+									<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./AIFR))" />
+								</xsl:attribute>
+							</clvapit:hasRegion>
+						</xsl:otherwise>
+						</xsl:choose>
 					</xsl:if>
 					<!-- Provincia -->
 					<xsl:if test="./AIFP and (not(starts-with(lower-case(normalize-space(./AIFP)), 'nr')) and not(starts-with(lower-case(normalize-space(./AIFP)), 'n.r')))">
@@ -9801,14 +10166,7 @@
 							</xsl:attribute>
 						</clvapit:hasCountry>
 					</xsl:if>
-					<!-- Regione -->
-					<xsl:if test="./AIFI and (not(starts-with(lower-case(normalize-space(./AIFI)), 'nr')) and not(starts-with(lower-case(normalize-space(./AIFI)), 'n.r')))">
-						<clvapit:hasRegion>
-							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./AIFI))" />
-							</xsl:attribute>
-						</clvapit:hasRegion>
-					</xsl:if>
+					
 					<!-- Provincia -->
 					<xsl:if test="./AIFV and (not(starts-with(lower-case(normalize-space(./AIFV)), 'nr')) and not(starts-with(lower-case(normalize-space(./AIFV)), 'n.r')))">
 						<clvapit:hasProvince>
@@ -10495,7 +10853,7 @@
 					<!-- Regione -->
 					<xsl:if test="./AIG/AIGR and (not(starts-with(lower-case(normalize-space(./AIG/AIGR)), 'nr')) and not(starts-with(lower-case(normalize-space(./AIG/AIGR)), 'n.r')))">
 						<xsl:choose>
-							<xsl:when test="./AIG/AIGC and (starts-with(lower-case(normalize-space(./AIG/AIGC)), 'firenze'))">	
+							<xsl:when test="./AIG/AIGC and (starts-with(lower-case(normalize-space(./AIG/AIGC)), 'firenze') or starts-with(lower-case(normalize-space(./AIG/AIGC)), 'siena') or starts-with(lower-case(normalize-space(./AIG/AIGC)), 'san severino marche') or starts-with(lower-case(normalize-space(./AIG/AIGC)), 'modena'))">		
 								<xsl:choose>
 									<xsl:when test="./AIG/AIGR and (starts-with(lower-case(normalize-space(./AIG/AIGR)), 'lombardia'))">
 									</xsl:when>
@@ -11183,6 +11541,13 @@
 						</xsl:attribute>
 					</arco-cd:isMemberOfCollectionOf>
 				</xsl:if>
+				<xsl:if test="./VIV/VIVT">
+					<arco-cd:isMemberOfCollectionOf>
+						<xsl:attribute name="rdf:resource">
+							<xsl:value-of select="concat($NS, 'VideoCollectionMembership/', $itemURI, arco-fn:urify(normalize-space(./VIV/VIVT)))" />
+						</xsl:attribute>
+					</arco-cd:isMemberOfCollectionOf>
+				</xsl:if>
 				<xsl:if test="./VIS">
 					<arco-cd:isMemberOfCollectionOf>
 						<xsl:attribute name="rdf:resource">
@@ -11333,11 +11698,11 @@
 						<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/denotative-description/', 'Duration')" />
 					</arco-dd:hasMeasurementType>
 					<arco-dd:hasValue>
-						<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-duration-', (./VIU))" />
+						<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-duration-', arco-fn:urify(./VIU))" />
 					</arco-dd:hasValue>
 				</rdf:Description>
 				<rdf:Description>
-					<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-duration-', (./VIU))" />
+					<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-duration-', arco-fn:urify(./VIU))" />
 					<rdf:type rdf:resource="https://w3id.org/italia/onto/MU/Value" />
 					<rdfs:label>
 						<xsl:value-of select="./VIU" />
@@ -11398,6 +11763,184 @@
 						<xsl:value-of select="./VIR/VIRD" />
 					</l0:name>
 				</rdf:Description>
+			</xsl:if>
+			<xsl:if test="./VIV/VIVT">
+				<rdf:Description>
+					<xsl:attribute name="rdf:about">
+						<xsl:value-of select="concat($NS, 'VideoCollectionMembership/', $itemURI, arco-fn:urify(normalize-space(./VIV/VIVT)))" />
+					</xsl:attribute>
+					<rdf:type>
+						<xsl:attribute name="rdf:resource">
+							<xsl:value-of select="'https://w3id.org/arco/ontology/context-description/VideoCollectionMembership'" />
+						</xsl:attribute>
+					</rdf:type>
+					<rdfs:label xml:lang="it">
+						<xsl:value-of select="concat('Appartenenza a collezione video della registrazione del bene: ', $itemURI)" />
+					</rdfs:label>
+					<l0:name xml:lang="it">
+						<xsl:value-of select="concat('Appartenenza a collezione video della registrazione del bene: ', $itemURI)" />
+					</l0:name>
+					<rdfs:label xml:lang="en">
+						<xsl:value-of select="concat('Video collection membership of recording of cultural property: ', $itemURI)" />
+					</rdfs:label>
+					<l0:name xml:lang="en">
+						<xsl:value-of select="concat('Video collection membership of recording of cultural property: ', $itemURI)" />
+					</l0:name>
+					<xsl:if test="./VIV/VIVT">
+						<arco-arco:positionInSequence>
+							<xsl:value-of select="normalize-space(./VIV/VIVT)" />
+						</arco-arco:positionInSequence>
+					</xsl:if>
+					<arco-cd:hasCollection>
+						<xsl:attribute name="rdf:resource">
+							<xsl:value-of select="concat($NS, 'VideoCollection/', arco-fn:urify(normalize-space(./VIV/VIVT)))" />
+						</xsl:attribute>
+					</arco-cd:hasCollection>
+				</rdf:Description>
+				<!-- video collection -->
+				<rdf:Description>
+					<xsl:attribute name="rdf:about">
+						<xsl:value-of select="concat($NS, 'VideoCollection/', arco-fn:urify(normalize-space(./VIV/VIVT)))" />
+					</xsl:attribute>
+					<rdf:type>
+						<xsl:attribute name="rdf:resource">
+							<xsl:value-of select="'https://w3id.org/arco/ontology/context-description/VideoCollection'" />
+						</xsl:attribute>
+					</rdf:type>
+					<rdfs:label>
+						<xsl:value-of select="./VIV/VIVT" />
+					</rdfs:label>
+					<l0:name>
+						<xsl:value-of select="./VIV/VIVT" />
+					</l0:name>
+					<!-- Edition -->
+					<xsl:if test="./VIX">
+						<arco-cd:hasEdition>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of select="concat($NS, 'Edition/', $itemURI)" />
+							</xsl:attribute>
+						</arco-cd:hasEdition>
+					</xsl:if>
+				</rdf:Description>
+				<!-- Edition as an individual -->
+				<xsl:if test="./VIX">
+					<rdf:Description>
+						<xsl:attribute name="rdf:about">
+            				<xsl:value-of select="concat($NS, 'Edition/', $itemURI)" />
+            			</xsl:attribute>
+						<rdf:type>
+							<xsl:attribute name="rdf:resource">
+            					<xsl:value-of select="'https://w3id.org/arco/ontology/context-description/Edition'" />
+	            			</xsl:attribute>
+						</rdf:type>
+						<rdfs:label xml:lang="it">
+							<xsl:value-of select="concat('Edizione del documento audio del bene ', $itemURI)" />
+						</rdfs:label>
+						<l0:name xml:lang="it">
+							<xsl:value-of select="concat('Edizione del documento audio del bene ', $itemURI)" />
+						</l0:name>
+						<rdfs:label xml:lang="en">
+							<xsl:value-of select="concat('Edition of audio documentation of cultural property ', $itemURI)" />
+						</rdfs:label>
+						<l0:name xml:lang="en">
+							<xsl:value-of select="concat('Edition of audio documentation of cultural property ', $itemURI)" />
+						</l0:name>
+						<!-- editor -->
+						<xsl:if test="./VIX/VIXE">
+							<arco-cd:hasEditor>
+								<xsl:attribute name="rdf:resource">
+            						<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./VIX/VIXE))" />
+            					</xsl:attribute>
+							</arco-cd:hasEditor>
+						</xsl:if>
+						<!-- curator -->
+						<xsl:if test="./VIX/VIXC">
+							<arco-cd:hasCurator>
+								<xsl:attribute name="rdf:resource">
+            						<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./VIX/VIXC))" />
+            					</xsl:attribute>
+							</arco-cd:hasCurator>
+						</xsl:if>
+						<!-- time interval -->
+						<xsl:if test="./VIX/VIXP">
+							<tiapit:atTime>
+								<xsl:attribute name="rdf:resource">
+									<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space(./VIX/VIXP)))" />
+								</xsl:attribute>
+							</tiapit:atTime>
+						</xsl:if>
+						<xsl:if test="./VIX/VIXI">
+							<arco-core:note>
+								<xsl:value-of select="concat('Indice: ', normalize-space(./VIX/VIXI))" />
+							</arco-core:note>
+						</xsl:if>
+						<xsl:if test="./VIX/VIXZ">
+							<arco-core:note>
+								<xsl:value-of select="normalize-space(./VIX/VIXZ)" />
+							</arco-core:note>
+						</xsl:if>
+					</rdf:Description>
+					<!-- Time interval as an individual -->
+					<xsl:if test="./VIX/VIXP">
+						<rdf:Description>
+							<xsl:attribute name="rdf:about">
+								<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space(./VIX/VIXP)))" />
+							</xsl:attribute>
+							<rdf:type>
+								<xsl:attribute name="rdf:resource">
+									<xsl:value-of select="'https://w3id.org/italia/onto/TI/TimeInterval'" />
+								</xsl:attribute>
+							</rdf:type>
+							<rdfs:label>
+								<xsl:value-of select="normalize-space(./VIX/VIXP)" />
+							</rdfs:label>
+							<l0:name>
+								<xsl:value-of select="normalize-space(./VIX/VIXP)" />
+							</l0:name>
+							<tiapit:time>
+								<xsl:value-of select="normalize-space(./VIX/VIXP)" />
+							</tiapit:time>
+						</rdf:Description>
+					</xsl:if>
+					<!-- editor as an individual -->
+					<xsl:if test="./VIX/VIXE">
+						<rdf:Description>
+							<xsl:attribute name="rdf:about">
+	            				<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./VIX/VIXE))" />
+	            			</xsl:attribute>
+							<rdf:type>
+								<xsl:attribute name="rdf:resource">
+	            					<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
+	            				</xsl:attribute>
+							</rdf:type>
+							<rdfs:label>
+								<xsl:value-of select="normalize-space(./VIX/VIXE)" />
+							</rdfs:label>
+							<l0:name>
+								<xsl:value-of select="normalize-space(./VIX/VIXE)" />
+							</l0:name>
+						</rdf:Description>
+					</xsl:if>
+					<!-- curator as an individual -->
+					<xsl:if test="./VIX/VIXC">
+						<rdf:Description>
+							<xsl:attribute name="rdf:about">
+	            				<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./VIX/VIXC))" />
+	            			</xsl:attribute>
+							<rdf:type>
+								<xsl:attribute name="rdf:resource">
+	            					<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
+	            				</xsl:attribute>
+							</rdf:type>
+							<rdfs:label>
+								<xsl:value-of select="normalize-space(./VIX/VIXC)" />
+							</rdfs:label>
+							<l0:name>
+								<xsl:value-of select="normalize-space(./VIX/VIXC)" />
+							</l0:name>
+						</rdf:Description>
+					</xsl:if>
+				</xsl:if>
 			</xsl:if>
 			<xsl:if test="./VIS">
 				<rdf:Description>
@@ -11597,7 +12140,7 @@
 					<!-- Regione -->
 					<xsl:if test="./VIA/VIAR and (not(starts-with(lower-case(normalize-space(./VIA/VIAR)), 'nr')) and not(starts-with(lower-case(normalize-space(./VIA/VIAR)), 'n.r')))">
 						<xsl:choose>
-							<xsl:when test="./VIA/VIAC and (starts-with(lower-case(normalize-space(./VIA/VIAC)), 'firenze'))">	
+							<xsl:when test="./VIA/VIAC and (starts-with(lower-case(normalize-space(./VIA/VIAC)), 'firenze') or starts-with(lower-case(normalize-space(./VIA/VIAC)), 'siena') or starts-with(lower-case(normalize-space(./VIA/VIAC)), 'san severino marche') or starts-with(lower-case(normalize-space(./VIA/VIAC)), 'modena'))">		
 								<xsl:choose>
 									<xsl:when test="./VIA/VIAR and (starts-with(lower-case(normalize-space(./VIA/VIAR)), 'lombardia'))">
 									</xsl:when>
@@ -12145,11 +12688,28 @@
 					</xsl:if>
 					<!-- Regione -->
 					<xsl:if test="./VIFR and (not(starts-with(lower-case(normalize-space(./VIFR)), 'nr')) and not(starts-with(lower-case(normalize-space(./VIFR)), 'n.r')))">
-						<clvapit:hasRegion>
-							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./VIFR))" />
-							</xsl:attribute>
-						</clvapit:hasRegion>
+						<xsl:choose>
+							<xsl:when test="./VIFC and (starts-with(lower-case(normalize-space(./VIFC)), 'firenze') or starts-with(lower-case(normalize-space(./VIFC)), 'siena') or starts-with(lower-case(normalize-space(./VIFC)), 'san severino marche') or starts-with(lower-case(normalize-space(./VIFC)), 'modena'))">		
+								<xsl:choose>
+									<xsl:when test="./VIFR and (starts-with(lower-case(normalize-space(./VIFR)), 'lombardia'))">
+									</xsl:when>
+									<xsl:otherwise>
+										<clvapit:hasRegion>
+											<xsl:attribute name="rdf:resource">
+												<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./VIFR))" />
+											</xsl:attribute>
+										</clvapit:hasRegion>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:otherwise>
+								<clvapit:hasRegion>
+									<xsl:attribute name="rdf:resource">
+										<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./VIFR))" />
+									</xsl:attribute>
+								</clvapit:hasRegion>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:if>
 					<!-- Provincia -->
 					<xsl:if test="./VIFP and (not(starts-with(lower-case(normalize-space(./VIFP)), 'nr')) and not(starts-with(lower-case(normalize-space(./VIFP)), 'n.r')))">
@@ -12374,11 +12934,28 @@
 					</xsl:if>
 					<!-- Regione -->
 					<xsl:if test="./VIFI and (not(starts-with(lower-case(normalize-space(./VIFI)), 'nr')) and not(starts-with(lower-case(normalize-space(./VIFI)), 'n.r')))">
-						<clvapit:hasRegion>
-							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./VIFI))" />
-							</xsl:attribute>
-						</clvapit:hasRegion>
+						<xsl:choose>
+							<xsl:when test="./VIFQ and (starts-with(lower-case(normalize-space(./VIFQ)), 'firenze') or starts-with(lower-case(normalize-space(./VIFQ)), 'siena') or starts-with(lower-case(normalize-space(./VIFQ)), 'san severino marche') or starts-with(lower-case(normalize-space(./VIFQ)), 'modena'))">		
+								<xsl:choose>
+									<xsl:when test="./VIFI and (starts-with(lower-case(normalize-space(./VIFI)), 'lombardia'))">
+									</xsl:when>
+									<xsl:otherwise>
+										<clvapit:hasRegion>
+											<xsl:attribute name="rdf:resource">
+												<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./VIFI))" />
+											</xsl:attribute>
+										</clvapit:hasRegion>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:otherwise>
+								<clvapit:hasRegion>
+									<xsl:attribute name="rdf:resource">
+										<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./VIFI))" />
+									</xsl:attribute>
+								</clvapit:hasRegion>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:if>
 					<!-- Provincia -->
 					<xsl:if test="./VIFV and (not(starts-with(lower-case(normalize-space(./VIFV)), 'nr')) and not(starts-with(lower-case(normalize-space(./VIFV)), 'n.r')))">
@@ -13054,7 +13631,7 @@
 					<!-- Regione -->
 					<xsl:if test="./VIG/VIGR and (not(starts-with(lower-case(normalize-space(./VIG/VIGR)), 'nr')) and not(starts-with(lower-case(normalize-space(./VIG/VIGR)), 'n.r')))">
 						<xsl:choose>
-							<xsl:when test="./VIG/VIGC and (starts-with(lower-case(normalize-space(./VIG/VIGC)), 'firenze'))">	
+							<xsl:when test="./VIG/VIGC and (starts-with(lower-case(normalize-space(./VIG/VIGC)), 'firenze') or starts-with(lower-case(normalize-space(./VIG/VIGC)), 'siena') or starts-with(lower-case(normalize-space(./VIG/VIGC)), 'san severino marche') or starts-with(lower-case(normalize-space(./VIG/VIGC)), 'modena'))">		
 								<xsl:choose>
 									<xsl:when test="./VIG/VIGR and (starts-with(lower-case(normalize-space(./VIG/VIGR)), 'lombardia'))">
 									</xsl:when>
@@ -13963,11 +14540,11 @@
 							<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/denotative-description/', 'PhotoSize')" />
 						</arco-dd:hasMeasurementType>
 						<arco-dd:hasValue>
-							<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-photosize-', (./FIM/FIME))" />
+							<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-photosize-', arco-fn:urify(./FIM/FIME))" />
 						</arco-dd:hasValue>
 					</rdf:Description>
 					<rdf:Description>
-						<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-photosize-', (./FIM/FIME))" />
+						<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-photosize-', arco-fn:urify(./FIM/FIME))" />
 						<rdf:type rdf:resource="https://w3id.org/italia/onto/MU/Value" />
 						<rdfs:label>
 							<xsl:value-of select="./FIM/FIME" />
@@ -13997,11 +14574,11 @@
 							<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/denotative-description/', 'PhotoSize')" />
 						</arco-dd:hasMeasurementType>
 						<arco-dd:hasValue>
-							<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-photosize-', (./FIM/FIMO))" />
+							<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-photosize-', arco-fn:urify(./FIM/FIMO))" />
 						</arco-dd:hasValue>
 					</rdf:Description>
 					<rdf:Description>
-						<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-photosize-', (./FIM/FIMO))" />
+						<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-photosize-', arco-fn:urify(./FIM/FIMO))" />
 						<rdf:type rdf:resource="https://w3id.org/italia/onto/MU/Value" />
 						<rdfs:label>
 							<xsl:value-of select="./FIM/FIMO" />
@@ -14031,11 +14608,11 @@
 							<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/denotative-description/', 'PhotoSize')" />
 						</arco-dd:hasMeasurementType>
 						<arco-dd:hasValue>
-							<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-photosize-', (./FIM/FIMG))" />
+							<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Recording-photosize-', arco-fn:urify(./FIM/FIMG))" />
 						</arco-dd:hasValue>
 					</rdf:Description>
 					<rdf:Description>
-						<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-photosize-', (./FIM/FIMG))" />
+						<xsl:attribute name="rdf:about" select="concat($NS, 'Value/Recording-photosize-', arco-fn:urify(./FIM/FIMG))" />
 						<rdf:type rdf:resource="https://w3id.org/italia/onto/MU/Value" />
 						<rdfs:label>
 							<xsl:value-of select="./FIM/FIMG" />
@@ -14094,11 +14671,11 @@
 						<xsl:attribute name="rdf:resource" select="concat('https://w3id.org/arco/ontology/denotative-description/', 'PhotoSize')" />
 					</arco-dd:hasMeasurementType>
 					<arco-dd:hasValue>
-						<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/IntegrativeRecording-photosize-', (./FIC/FICF))" />
+						<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/IntegrativeRecording-photosize-', arco-fn:urify(./FIC/FICF))" />
 					</arco-dd:hasValue>
 				</rdf:Description>
 				<rdf:Description>
-					<xsl:attribute name="rdf:about" select="concat($NS, 'Value/IntegrativeRecording-photosize-', (./FIC/FICF))" />
+					<xsl:attribute name="rdf:about" select="concat($NS, 'Value/IntegrativeRecording-photosize-', arco-fn:urify(./FIC/FICF))" />
 					<rdf:type rdf:resource="https://w3id.org/italia/onto/MU/Value" />
 					<rdfs:label>
 						<xsl:value-of select="./FIC/FICF" />
@@ -14394,7 +14971,7 @@
 					<!-- Regione -->
 					<xsl:if test="./FIA/FIAR and (not(starts-with(lower-case(normalize-space(./FIA/FIAR)), 'nr')) and not(starts-with(lower-case(normalize-space(./FIA/FIAR)), 'n.r')))">
 						<xsl:choose>
-							<xsl:when test="./FIA/FIAC and (starts-with(lower-case(normalize-space(./FIA/FIAC)), 'firenze'))">	
+							<xsl:when test="./FIA/FIAC and (starts-with(lower-case(normalize-space(./FIA/FIAC)), 'firenze') or starts-with(lower-case(normalize-space(./FIA/FIAC)), 'siena') or starts-with(lower-case(normalize-space(./FIA/FIAC)), 'san severino marche') or starts-with(lower-case(normalize-space(./FIA/FIAC)), 'modena'))">		
 								<xsl:choose>
 									<xsl:when test="./FIA/FIAR and (starts-with(lower-case(normalize-space(./FIA/FIAR)), 'lombardia'))">
 									</xsl:when>
@@ -14722,7 +15299,7 @@
 					<!-- Regione -->
 					<xsl:if test="./FIC/FICR and (not(starts-with(lower-case(normalize-space(./FIC/FICR)), 'nr')) and not(starts-with(lower-case(normalize-space(./FIC/FICR)), 'n.r')))">
 						<xsl:choose>
-							<xsl:when test="./FIC/FICC and (starts-with(lower-case(normalize-space(./FIC/FICC)), 'firenze'))">	
+							<xsl:when test="./FIC/FICC and (starts-with(lower-case(normalize-space(./FIC/FICC)), 'firenze') or starts-with(lower-case(normalize-space(./FIC/FICC)), 'siena') or starts-with(lower-case(normalize-space(./FIC/FICC)), 'san severino marche') or starts-with(lower-case(normalize-space(./FIC/FICC)), 'modena'))">	
 								<xsl:choose>
 									<xsl:when test="./FIC/FICR and (starts-with(lower-case(normalize-space(./FIC/FICR)), 'lombardia'))">
 									</xsl:when>
@@ -15270,11 +15847,28 @@
 					</xsl:if>
 					<!-- Regione -->
 					<xsl:if test="./FIFR and (not(starts-with(lower-case(normalize-space(./FIFR)), 'nr')) and not(starts-with(lower-case(normalize-space(./FIFR)), 'n.r')))">
-						<clvapit:hasRegion>
-							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./FIFR))" />
-							</xsl:attribute>
-						</clvapit:hasRegion>
+						<xsl:choose>
+							<xsl:when test="./FIFC and (starts-with(lower-case(normalize-space(./FIFC)), 'firenze') or starts-with(lower-case(normalize-space(./FIFC)), 'siena') or starts-with(lower-case(normalize-space(./FIFC)), 'san severino marche') or starts-with(lower-case(normalize-space(./FIFC)), 'modena'))">		
+								<xsl:choose>
+									<xsl:when test="./FIFR and (starts-with(lower-case(normalize-space(./FIFR)), 'lombardia'))">
+									</xsl:when>
+									<xsl:otherwise>
+										<clvapit:hasRegion>
+											<xsl:attribute name="rdf:resource">
+												<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./FIFR))" />
+											</xsl:attribute>
+										</clvapit:hasRegion>
+									</xsl:otherwise>
+								</xsl:choose>					
+							</xsl:when>
+							<xsl:otherwise>
+								<clvapit:hasRegion>
+									<xsl:attribute name="rdf:resource">
+										<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./FIFR))" />
+									</xsl:attribute>
+								</clvapit:hasRegion>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:if>
 					<!-- Provincia -->
 					<xsl:if test="./FIFP and (not(starts-with(lower-case(normalize-space(./FIFP)), 'nr')) and not(starts-with(lower-case(normalize-space(./FIFP)), 'n.r')))">
@@ -15499,11 +16093,28 @@
 					</xsl:if>
 					<!-- Regione -->
 					<xsl:if test="./FIFI and (not(starts-with(lower-case(normalize-space(./FIFI)), 'nr')) and not(starts-with(lower-case(normalize-space(./FIFI)), 'n.r')))">
-						<clvapit:hasRegion>
-							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./FIFI))" />
-							</xsl:attribute>
-						</clvapit:hasRegion>
+						<xsl:choose>
+							<xsl:when test="./FIFQ and (starts-with(lower-case(normalize-space(./FIFQ)), 'firenze') or starts-with(lower-case(normalize-space(./FIFQ)), 'siena') or starts-with(lower-case(normalize-space(./FIFQ)), 'san severino marche') or starts-with(lower-case(normalize-space(./FIFQ)), 'modena'))">		
+								<xsl:choose>
+									<xsl:when test="./FIFI and (starts-with(lower-case(normalize-space(./FIFI)), 'lombardia'))">
+									</xsl:when>
+									<xsl:otherwise>
+										<clvapit:hasRegion>
+											<xsl:attribute name="rdf:resource">
+												<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./FIFI))" />
+											</xsl:attribute>
+										</clvapit:hasRegion>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:otherwise>
+								<clvapit:hasRegion>
+									<xsl:attribute name="rdf:resource">
+										<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./FIFI))" />
+									</xsl:attribute>
+								</clvapit:hasRegion>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:if>
 					<!-- Provincia -->
 					<xsl:if test="./FIFV and (not(starts-with(lower-case(normalize-space(./FIFV)), 'nr')) and not(starts-with(lower-case(normalize-space(./FIFV)), 'n.r')))">
@@ -16029,7 +16640,7 @@
 					<!-- Regione -->
 					<xsl:if test="./FIG/FIGR and (not(starts-with(lower-case(normalize-space(./FIG/FIGR)), 'nr')) and not(starts-with(lower-case(normalize-space(./FIG/FIGR)), 'n.r')))">
 						<xsl:choose>
-							<xsl:when test="./FIG/FIGC and (starts-with(lower-case(normalize-space(./FIG/FIGC)), 'firenze'))">	
+							<xsl:when test="./FIG/FIGC and (starts-with(lower-case(normalize-space(./FIG/FIGC)), 'firenze') or starts-with(lower-case(normalize-space(./FIFQ)), 'siena') or starts-with(lower-case(normalize-space(./FIFQ)), 'san severino marche') or starts-with(lower-case(normalize-space(./FIFQ)), 'modena'))">		
 								<xsl:choose>
 									<xsl:when test="./FIG/FIGR and (starts-with(lower-case(normalize-space(./FIG/FIGR)), 'lombardia'))">
 									</xsl:when>

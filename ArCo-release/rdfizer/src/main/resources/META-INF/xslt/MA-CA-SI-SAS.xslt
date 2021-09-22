@@ -260,7 +260,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:for-each>
-			<xsl:for-each select="record/metadata/schede/*/DA/SCA">
+			<xsl:for-each select="record/metadata/schede/*/DA/SCA[*]">
 				<xsl:choose>	
 					<xsl:when test="not(./SCAP) or ./SCAP='intero bene' or ./SCAP='integrale' or ./SCAP='tutta' or ./SCAP='totale' or ./SCAP='carattere generale' or (starts-with(lower-case(normalize-space(./SCAP)), 'nr')) or (starts-with(lower-case(normalize-space(./SCAP)), 'n.r')) or (starts-with(lower-case(normalize-space(./SCAP)), 'intero')) or (starts-with(lower-case(normalize-space(./SCAP)), 'intera')) or (starts-with(lower-case(normalize-space(./SCAP)), 'esemplar'))">
 						<arco-con:hasVerticalConnection>
@@ -318,6 +318,11 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:for-each>
+			<xsl:if test="record/metadata/schede/*/MT/POS">
+				<arco-core:description>
+					<xsl:value-of select="concat('Posizione saggio: area ', record/metadata/schede/*/MT/POS/POSN, '. ',  record/metadata/schede/*/MT/POS/POSD)" />
+				</arco-core:description>
+			</xsl:if>
 		</rdf:Description>
 		<!-- NaturalEnvironment as individual -->
 		<xsl:if test="record/metadata/schede/SI/CA">

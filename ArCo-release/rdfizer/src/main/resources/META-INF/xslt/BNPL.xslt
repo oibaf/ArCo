@@ -80,6 +80,7 @@
 	xmlns:ar-MeasurementCollection="https://w3id.org/arco/resource/MeasurementCollection/"
 	xmlns:ar-CISNameInTime="https://w3id.org/arco/resource/CISNameInTime/"
 	xmlns:ar-Measurement="https://w3id.org/arco/resource/Measurement/"
+	xmlns:arco-ip="https://w3id.org/arco/ontology/imnatural-specimen-description//"
 
 	xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0"
 	exclude-result-prefixes="xsl php">
@@ -203,7 +204,7 @@
 			</arco-core:isIdentifiedBy>
 			<arco-core:hasClassificationInTime>
 				<xsl:attribute name="rdf:resource">
-		    		<xsl:value-of select="concat($NS,'IdentificationInTime/', $itemURI)" />
+		    		<xsl:value-of select="concat($NS,'ClassificationInTime/', $itemURI)" />
 				</xsl:attribute>
 			</arco-core:hasClassificationInTime>
 			<arco-core:hasIdentificationInTime>

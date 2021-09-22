@@ -91,6 +91,7 @@
 <xsl:template match="/">
 	<rdf:RDF>
 	<xsl:variable name="sheetType" select="name(record/metadata/schede/*[1])" />
+	<!-- Properties of ArchitecturalHeritage -->						
 	<xsl:variable name="sheetVersion" select="record/metadata/schede/*/@version" />
 	<xsl:variable name="cp-name" select="''" />
 	<xsl:variable name="itemURI">
@@ -154,7 +155,6 @@
 		</xsl:choose>
 	</xsl:variable>	
 	<xsl:if test="$sheetType='A' or $sheetType='PG'" >
-		<!-- Properties of ArchitecturalHeritage -->
 		<rdf:Description>
 			<xsl:attribute name="rdf:about">
 	        	<xsl:value-of select="$culturalProperty" />
@@ -164,12 +164,12 @@
 					<xsl:choose>
 						<xsl:when test="record/metadata/schede/A/SI/SII/SIIN or record/metadata/schede/A/SI/SII/SIIP">
 							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="'https://w3id.org/arco/ontology/construction/Building'" />
+								<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Building'" />
 							</xsl:attribute>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="'https://w3id.org/arco/ontology/construction/Construction'" />
+								<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Construction'" />
 							</xsl:attribute>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -178,10 +178,24 @@
 			<xsl:if test="$sheetType='PG'">
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/OpenSpace'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/OpenSpace'" />
 					</xsl:attribute>
 				</rdf:type>
 			</xsl:if>
+			<xsl:for-each select="record/metadata/schede/*/LC/PVC/PVCA">
+				<arco-con:hasConstructionElement>
+					<xsl:attribute name="rdf:resource">
+						<xsl:value-of select="concat($NS, 'Facade/', $itemURI, '-', position())" />
+					</xsl:attribute>
+				</arco-con:hasConstructionElement>
+			</xsl:for-each>
+			<xsl:for-each select="record/metadata/schede/*/UB/UBV">
+				<arco-con:hasConstructionElement>
+					<xsl:attribute name="rdf:resource">
+						<xsl:value-of select="concat($NS, 'Facade/', $itemURI, '-', position())" />
+					</xsl:attribute>
+				</arco-con:hasConstructionElement>
+			</xsl:for-each>
 			<xsl:if test="record/metadata/schede/A/IS/IST">
 				<arco-core:description>
 					<xsl:value-of select="record/metadata/schede/A/IS/IST" />
@@ -513,6 +527,93 @@
 				</xsl:choose>
 			</xsl:for-each>
 		</rdf:Description>
+		<!-- Facade as individual -->
+		<xsl:for-each select="record/metadata/schede/*/LC/PVC/PVCA">
+			<rdf:Description>
+				<xsl:attribute name="rdf:about">
+	    	    	<xsl:value-of select="concat($NS, 'Facade/', $itemURI, '-', position())" />
+				</xsl:attribute>
+				<rdf:type>
+					<xsl:attribute name="rdf:resource">
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Facade'" />
+					</xsl:attribute>
+				</rdf:type>
+				<rdfs:label xml:lang="it">
+					<xsl:value-of select="concat('Facciata ', position(), ' del bene culturale: ', $itemURI)" />
+				</rdfs:label>
+				<l0:name xml:lang="it">
+					<xsl:value-of select="concat('Facciata ', position(), ' del bene culturale: ', $itemURI)" />
+				</l0:name>
+				<rdfs:label xml:lang="en">
+					<xsl:value-of select="concat('Facade ', position(), ' of cultural property: ', $itemURI)" />
+				</rdfs:label>
+				<l0:name xml:lang="en">
+					<xsl:value-of select="concat('Facade ', position(), ' of cultural property: ', $itemURI)" />
+				</l0:name>
+				<arco-core:note>
+					<xsl:value-of select="." />
+				</arco-core:note>
+			</rdf:Description>
+		</xsl:for-each>
+		<xsl:for-each select="record/metadata/schede/*/UB/UBV">
+			<rdf:Description>
+				<xsl:attribute name="rdf:about">
+	    	    	<xsl:value-of select="concat($NS, 'Facade/', $itemURI, '-', position())" />
+				</xsl:attribute>
+				<rdf:type>
+					<xsl:attribute name="rdf:resource">
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Facade'" />
+					</xsl:attribute>
+				</rdf:type>
+				<rdfs:label xml:lang="it">
+					<xsl:value-of select="concat('Facciata ', position(), ' del bene culturale: ', $itemURI)" />
+				</rdfs:label>
+				<l0:name xml:lang="it">
+					<xsl:value-of select="concat('Facciata ', position(), ' del bene culturale: ', $itemURI)" />
+				</l0:name>
+				<rdfs:label xml:lang="en">
+					<xsl:value-of select="concat('Facade ', position(), ' of cultural property: ', $itemURI)" />
+				</rdfs:label>
+				<l0:name xml:lang="en">
+					<xsl:value-of select="concat('Facade ', position(), ' of cultural property: ', $itemURI)" />
+				</l0:name>
+				<xsl:if test="./UBVA and starts-with(lower-case(normalize-space(./UBVA)), 'principale')">
+					<arco-con:mainFacade>
+						<xsl:value-of select="true()" />
+					</arco-con:mainFacade>
+				</xsl:if>
+				<xsl:if test="./UBVP">
+					<arco-core:note>
+						<xsl:value-of select="./UBVP" />
+					</arco-core:note>
+				</xsl:if>
+				<xsl:if test="./UBVD">
+					<arco-core:note>
+						<xsl:choose>
+							<xsl:when test="./UBVN">
+								<xsl:value-of select="concat(./UBVD, ' ', string-join(./UBVN,' - '))" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="./UBVD" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</arco-core:note>
+				</xsl:if>
+				<xsl:if test="./UBVK">
+					<arco-core:note>
+						<xsl:choose>
+							<xsl:when test="./UBVL">
+								<xsl:value-of select="concat(./UBVK, ' ', ./UBVL)" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="./UBVK" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</arco-core:note>
+				</xsl:if>
+			</rdf:Description>
+		</xsl:for-each>
+		<!-- Architectural Space as individual -->
 		<xsl:for-each select="record/metadata/schede/A/SI/SII">
 		<!-- Vertical subdivision as individual -->
 		<xsl:for-each select="./SIIV">
@@ -522,7 +623,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/VerticalSubdivision'" />
+							<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/VerticalSubdivision'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label>
@@ -541,7 +642,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/HorizontalSubdivision'" />
+							<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/HorizontalSubdivision'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label>
@@ -564,7 +665,7 @@
 						</xsl:attribute>
 						<rdf:type>
 							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="'https://w3id.org/arco/ontology/construction/Floor'" />
+								<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Floor'" />
 							</xsl:attribute>
 						</rdf:type>
 						<rdfs:label>
@@ -587,7 +688,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/ConstructionDesign'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/ConstructionDesign'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label  xml:lang="en">
@@ -632,7 +733,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="'https://w3id.org/arco/ontology/construction/PlanLayout'" />
+							<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/PlanLayout'" />
 					</xsl:attribute>
 				</rdf:type>
 				<xsl:variable name="layoutLabel"> 
@@ -662,7 +763,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/Construction'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Construction'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label>
@@ -683,7 +784,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/Foundation'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Foundation'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label  xml:lang="en">
@@ -808,7 +909,7 @@
 				</xsl:attribute>
 	 	        <rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/FoundationType'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/FoundationType'" />
 					</xsl:attribute>
 				</rdf:type>
 				<xsl:choose>
@@ -876,7 +977,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/VerticalElement'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/VerticalElement'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label  xml:lang="en">
@@ -1005,7 +1106,7 @@
 	            </xsl:attribute>
 	 	        <rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/VerticalElementType'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/VerticalElementType'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label>
@@ -1030,7 +1131,7 @@
 				</xsl:attribute> 
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/HorizontalElement'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/HorizontalElement'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label  xml:lang="en">
@@ -1118,7 +1219,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="'https://w3id.org/arco/ontology/construction/HorizontalElement'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/HorizontalElement'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label  xml:lang="en">
@@ -1216,7 +1317,7 @@
 				</xsl:attribute>
 	 	        <rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/HorizontalElementType'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/HorizontalElementType'" />
 					</xsl:attribute>
 				</rdf:type>
 				<xsl:choose>
@@ -1300,7 +1401,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/Roof'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Roof'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label  xml:lang="en">
@@ -1369,7 +1470,7 @@
         	    </xsl:attribute>
  	        	<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/RoofStructure'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/RoofStructure'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label>
@@ -1387,7 +1488,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="'https://w3id.org/arco/ontology/construction/Roof'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Roof'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label  xml:lang="en">
@@ -1469,7 +1570,7 @@
 					</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="'https://w3id.org/arco/ontology/construction/RoofType'" />
+							<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/RoofType'" />
 						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label>
@@ -1484,11 +1585,11 @@
 			<xsl:if test="./CPM">
 			<rdf:Description>	
 				<xsl:attribute name="rdf:about">
-	        			<xsl:value-of select="concat($NS, 'Roofing/', $itemURI, '-', arco-fn:arcofy(normalize-space(./CPM)))" />
+	        		<xsl:value-of select="concat($NS, 'Roofing/', $itemURI, '-', arco-fn:arcofy(normalize-space(./CPM)))" />
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="'https://w3id.org/arco/ontology/construction/Roofing'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Roofing'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label  xml:lang="en">
@@ -1527,7 +1628,7 @@
 					</arco-core:hasType>
 				</xsl:if>
 			</rdf:Description>
-											<!-- RoofingType as individual -->
+			<!-- RoofingType as individual -->
 			<xsl:if test="./CPM/CPMT">
 			<rdf:Description>
 				<xsl:attribute name="rdf:about"> 
@@ -1542,7 +1643,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/RoofingType'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/RoofingType'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label>
@@ -1601,7 +1702,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/Flooring'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Flooring'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label  xml:lang="en">
@@ -1639,7 +1740,7 @@
 				</xsl:attribute>
 	 	        <rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/FlooringType'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/FlooringType'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label>
@@ -1658,7 +1759,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="'https://w3id.org/arco/ontology/construction/FlooringLayout'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/FlooringLayout'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label>
@@ -1678,7 +1779,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/Stairs'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Stairs'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label  xml:lang="en">
@@ -1758,7 +1859,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/Stairs'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Stairs'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label  xml:lang="en">
@@ -1840,7 +1941,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="'https://w3id.org/arco/ontology/construction/VerticalConnectionType'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/VerticalConnectionType'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label>
@@ -1909,7 +2010,7 @@
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of 	select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify($siir))" />
 					</xsl:attribute>
-					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 					<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />				
 					<xsl:if test="./SIIN">
 						<arco-con:numberOfFloors>
@@ -1965,7 +2066,7 @@
 							</xsl:attribute>
 							<rdf:type>
 								<xsl:attribute name="rdf:resource">
-									<xsl:value-of select="'https://w3id.org/arco/ontology/construction/Floor'" />
+									<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Floor'" />
 								</xsl:attribute>
 							</rdf:type>
 							<rdfs:label>
@@ -1987,7 +2088,7 @@
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of 	select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(normalize-space(./PNR)))" />
 					</xsl:attribute>
-					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 					<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 					<rdfs:label>
 						<xsl:value-of select="normalize-space(./PNR)" />
@@ -2049,7 +2150,7 @@
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of 	select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(normalize-space(./FNSU)))" />
 					</xsl:attribute>
-					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 					<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 					<rdfs:label>
 						<xsl:value-of select="normalize-space(./FNSU)" />
@@ -2079,7 +2180,7 @@
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of 	select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(normalize-space(./SVCU)))" />
 					</xsl:attribute>
-					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 					<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 					<rdfs:label>
 						<xsl:value-of select="normalize-space(./SVCU)" />
@@ -2109,7 +2210,7 @@
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of 	select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(normalize-space(./SOU)))" />
 					</xsl:attribute>
-					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 					<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 					<rdfs:label>
 						<xsl:value-of select="normalize-space(./SOU)" />
@@ -2137,7 +2238,7 @@
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of 	select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(normalize-space(./CPU)))" />
 					</xsl:attribute>
-					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 					<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 					<rdfs:label>
 						<xsl:value-of select="normalize-space(./CPU)" />
@@ -2183,7 +2284,7 @@
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(normalize-space(./CPM/CPMR)))" />
 					</xsl:attribute>
-					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 					<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 					<rdfs:label>
 						<xsl:value-of select="normalize-space(./CPM/CPMR)" />
@@ -2211,7 +2312,7 @@
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(normalize-space(./SCL/SCLU)))" />
 					</xsl:attribute>
-					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 					<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 					<rdfs:label>
 						<xsl:value-of select="normalize-space(./SCL/SCLU)" />
@@ -2239,7 +2340,7 @@
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of 	select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(normalize-space(./PVMU)))" />
 					</xsl:attribute>
-					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 					<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 					<rdfs:label>
 						<xsl:value-of select="normalize-space(./PVMU)" />
@@ -2862,7 +2963,7 @@
 					</xsl:attribute>
 	 	    	    <rdf:type>
 						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="'https://w3id.org/arco/ontology/construction/WaterSystem'" />
+							<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/WaterSystem'" />
 						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label xml:lang="en">
@@ -2900,7 +3001,7 @@
 					</xsl:attribute>
 	 	    	    <rdf:type>
 						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="'https://w3id.org/arco/ontology/construction/WaterSystem'" />
+							<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/WaterSystem'" />
 						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label xml:lang="en">
@@ -2924,7 +3025,7 @@
 					</xsl:attribute>
 	 	    	    <rdf:type>
 						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="'https://w3id.org/arco/ontology/construction/TechnicalSystem'" />
+							<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/TechnicalSystem'" />
 						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label>
@@ -2946,7 +3047,7 @@
 					</xsl:attribute>
 					 <rdf:type>
 						<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/WaterElement'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/WaterElement'" />
 						</xsl:attribute>
 					</rdf:type>
 					<xsl:choose>
@@ -3089,7 +3190,7 @@
 						<xsl:attribute name="rdf:about">
 							<xsl:value-of 	select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(normalize-space(./FOTU)))" />
 						</xsl:attribute>
-						<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+						<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 						<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 						<rdfs:label>
 							<xsl:value-of select="normalize-space(./FOTU)" />
@@ -3131,7 +3232,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/Layout'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/Layout'" />
 					</xsl:attribute>
 				</rdf:type>
 				<xsl:choose>
@@ -3163,7 +3264,7 @@
 					</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="'https://w3id.org/arco/ontology/construction/ConstructionElement'" />
+							<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/ConstructionElement'" />
 						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label >
@@ -3185,7 +3286,7 @@
 					</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="'https://w3id.org/arco/ontology/construction/ConnectionElement'" />
+							<xsl:value-of select="'https://w3id.org/arco/ontology/construction-description/ConnectionElement'" />
 						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label xml:lang="en">
@@ -3213,7 +3314,7 @@
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(normalize-space(./IMPU)))" />
 					</xsl:attribute>
-					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 					<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 					<rdfs:label>
 						<xsl:value-of select="normalize-space(./IMPU)" />
@@ -3258,7 +3359,7 @@
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:attribute>
-						<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+						<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 						<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 						<xsl:choose>
 							<xsl:when test="./MPTT">
@@ -3308,7 +3409,7 @@
 						<xsl:attribute name="rdf:about">
 							<xsl:value-of select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(normalize-space(./MPAU)))" />
 						</xsl:attribute>
-					<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+						<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 						<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 						<rdfs:label>
 							<xsl:value-of select="normalize-space(./MPAU)" />
@@ -3336,7 +3437,7 @@
 						<xsl:attribute name="rdf:about">
 							<xsl:value-of select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(normalize-space(./MPCR)))" />
 						</xsl:attribute>
-						<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+						<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 						<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 						<rdfs:label>
 							<xsl:value-of select="normalize-space(./MPCR)" />
@@ -3364,7 +3465,7 @@
 						<xsl:attribute name="rdf:about">
 							<xsl:value-of select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(normalize-space(./FVPD)))" />
 						</xsl:attribute>
-						<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction/ConstructionPart" />
+						<rdf:type rdf:resource="https://w3id.org/arco/ontology/construction-description/ConstructionPart" />
 						<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 						<rdfs:label>
 							<xsl:value-of select="normalize-space(./FVPD)" />
