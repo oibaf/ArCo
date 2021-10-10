@@ -591,10 +591,10 @@
 					<arco-core:note>
 						<xsl:choose>
 							<xsl:when test="./UBVN">
-								<xsl:value-of select="concat(./UBVD, ' ', string-join(./UBVN,' - '))" />
+								<xsl:value-of select="concat('Affaccio su ', ./UBVD, ' ', string-join(./UBVN,' - '))" />
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:value-of select="./UBVD" />
+								<xsl:value-of select="concat('Affaccio su ', ./UBVD)" />
 							</xsl:otherwise>
 						</xsl:choose>
 					</arco-core:note>
@@ -653,6 +653,7 @@
 				</l0:name>
 			</rdf:Description>
 		</xsl:for-each>	
+		<!-- Floor as individual -->
 		<xsl:if test="./SIIP">
 			<xsl:if test="not(./SIIR/node()) or ./SIIR[.='intero bene' or .='integrale' or .='tutta' or .='totale' or .='carattere generale' or starts-with(lower-case(normalize-space()), 'non accertabile') or starts-with(lower-case(normalize-space()), 'nr') or starts-with(lower-case(normalize-space()), 'n.r') or starts-with(lower-case(normalize-space()), 'intero') or starts-with(lower-case(normalize-space()), 'intera') or starts-with(lower-case(normalize-space()), 'esemplar')]">
 				<xsl:variable name="siip-virgola" select="./SIIP" />

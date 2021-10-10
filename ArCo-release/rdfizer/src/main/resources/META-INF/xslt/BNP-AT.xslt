@@ -910,10 +910,10 @@
 	</xsl:for-each>
 	</xsl:if>
 
-	<xsl:if test="$sheetType='BNZ'">			
+	<xsl:if test="$sheetType='BNZ'">
 	<rdf:Description>
 		<xsl:attribute name="rdf:about">
-        	<xsl:value-of select="$culturalProperty" />
+			<xsl:value-of select="$culturalProperty" />
 		</xsl:attribute>
 		<rdf:type>
 			<xsl:attribute name="rdf:resource">
@@ -1512,46 +1512,52 @@
 		<xsl:if test="./TZID">
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-        			<xsl:value-of select="concat($NS,'BiologicalTaxon/', arco-fn:urify(normalize-space(./TZID)))" />
-	        	</xsl:attribute>    
+					<xsl:value-of select="concat($NS,'BiologicalTaxon/', arco-fn:urify(normalize-space(./TZID)))" />
+				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-        	   	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/BiologicalTaxon'" />
-           			</xsl:attribute>
+						<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/BiologicalTaxon'" />
+					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label>
-        	    	 <xsl:value-of select="./TZID" />
-           		</rdfs:label>
+					<xsl:value-of select="./TZID" />
+				</rdfs:label>
 				<l0:name>
-   					<xsl:value-of select="./TZID" />
+					<xsl:value-of select="./TZID" />
 				</l0:name>
-			</rdf:Description>				
+			</rdf:Description>
 		</xsl:if>
-	</xsl:for-each>							
+	</xsl:for-each>
 	<xsl:for-each select="record/metadata/schede/BNZ/SZ/SZS/SZSL">
-		<rdf:Description>
-			<xsl:attribute name="rdf:about">
-	            <xsl:value-of 	select="concat($NS, 'Agent/', arco-fn:arcofy(record/metadata/schede/BNZ/SZ/SZS/SZSL))" />
-	        </xsl:attribute>
-			<rdf:type>
-				<xsl:attribute name="rdf:resource">
-	            	<xsl:value-of	select="'https://w3id.org/italia/onto/l0/Agent'" />
-	            </xsl:attribute>
-			</rdf:type>
-			<rdfs:label>
-				<xsl:value-of select="normalize-space(record/metadata/schede/BNZ/SZ/SZS/SZSL)" />
-			</rdfs:label>
-			<l0:name>
-				<xsl:value-of select="normalize-space(record/metadata/schede/BNZ/SZ/SZS/SZSL)" />
-			</l0:name>
-		</rdf:Description>
+		<xsl:variable name="virgola" select="." />
+		<xsl:variable name="novirgola" select="translate($virgola, ',', ' ')" />
+		<xsl:variable name="aut" select="translate($novirgola, '/', ',')" />
+		<xsl:variable name="authorssplit" select="arco-fn:split($aut)" />
+		<xsl:for-each select="$authorssplit">
+			<rdf:Description>
+				<xsl:attribute name="rdf:about">
+					<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(.))" />
+				</xsl:attribute>
+				<rdf:type>
+					<xsl:attribute name="rdf:resource">
+						<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
+					</xsl:attribute>
+				</rdf:type>
+				<rdfs:label>
+					<xsl:value-of select="normalize-space()" />
+				</rdfs:label>
+				<l0:name>
+					<xsl:value-of select="normalize-space()" />
+				</l0:name>
+			</rdf:Description>
+		</xsl:for-each>
 	</xsl:for-each>
 	</xsl:if>	
 
-	<xsl:if test="$sheetType='AT'">			
+	<xsl:if test="$sheetType='AT'">
 		<rdf:Description>
 			<xsl:attribute name="rdf:about">
-        		<xsl:value-of select="$culturalProperty" />
+				<xsl:value-of select="$culturalProperty" />
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">

@@ -2083,7 +2083,7 @@
 						</arco-cd:hasSubject>
 					</xsl:if>
 				</xsl:for-each>
-				<xsl:for-each select="record/metadata/schede/*/*/THS">
+				<xsl:for-each select="record/metadata/schede/*/*/THS[THSD]">
 					<xsl:if test="not(starts-with(lower-case(normalize-space(.)), 'nr')) and not(starts-with(lower-case(normalize-space(.)), 'n.r'))">
 						<arco-cd:subject>
 							<xsl:value-of select="normalize-space(.)" />

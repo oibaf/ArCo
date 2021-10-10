@@ -399,9 +399,9 @@
 			<xsl:when test="record/metadata/schede/*/ET/ETL/ETLS">				
 				<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/ET/ETL/ETLS)" />
 			</xsl:when>
-			<xsl:otherwise>
+			<xsl:when test="record/metadata/schede/*/ET/ETL/ETLC">
 				<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/ET/ETL/ETLC)" />
-			</xsl:otherwise>
+			</xsl:when>
 		</xsl:choose>
 	</xsl:variable>
 <xsl:template match="/">
@@ -3798,13 +3798,13 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</clvapit:hasAddress>		
-			<xsl:if test="../LRL and (not(starts-with(lower-case(normalize-space(../LRL)), 'nr')) and not(starts-with(lower-case(normalize-space(../LRL)), 'n.r')))">
+			<xsl:for-each select="../LRL[not(starts-with(lower-case(normalize-space()), 'nr') or starts-with(lower-case(normalize-space()), 'n.r'))]">
 				<arco-location:hasToponymInTime>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="concat($NS, 'ToponymInTime/', arco-fn:urify(normalize-space(../LRL)))" />
+						<xsl:value-of select="concat($NS, 'ToponymInTime/', arco-fn:urify(normalize-space()))" />
 					</xsl:attribute>
 				</arco-location:hasToponymInTime>
-			</xsl:if>	
+			</xsl:for-each>	
 			<xsl:if test="../LRS and (not(starts-with(lower-case(normalize-space(../LRS)), 'nr')) and not(starts-with(lower-case(normalize-space(../LRS)), 'n.r')))">
 				<arco-core:specifications>
 					<xsl:value-of select="normalize-space(../LRS)" />
@@ -3863,28 +3863,11 @@
 				</clvapit:hasCountry>
 			</xsl:if>
 			<xsl:if test="./LRVR and (not(starts-with(lower-case(normalize-space(./LRVR)), 'nr')) and not(starts-with(lower-case(normalize-space(./LRVR)), 'n.r')))">
-				<xsl:choose>
-					<xsl:when test="./LRVC and (starts-with(lower-case(normalize-space(./LRVC)), 'firenze') or starts-with(lower-case(normalize-space(./LRVC)), 'siena') or starts-with(lower-case(normalize-space(./LRVC)), 'san severino marche') or starts-with(lower-case(normalize-space(./LRVC)), 'modena'))">	
-						<xsl:choose>
-							<xsl:when test="./LRVR and (starts-with(lower-case(normalize-space(./LRVR)), 'lombardia'))">
-							</xsl:when>
-							<xsl:otherwise>
-								<clvapit:hasRegion>
-									<xsl:attribute name="rdf:resource">
-										<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./LRVR))" />
-									</xsl:attribute>
-								</clvapit:hasRegion>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:when>
-					<xsl:otherwise>
-						<clvapit:hasRegion>
-							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./LRVR))" />
-							</xsl:attribute>
-						</clvapit:hasRegion>
-					</xsl:otherwise>
-				</xsl:choose>
+				<clvapit:hasRegion>
+					<xsl:attribute name="rdf:resource">
+						<xsl:value-of select="concat($NS, 'Region/', arco-fn:urify(./LRVR))" />
+					</xsl:attribute>
+				</clvapit:hasRegion>
 			</xsl:if>
 			<xsl:if test="./LRVP and (not(starts-with(lower-case(normalize-space(./LRVP)), 'nr')) and not(starts-with(lower-case(normalize-space(./LRVP)), 'n.r')))">
 				<clvapit:hasProvince>
@@ -4033,10 +4016,10 @@
 				</l0:name>
 			</rdf:Description>
 		</xsl:if>
-		<xsl:if test="../LRL and (not(starts-with(lower-case(normalize-space(../LRL)), 'nr')) and not(starts-with(lower-case(normalize-space(../LRL)), 'n.r')))">
+		<xsl:for-each select="../LRL[not(starts-with(lower-case(normalize-space()), 'nr') or starts-with(lower-case(normalize-space()), 'n.r'))]">
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-					<xsl:value-of select="concat($NS, 'ToponymInTime/', arco-fn:urify(normalize-space(../LRL)))" />
+					<xsl:value-of select="concat($NS, 'ToponymInTime/', arco-fn:urify(normalize-space()))" />
 			 	</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
@@ -4045,16 +4028,16 @@
 				</rdf:type>
 				<rdfs:label>
 					<xsl:call-template name="CamelCase">
-						<xsl:with-param name="text" select="normalize-space(../LRL)" />
+						<xsl:with-param name="text" select="normalize-space()" />
 					</xsl:call-template>
 				</rdfs:label>
 				<l0:name>
 					<xsl:call-template name="CamelCase">
-						<xsl:with-param name="text" select="normalize-space(../LRL)" />
+						<xsl:with-param name="text" select="normalize-space()" />
 					</xsl:call-template>
 				</l0:name>
 			</rdf:Description>
-		</xsl:if>
+		</xsl:for-each>
 	</xsl:for-each>		
 	</xsl:if>				
 					<!-- Address Area -->
@@ -5369,6 +5352,7 @@
 				</xsl:attribute>
 			</arco-location:hasStratum>
 		</rdf:Description>
+		<xsl:if test="string-length($lithostratigraphicClassBNP)">
 		<rdf:Description>
 			<xsl:attribute name="rdf:about">
 				<xsl:value-of select="concat($NS, 'Stratum/', $itemURI)" />
@@ -5396,6 +5380,7 @@
 				</xsl:attribute>
 			</arco-core:isClassifiedBy>
 		</rdf:Description>
+		</xsl:if>
 		<xsl:if test="record/metadata/schede/*/ET/ETL/ETLO">
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
