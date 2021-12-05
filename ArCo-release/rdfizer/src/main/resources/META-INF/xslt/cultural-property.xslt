@@ -703,6 +703,11 @@
 						<xsl:value-of select="normalize-space(record/metadata/schede/*/DA/DRE)" />
 					</arco-core:description>
 				</xsl:if>
+				<xsl:if test="record/metadata/schede/*/DA/DSO">
+					<arco-core:note>
+						<xsl:value-of select="normalize-space(record/metadata/schede/*/DA/DSO)" />
+					</arco-core:note>
+				</xsl:if>
 				<xsl:if test="record/metadata/schede/FF/OG/OGT/OGTC">
 					<arco-core:description>
 						<xsl:value-of select="normalize-space(record/metadata/schede/FF/OG/OGT/OGTC)" />
@@ -2086,7 +2091,7 @@
 				<xsl:for-each select="record/metadata/schede/*/*/THS[THSD]">
 					<xsl:if test="not(starts-with(lower-case(normalize-space(.)), 'nr')) and not(starts-with(lower-case(normalize-space(.)), 'n.r'))">
 						<arco-cd:subject>
-							<xsl:value-of select="normalize-space(.)" />
+								<xsl:value-of select="normalize-space(./THSD)" />
 						</arco-cd:subject>
 						<arco-cd:hasSubject>
 							<xsl:attribute name="rdf:resource">
@@ -2525,7 +2530,7 @@
                         </xsl:attribute>
 					</arco-dd:hasDesignationInTime>
 				</xsl:for-each>
-				<xsl:for-each select="record/metadata/schede/*/OG/OGT/OGTU">
+				<xsl:for-each select="record/metadata/schede/*/OG/OGT/OGTU and not($sheetType='FF')">
 					<arco-dd:hasDesignationInTime>
 						<xsl:attribute name="rdf:resource">
                         	<xsl:value-of select="concat($NS,'DesignationInTime/', $itemURI, '-', arco-fn:urify(normalize-space()))" />                      	                            
@@ -3505,6 +3510,20 @@
 					<arco-cd:methodOfInterventionAndDigitization>
 						<xsl:value-of select="record/metadata/schede/FF/DA/MTI" />
 					</arco-cd:methodOfInterventionAndDigitization>
+				</xsl:if>
+				<xsl:if test="$sheetType='SM'" >
+					<rdf:type>
+						<xsl:attribute name="rdf:resource">
+							<xsl:value-of select="'https://w3id.org/arco/ontology/denotative-description/MusicalInstrument'" />
+						</xsl:attribute>
+					</rdf:type>
+					<xsl:for-each select="record/metadata/schede/*/AS/ASS/ASST" >
+						<arco-dd:hasAccessory>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of select="concat($NS, 'Accessory/', arco-fn:urify(normalize-space(.)))" />
+							</xsl:attribute>
+						</arco-dd:hasAccessory>
+					</xsl:for-each>
 				</xsl:if>
 			</rdf:Description>
 			

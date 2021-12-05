@@ -246,6 +246,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 				</xsl:if>
+				<!-- Interior subdivision -->
 				<xsl:if test="./SIIV">
 				<xsl:choose>
 					<xsl:when test="$notIr">
@@ -286,6 +287,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 				</xsl:if>
+				<!-- Floor -->
 				<xsl:if test="./SIIP">
 				<xsl:variable name="siip-virgola" select="./SIIP" />
 				<xsl:variable name="siip" select="translate($siip-virgola, ';', ',')" />

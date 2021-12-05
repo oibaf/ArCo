@@ -890,23 +890,31 @@
 		</xsl:if>				
 	</xsl:if>
 	</xsl:for-each>							
-	<xsl:for-each select="record/metadata/schede/BNP/SP/SPS/SPSL">
-		<rdf:Description>
-			<xsl:attribute name="rdf:about">
-	            <xsl:value-of 	select="concat($NS, 'Agent/', arco-fn:arcofy(.))" />
-	        </xsl:attribute>
-			<rdf:type>
-				<xsl:attribute name="rdf:resource">
-	            	<xsl:value-of	select="'https://w3id.org/italia/onto/l0/Agent'" />
-	            </xsl:attribute>
-			</rdf:type>
-			<rdfs:label>
-				<xsl:value-of select="normalize-space(.)" />
-			</rdfs:label>
-			<l0:name>
-				<xsl:value-of select="normalize-space(.)" />
-			</l0:name>
-		</rdf:Description>
+	<xsl:for-each select="record/metadata/schede/BNP/SP/SPS">
+		<xsl:if test="./SPSL">
+			<xsl:variable name="virgola" select="./SPSL" />
+			<xsl:variable name="novirgola" select="translate($virgola, ',', ' ')" />
+			<xsl:variable name="aut" select="translate($novirgola, '/', ',')" />
+			<xsl:variable name="authorssplit" select="arco-fn:split($aut)" />
+			<xsl:for-each select="$authorssplit">
+				<rdf:Description>
+					<xsl:attribute name="rdf:about">
+						<xsl:value-of 	select="concat($NS, 'Agent/', arco-fn:arcofy(.))" />
+					</xsl:attribute>
+					<rdf:type>
+						<xsl:attribute name="rdf:resource">
+							<xsl:value-of	select="'https://w3id.org/italia/onto/l0/Agent'" />
+						</xsl:attribute>
+					</rdf:type>
+					<rdfs:label>
+						<xsl:value-of select="normalize-space(.)" />
+					</rdfs:label>
+					<l0:name>
+						<xsl:value-of select="normalize-space(.)" />
+					</l0:name>
+				</rdf:Description>
+			</xsl:for-each>
+		</xsl:if>
 	</xsl:for-each>
 	</xsl:if>
 

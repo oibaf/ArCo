@@ -330,6 +330,7 @@
 		</xsl:choose>
 	</xsl:variable>
 	<xsl:variable name="lithostratigraphicClassBNM">
+		<xsl:if test="record/metadata/schede/*/IM/IML/IMLO or record/metadata/schede/*/IM/IML/IMLL or record/metadata/schede/*/IM/IML/IMLM or record/metadata/schede/*/IM/IML/IMLF or record/metadata/schede/*/IM/IML/IMLG or record/metadata/schede/*/IM/IML/IMLS or record/metadata/schede/*/IM/IML/IMLC">
 		<xsl:choose>
 			<xsl:when test="record/metadata/schede/*/IM/IML/IMLO">				
 				<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/IM/IML/IMLO)" />
@@ -349,12 +350,15 @@
 			<xsl:when test="record/metadata/schede/*/IM/IML/IMLS">				
 				<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/IM/IML/IMLS)" />
 			</xsl:when>
-			<xsl:otherwise>
+			<xsl:when test="record/metadata/schede/*/IM/IML/IMLC">				
 				<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/IM/IML/IMLC)" />
-			</xsl:otherwise>
+			</xsl:when>
+			<xsl:otherwise></xsl:otherwise>
 		</xsl:choose>
+		</xsl:if>
 	</xsl:variable>
 	<xsl:variable name="lithostratigraphicClassBNPE">
+		<xsl:if test="record/metadata/schede/*/IR/IRL/IRLO or record/metadata/schede/*/IR/IRL/IRLL or record/metadata/schede/*/IR/IRL/IRLM or record/metadata/schede/*/IR/IRL/IRLF or record/metadata/schede/*/IR/IRL/IRLG or record/metadata/schede/*/IR/IRL/IRLS or record/metadata/schede/*/IR/IRL/IRLC">
 		<xsl:choose>
 			<xsl:when test="record/metadata/schede/*/IR/IRL/IRLO">				
 				<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/IR/IRL/IRLO)" />
@@ -374,12 +378,15 @@
 			<xsl:when test="record/metadata/schede/*/IR/IRL/IRLS">				
 				<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/IR/IRL/IRLS)" />
 			</xsl:when>
-			<xsl:otherwise>
+			<xsl:when test="record/metadata/schede/*/IR/IRL/IRLC">				
 				<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/IR/IRL/IRLC)" />
-			</xsl:otherwise>
+			</xsl:when>
+			<xsl:otherwise></xsl:otherwise>
 		</xsl:choose>
+		</xsl:if>
 	</xsl:variable>
 	<xsl:variable name="lithostratigraphicClassBNP">
+		<xsl:if test="record/metadata/schede/*/ET/ETL/ETLO or record/metadata/schede/*/ET/ETL/ETLL or record/metadata/schede/*/ET/ETL/ETLM or record/metadata/schede/*/ET/ETL/ETLF or record/metadata/schede/*/ET/ETL/ETLG or record/metadata/schede/*/ET/ETL/ETLS or record/metadata/schede/*/ET/ETL/ETLC">
 		<xsl:choose>
 			<xsl:when test="record/metadata/schede/*/ET/ETL/ETLO">				
 				<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/ET/ETL/ETLO)" />
@@ -402,7 +409,9 @@
 			<xsl:when test="record/metadata/schede/*/ET/ETL/ETLC">
 				<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/ET/ETL/ETLC)" />
 			</xsl:when>
+			<xsl:otherwise></xsl:otherwise>
 		</xsl:choose>
+		</xsl:if>
 	</xsl:variable>
 <xsl:template match="/">
 	<rdf:RDF>
@@ -3784,6 +3793,27 @@
 				</xsl:call-template>
 			</arco-location:seaOrOcean>
 			</xsl:if>
+			<xsl:if test="../BID and (not(starts-with(lower-case(normalize-space(../BID)), 'nr')) and not(starts-with(lower-case(normalize-space(../BID)), 'n.r')))">
+				<arco-location:drainageBasin>
+					<xsl:call-template name="CamelCase">
+						<xsl:with-param name="text" select="../BID" />
+					</xsl:call-template>
+				</arco-location:drainageBasin>
+			</xsl:if>
+			<xsl:if test="./LRVZ and (not(starts-with(lower-case(normalize-space(./LRVZ)), 'nr')) and not(starts-with(lower-case(normalize-space(./LRVZ)), 'n.r')))">
+				<arco-location:hasZoogeographicRegion>
+					<xsl:attribute name="rdf:resource">
+						<xsl:value-of 	select="concat($NS, 'ZoogeographicRegion/', arco-fn:urify(./LRVZ))" />
+					</xsl:attribute>
+				</arco-location:hasZoogeographicRegion> 
+			</xsl:if>
+			<xsl:if test="../LRM and (not(starts-with(lower-case(normalize-space(../LRM)), 'nr')) and not(starts-with(lower-case(normalize-space(../LRM)), 'n.r')))">
+				<arco-location:hasZoogeographicRegion>
+					<xsl:attribute name="rdf:resource">
+						<xsl:value-of 	select="concat($NS, 'ZoogeographicRegion/', arco-fn:urify(../LRM))" />
+					</xsl:attribute>
+				</arco-location:hasZoogeographicRegion> 
+			</xsl:if>
 			<clvapit:hasAddress>
 				<xsl:choose>
 					<xsl:when test="./LRVS and not(lower-case(normalize-space(./LRVS))='italia')">
@@ -3924,6 +3954,50 @@
 				<l0:name>
 					<xsl:call-template name="CamelCase">
 						<xsl:with-param name="text" select="normalize-space(./LRVE)" />
+					</xsl:call-template>
+				</l0:name>
+			</rdf:Description>
+		</xsl:if>
+		<xsl:if test="./LRVZ and (not(starts-with(lower-case(normalize-space(./LRVZ)), 'nr')) and not(starts-with(lower-case(normalize-space(./LRVZ)), 'n.r')))">
+			<rdf:Description>
+				<xsl:attribute name="rdf:about">
+					<xsl:value-of 	select="concat($NS, 'ZoogeographicRegion/', arco-fn:urify(./LRVZ))" />
+			 	</xsl:attribute>
+				<rdf:type>
+					<xsl:attribute name="rdf:resource">
+						<xsl:value-of select="'https://w3id.org/arco/ontology/location/ZoogeographicRegion'" />
+					</xsl:attribute>
+				</rdf:type>
+				<rdfs:label>
+					<xsl:call-template name="CamelCase">
+						<xsl:with-param name="text" select="normalize-space(./LRVZ)" />
+					</xsl:call-template>
+				</rdfs:label>
+				<l0:name>
+					<xsl:call-template name="CamelCase">
+						<xsl:with-param name="text" select="normalize-space(./LRVZ)" />
+					</xsl:call-template>
+				</l0:name>
+			</rdf:Description>
+		</xsl:if>
+		<xsl:if test="../LRM and (not(starts-with(lower-case(normalize-space(../LRM)), 'nr')) and not(starts-with(lower-case(normalize-space(../LRM)), 'n.r')))">
+			<rdf:Description>
+				<xsl:attribute name="rdf:about">
+					<xsl:value-of 	select="concat($NS, 'ZoogeographicRegion/', arco-fn:urify(../LRM))" />
+			 	</xsl:attribute>
+				<rdf:type>
+					<xsl:attribute name="rdf:resource">
+						<xsl:value-of select="'https://w3id.org/arco/ontology/location/ZoogeographicRegion'" />
+					</xsl:attribute>
+				</rdf:type>
+				<rdfs:label>
+					<xsl:call-template name="CamelCase">
+						<xsl:with-param name="text" select="normalize-space(../LRM)" />
+					</xsl:call-template>
+				</rdfs:label>
+				<l0:name>
+					<xsl:call-template name="CamelCase">
+						<xsl:with-param name="text" select="normalize-space(../LRM)" />
 					</xsl:call-template>
 				</l0:name>
 			</rdf:Description>
@@ -4450,12 +4524,15 @@
 			<l0:name xml:lang="en">
 				<xsl:value-of select="concat('Geological context of collecting location of cultural property ', $itemURI)" />
 			</l0:name>
+			<xsl:if test="record/metadata/schede/*/IM/IML/IMLO or record/metadata/schede/*/IM/IML/IMLL or record/metadata/schede/*/IM/IML/IMLM or record/metadata/schede/*/IM/IML/IMLF or record/metadata/schede/*/IM/IML/IMLG or record/metadata/schede/*/IM/IML/IMLS or record/metadata/schede/*/IM/IML/IMLC">
 			<arco-location:hasStratum>
 				<xsl:attribute name="rdf:resource">
 					<xsl:value-of select="concat($NS, 'Stratum/', $itemURI)" />
 				</xsl:attribute>
 			</arco-location:hasStratum>
+			</xsl:if>
 		</rdf:Description>
+		<xsl:if test="record/metadata/schede/*/IM/IML/IMLO or record/metadata/schede/*/IM/IML/IMLL or record/metadata/schede/*/IM/IML/IMLM or record/metadata/schede/*/IM/IML/IMLF or record/metadata/schede/*/IM/IML/IMLG or record/metadata/schede/*/IM/IML/IMLS or record/metadata/schede/*/IM/IML/IMLC">
 		<rdf:Description>
 			<xsl:attribute name="rdf:about">
 				<xsl:value-of select="concat($NS, 'Stratum/', $itemURI)" />
@@ -4483,6 +4560,7 @@
 				</xsl:attribute>
 			</arco-core:isClassifiedBy>
 		</rdf:Description>
+		</xsl:if>
 		<xsl:if test="record/metadata/schede/*/IM/IML/IMLO">
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
@@ -4898,12 +4976,15 @@
 			<l0:name xml:lang="en">
 				<xsl:value-of select="concat('Geological context of collecting location of cultural property ', $itemURI)" />
 			</l0:name>
+			<xsl:if test="record/metadata/schede/*/IR/IRL/IRLO or record/metadata/schede/*/IR/IRL/IRLL or record/metadata/schede/*/IR/IRL/IRLM or record/metadata/schede/*/IR/IRL/IRLF or record/metadata/schede/*/IR/IRL/IRLG or record/metadata/schede/*/IR/IRL/IRLS or record/metadata/schede/*/IR/IRL/IRLC">
 			<arco-location:hasStratum>
 				<xsl:attribute name="rdf:resource">
 					<xsl:value-of select="concat($NS, 'Stratum/', $itemURI)" />
 				</xsl:attribute>
 			</arco-location:hasStratum>
+			</xsl:if>
 		</rdf:Description>
+		<xsl:if test="record/metadata/schede/*/IR/IRL/IRLO or record/metadata/schede/*/IR/IRL/IRLL or record/metadata/schede/*/IR/IRL/IRLM or record/metadata/schede/*/IR/IRL/IRLF or record/metadata/schede/*/IR/IRL/IRLG or record/metadata/schede/*/IR/IRL/IRLS or record/metadata/schede/*/IR/IRL/IRLC">
 		<rdf:Description>
 			<xsl:attribute name="rdf:about">
 				<xsl:value-of select="concat($NS, 'Stratum/', $itemURI)" />
@@ -4931,6 +5012,7 @@
 				</xsl:attribute>
 			</arco-core:isClassifiedBy>
 		</rdf:Description>
+		</xsl:if>
 		<xsl:if test="record/metadata/schede/*/IR/IRL/IRLO">
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
@@ -5346,13 +5428,15 @@
 			<l0:name xml:lang="en">
 				<xsl:value-of select="concat('Geological context of collecting location of cultural property ', $itemURI)" />
 			</l0:name>
+			<xsl:if test="record/metadata/schede/*/ET/ETL/ETLO or record/metadata/schede/*/ET/ETL/ETLL or record/metadata/schede/*/ET/ETL/ETLM or record/metadata/schede/*/ET/ETL/ETLF or record/metadata/schede/*/ET/ETL/ETLG or record/metadata/schede/*/ET/ETL/ETLS or record/metadata/schede/*/ET/ETL/ETLC">
 			<arco-location:hasStratum>
 				<xsl:attribute name="rdf:resource">
 					<xsl:value-of select="concat($NS, 'Stratum/', $itemURI)" />
 				</xsl:attribute>
 			</arco-location:hasStratum>
+			</xsl:if>
 		</rdf:Description>
-		<xsl:if test="string-length($lithostratigraphicClassBNP)">
+		<xsl:if test="record/metadata/schede/*/ET/ETL/ETLO or record/metadata/schede/*/ET/ETL/ETLL or record/metadata/schede/*/ET/ETL/ETLM or record/metadata/schede/*/ET/ETL/ETLF or record/metadata/schede/*/ET/ETL/ETLG or record/metadata/schede/*/ET/ETL/ETLS or record/metadata/schede/*/ET/ETL/ETLC">
 		<rdf:Description>
 			<xsl:attribute name="rdf:about">
 				<xsl:value-of select="concat($NS, 'Stratum/', $itemURI)" />
