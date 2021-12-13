@@ -515,18 +515,20 @@
 					<xsl:value-of select="$author" />
 				</xsl:attribute>
 				<rdf:type>
-					<xsl:choose>
-						<xsl:when test="($sheetVersion='4.00' or $sheetVersion='4.00_ICCD0') and lower-case(normalize-space(record/metadata/schede/*/AU/AUT/AUTP))='p'">
-							<xsl:value-of select="'https://w3id.org/italia/onto/CPV/Person'" />
-						</xsl:when>
-						<xsl:when test="($sheetVersion='4.00' or $sheetVersion='4.00_ICCD0') and lower-case(normalize-space(record/metadata/schede/*/AU/AUT/AUTP))='e'">
-							<xsl:value-of select="'https://w3id.org/italia/onto/COV/Organization'" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
-						</xsl:otherwise>
+					<xsl:attribute name="rdf:resource">
+						<xsl:choose>
+							<xsl:when test="($sheetVersion='4.00' or $sheetVersion='4.00_ICCD0') and lower-case(normalize-space(record/metadata/schede/*/AU/AUT/AUTP))='p'">
+								<xsl:value-of select="'https://w3id.org/italia/onto/CPV/Person'" />
+							</xsl:when>
+							<xsl:when test="($sheetVersion='4.00' or $sheetVersion='4.00_ICCD0') and lower-case(normalize-space(record/metadata/schede/*/AU/AUT/AUTP))='e'">
+								<xsl:value-of select="'https://w3id.org/italia/onto/COV/Organization'" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
+							</xsl:otherwise>
 						</xsl:choose>
-					</rdf:type>
+					</xsl:attribute>
+				</rdf:type>
 				<arco-catalogue:isDescribedByCatalogueRecord>
 					<xsl:attribute name="rdf:resource">
 						<xsl:value-of select="concat($NS, 'CatalogueRecord', $sheetType, '/', $idAuthor)" />
