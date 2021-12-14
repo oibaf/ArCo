@@ -509,7 +509,7 @@
 				</xsl:if>
 			</xsl:for-each>
 			
-					<!-- Author -->
+			<!-- Author -->
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
 					<xsl:value-of select="$author" />
@@ -532,7 +532,7 @@
 				<arco-catalogue:isDescribedByCatalogueRecord>
 					<xsl:attribute name="rdf:resource">
 						<xsl:value-of select="concat($NS, 'CatalogueRecord', $sheetType, '/', $idAuthor)" />
-	                </xsl:attribute>
+					</xsl:attribute>
 				</arco-catalogue:isDescribedByCatalogueRecord>
 				<rdfs:label>
 					<xsl:value-of select="$nameAuthor" />
@@ -610,6 +610,12 @@
 					<arco-cd:activityPlaceAndPeriod>
 						<xsl:value-of select="normalize-space(record/metadata/schede/*/AU/AUT/AUTG)" />
 					</arco-cd:activityPlaceAndPeriod>
+				</xsl:if>
+				<!-- historical information -->
+				<xsl:if test="record/metadata/schede/*/AU/NSC">
+					<arco-cd:historicalInformation>
+						<xsl:value-of select="normalize-space(record/metadata/schede/*/AU/NSC)" />
+					</arco-cd:historicalInformation>
 				</xsl:if>
 			</rdf:Description>
 			<xsl:if test="string-length($sex) and contains('MF',translate(normalize-space($sex),'mf','MF'))">
