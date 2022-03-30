@@ -1500,12 +1500,27 @@
                                         <xsl:value-of select="'https://w3id.org/arco/ontology/arco/HistoricalArtisticScope'" />
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <xsl:value-of select="concat($NS, 'MibacScopeOfProtection/', arco-fn:urify(normalize-space(.)))" />
+										<!-- 
+										<xsl:value-of select="concat($NS, 'MibacScopeOfProtection/', arco-fn:urify(normalize-space(.)))" />
+										-->
+										<rdf:Description>
+											<xsl:attribute name="rdf:about">
+												<xsl:value-of select="concat($NS, 'MibacScopeOfProtection/', arco-fn:urify(normalize-space(.)))" />
+											</xsl:attribute>
+											<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/MibacScopeOfProtection" />
+											<rdfs:label>
+												<xsl:value-of select="normalize-space(.)" />
+											</rdfs:label>
+											<l0:name>
+												<xsl:value-of select="normalize-space(.)" />
+											</l0:name>
+										</rdf:Description>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:attribute>
 						</arco-arco:hasMibacScopeOfProtection>
 						<!-- mibact scope of protection as an individual -->
+						<!-- 
 						<xsl:choose>
 							<xsl:when test="lower-case(normalize-space(.))='archeologico'" />
 							<xsl:when test="lower-case(normalize-space(.))='architettonico e paesaggistico'" />
@@ -1526,6 +1541,7 @@
 								</rdf:Description>
 							</xsl:when>
 						</xsl:choose>
+						-->
 					</xsl:for-each>
 				</xsl:if>
 				<!-- intervention (CO/RST) -->
