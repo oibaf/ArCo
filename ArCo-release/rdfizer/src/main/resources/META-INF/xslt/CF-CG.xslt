@@ -213,6 +213,9 @@
 					<xsl:value-of select="concat('https://w3id.org/arco/ontology/catalogue/', 'CatalogueRecord', $sheetType)" />
 				</xsl:attribute>
 			</rdf:type>
+			<arco-catalogue:lastUpdateDate>
+				<xsl:value-of select="record/header/datestamp" />
+			</arco-catalogue:lastUpdateDate>
 			<rdfs:label xml:lang="en">
 				<xsl:value-of select="concat('Catalogue Record of site n: ', $idCF)" />
 			</rdfs:label>
@@ -1886,12 +1889,15 @@
 					<xsl:value-of select="concat('https://w3id.org/arco/ontology/catalogue/', 'CatalogueRecord', $sheetType)" />
 				</xsl:attribute>
 			</rdf:type>
+			<arco-catalogue:lastUpdateDate>
+				<xsl:value-of select="record/header/datestamp" />
+			</arco-catalogue:lastUpdateDate>
 			<rdfs:label xml:lang="en">
-					<xsl:value-of select="concat('Catalogue Record of cultural institute or site n: ', $idCG)" />
-				</rdfs:label>
-				<rdfs:label xml:lang="it">
-					<xsl:value-of select="concat('Scheda catalografica del contenitore giuridico n: ', $idCG)" />
-				</rdfs:label>
+				<xsl:value-of select="concat('Catalogue Record of cultural institute or site n: ', $idCG)" />
+			</rdfs:label>
+			<rdfs:label xml:lang="it">
+				<xsl:value-of select="concat('Scheda catalografica del contenitore giuridico n: ', $idCG)" />
+			</rdfs:label>
 			<xsl:for-each select="record/metadata/schede/*/CD/LIR">
 				<arco-catalogue:hasCataloguingLevel>
 					<xsl:attribute name="rdf:resource">
