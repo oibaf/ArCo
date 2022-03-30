@@ -618,12 +618,12 @@
 				</l0:name>
 				<arco-dd:hasMeasurement>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="concat($NS, 'Measurement/Foundation/', (.))" />
+						<xsl:value-of select="concat($NS, 'Measurement/Foundation/', arco-fn:urify(normalize-space(.)))" />
 					</xsl:attribute>
 				</arco-dd:hasMeasurement>
 			</rdf:Description>
 			<rdf:Description>
-				<xsl:attribute name="rdf:about"   select="concat($NS, 'Measurement/Foundation/', (.))" />
+				<xsl:attribute name="rdf:about"   select="concat($NS, 'Measurement/Foundation/', arco-fn:urify(normalize-space(.)))" />
 				<rdf:type rdf:resource="https://w3id.org/arco/ontology/denotative-description/Measurement" />
 				<rdfs:label xml:lang="en">
 					<xsl:value-of select="concat('Measurement of foundation ', position(), ': ', (.))" />
