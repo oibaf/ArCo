@@ -433,31 +433,31 @@
 					</xsl:attribute>
 				</arco-dd:hasCommunicationMedium>
 			</xsl:if>
-			<xsl:if test="record/metadata/schede/*/CU/CUS">
+			<xsl:for-each select="record/metadata/schede/*/CU/CUS">
 				<arco-dd:hasCommunicationMedium>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-instrumental')" />
-					</xsl:attribute>
-				</arco-dd:hasCommunicationMedium>
-			</xsl:if>
-			<xsl:for-each select="record/metadata/schede/*/CU/CUC">
-				<arco-dd:hasCommunicationMedium>
-					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-kinetic')" />
+						<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-instrumental-', position())" />
 					</xsl:attribute>
 				</arco-dd:hasCommunicationMedium>
 			</xsl:for-each>
-			<xsl:if test="record/metadata/schede/*/CU/CUP">
+			<xsl:for-each select="record/metadata/schede/*/CU/CUC">
 				<arco-dd:hasCommunicationMedium>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-proxemics')" />
+						<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-kinetic-', position())" />
 					</xsl:attribute>
 				</arco-dd:hasCommunicationMedium>
-			</xsl:if>
+			</xsl:for-each>
+			<xsl:for-each select="record/metadata/schede/*/CU/CUP">
+				<arco-dd:hasCommunicationMedium>
+					<xsl:attribute name="rdf:resource">
+						<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-proxemics-', position())" />
+					</xsl:attribute>
+				</arco-dd:hasCommunicationMedium>
+			</xsl:for-each>
 			<xsl:for-each select="record/metadata/schede/*/CU/CUR">
 				<arco-dd:hasCommunicationMedium>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-written')" />
+						<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-written-', position())" />
 					</xsl:attribute>
 				</arco-dd:hasCommunicationMedium>
 			</xsl:for-each>
@@ -524,7 +524,7 @@
 			<xsl:for-each select="record/metadata/schede/*/TC">
 				<arco-core:hasAgentRole>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, '-main-agent-group', position())" />
+						<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, '-main-agent-group-', position())" />
 					</xsl:attribute>
 				</arco-core:hasAgentRole>
 				<arco-cd:involvesMainAgent>
@@ -1528,13 +1528,13 @@
 						</xsl:attribute>
 					</tiapit:atTime>
 				</xsl:if>
-				<xsl:if test="record/metadata/schede/*/DR/DRD and not(record/metadata/schede/*/DR/DRD='0000/00/00' or record/metadata/schede/*/DR/DRD='/')">
+				<xsl:for-each select="record/metadata/schede/*/DR/DRD[not(.='0000/00/00' or .='/')]">
 					<tiapit:atTime>
 						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space(record/metadata/schede/*/DR/DRD)))" />
+							<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space()))" />
 						</xsl:attribute>
 					</tiapit:atTime>
-				</xsl:if>
+				</xsl:for-each>
 				<xsl:if test="record/metadata/schede/*/DR/DRN">
 					<arco-core:note>
 						<xsl:value-of select="normalize-space(record/metadata/schede/*/DR/DRN)" />
@@ -1653,10 +1653,10 @@
 					</tiapit:time>
 				</rdf:Description>
 			</xsl:if>
-			<xsl:if test="record/metadata/schede/*/DR/DRD and not(record/metadata/schede/*/DR/DRD='0000/00/00' or record/metadata/schede/*/DR/DRD='/')">
+			<xsl:for-each select="record/metadata/schede/*/DR/DRD[not(.='0000/00/00' or .='/')]">
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-						<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space(record/metadata/schede/*/DR/DRD)))" />
+						<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space()))" />
 					</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
@@ -1664,16 +1664,16 @@
 						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label>
-						<xsl:value-of select="normalize-space(record/metadata/schede/*/DR/DRD)" />
+						<xsl:value-of select="normalize-space()" />
 					</rdfs:label>
 					<l0:name>
-						<xsl:value-of select="normalize-space(record/metadata/schede/*/DR/DRD)" />
+						<xsl:value-of select="normalize-space()" />
 					</l0:name>
 					<tiapit:time>
-						<xsl:value-of select="normalize-space(record/metadata/schede/*/DR/DRD)" />
-				</tiapit:time>
+						<xsl:value-of select="normalize-space()" />
+					</tiapit:time>
 				</rdf:Description>
-			</xsl:if>
+			</xsl:for-each>
 			<!-- Activity responsible as an individual -->
 			<xsl:if test="record/metadata/schede/BDM/DR/DRV/DRVE and (not(starts-with(lower-case(normalize-space(record/metadata/schede/BDM/DR/DRV/DRVE)), 'nr')) and not(starts-with(lower-case(normalize-space(record/metadata/schede/BDM/DR/DRV/DRVE)), 'n.r')))">
 				<rdf:Description>
@@ -3076,10 +3076,10 @@
 				</rdf:Description>
 			</xsl:if>
 		</xsl:if>
-		<xsl:if test="record/metadata/schede/*/CU/CUS">
+		<xsl:for-each select="record/metadata/schede/*/CU/CUS">
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-              		<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-instrumental')" />
+              		<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-instrumental-', position())" />
               	</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
@@ -3098,9 +3098,9 @@
 				<l0:name xml:lang="it">
 					<xsl:value-of select="concat('Modalità comunicativa strumentale del bene culturale ', $itemURI)" />
 				</l0:name>
-				<xsl:if test="record/metadata/schede/*/CU/CUS/CUSN">
+				<xsl:if test="CUSN">
 					<arco-core:note>
-						<xsl:value-of select="normalize-space(record/metadata/schede/*/CU/CUS/CUSN)" />
+						<xsl:value-of select="normalize-space(CUSN)" />
 					</arco-core:note>
 				</xsl:if>
 				<arco-core:hasType>
@@ -3109,7 +3109,7 @@
 					</xsl:attribute>
 				</arco-core:hasType>
 				<!-- involves solo instrument -->
-				<xsl:for-each select="record/metadata/schede/*/CU/CUS/CUSS">
+				<xsl:for-each select="CUSS">
 					<arco-dd:involvesSoloInstrument>
 						<xsl:attribute name="rdf:resource">
 							<xsl:value-of select="concat($NS, 'MusicalInstrument/', arco-fn:urify(normalize-space(.)))" />
@@ -3117,7 +3117,7 @@
 					</arco-dd:involvesSoloInstrument>
 				</xsl:for-each>
 				<!--  involves accompayining instrument -->
-				<xsl:for-each select="record/metadata/schede/*/CU/CUS/CUSA">
+				<xsl:for-each select="CUSA">
 					<arco-dd:involvesAccompanyingInstrument>
 						<xsl:attribute name="rdf:resource">
 							<xsl:value-of select="concat($NS, 'MusicalInstrument/', arco-fn:urify(normalize-space(.)))" />
@@ -3125,24 +3125,24 @@
 					</arco-dd:involvesAccompanyingInstrument>
 				</xsl:for-each>
 				<!-- has implementation method -->
-				<xsl:if test="record/metadata/schede/*/CU/CUS/CUSD">
+				<xsl:if test="CUSD">
 					<arco-dd:hasImplementationMethod>
 						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="concat($NS, 'ImplementationMethod/', arco-fn:urify(normalize-space(record/metadata/schede/*/CU/CUS/CUSD)))" />
+							<xsl:value-of select="concat($NS, 'ImplementationMethod/', arco-fn:urify(normalize-space(CUSD)))" />
 						</xsl:attribute>
 					</arco-dd:hasImplementationMethod>
 				</xsl:if>
-				<xsl:if test="record/metadata/schede/*/DA/ICM/ICMC">
+				<xsl:if test="../../DA/ICM/ICMC">
 					<arco-dd:transcript>
-						<xsl:value-of select="normalize-space(record/metadata/schede/*/DA/ICM/ICMC)" />
+						<xsl:value-of select="normalize-space(../../DA/ICM/ICMC)" />
 					</arco-dd:transcript>
 				</xsl:if>
 			</rdf:Description>
 			<!-- implementation method -->
-			<xsl:if test="record/metadata/schede/*/CU/CUS/CUSD">
+			<xsl:if test="CUSD">
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-                      		<xsl:value-of select="concat($NS, 'ImplementationMethod/', arco-fn:urify(normalize-space(record/metadata/schede/*/CU/CUS/CUSD)))" />
+                      		<xsl:value-of select="concat($NS, 'ImplementationMethod/', arco-fn:urify(normalize-space(CUSD)))" />
                   		</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
@@ -3150,15 +3150,15 @@
 						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label>
-						<xsl:value-of select="normalize-space(record/metadata/schede/*/CU/CUS/CUSD)" />
+						<xsl:value-of select="normalize-space(CUSD)" />
 					</rdfs:label>
 					<l0:name>
-						<xsl:value-of select="normalize-space(record/metadata/schede/*/CU/CUS/CUSD)" />
+						<xsl:value-of select="normalize-space(CUSD)" />
 					</l0:name>
 				</rdf:Description>
 			</xsl:if>
 			<!-- musical instrument -->
-			<xsl:for-each select="record/metadata/schede/*/CU/CUS/CUSS">
+			<xsl:for-each select="CUSS">
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
                       	<xsl:value-of select="concat($NS, 'MusicalInstrument/', arco-fn:urify(normalize-space(.)))" />
@@ -3176,7 +3176,7 @@
 					</l0:name>
 				</rdf:Description>
 			</xsl:for-each>
-			<xsl:for-each select="record/metadata/schede/*/CU/CUS/CUSA">
+			<xsl:for-each select="CUSA">
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
                       	<xsl:value-of select="concat($NS, 'MusicalInstrument/', arco-fn:urify(normalize-space(.)))" />
@@ -3194,11 +3194,11 @@
 					</l0:name>
 				</rdf:Description>
 			</xsl:for-each>
-		</xsl:if>
+		</xsl:for-each>
 		<xsl:for-each select="record/metadata/schede/*/CU/CUC">
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-              		<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-kinetic')" />
+              		<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-kinetic-', position())" />
               	</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
@@ -3271,10 +3271,10 @@
 				</rdf:Description>
 			</xsl:for-each>
 		</xsl:for-each>
-		<xsl:if test="record/metadata/schede/*/CU/CUP">
+		<xsl:for-each select="record/metadata/schede/*/CU/CUP">
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-              		<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-proxemics')" />
+              		<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-proxemics-', position())" />
               	</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
@@ -3298,23 +3298,23 @@
 						<xsl:value-of select="'https://w3id.org/arco/ontology/denotative-description/ProxemicsCommunication'" />
 					</xsl:attribute>
 				</arco-core:hasType>
-				<xsl:if test="record/metadata/schede/*/CU/CUP/CUPF">
+				<xsl:if test="CUPF">
 					<arco-dd:numberOfFemaleParticipants>
-						<xsl:value-of select="normalize-space(record/metadata/schede/*/CU/CUP/CUPF)" />
+						<xsl:value-of select="normalize-space(CUPF)" />
 					</arco-dd:numberOfFemaleParticipants>
 				</xsl:if>
-				<xsl:if test="record/metadata/schede/*/CU/CUP/CUPM">
+				<xsl:if test="CUPM">
 					<arco-dd:numberOfMaleParticipants>
-						<xsl:value-of select="normalize-space(record/metadata/schede/*/CU/CUP/CUPM)" />
+						<xsl:value-of select="normalize-space(CUPM)" />
 					</arco-dd:numberOfMaleParticipants>
 				</xsl:if>
-				<xsl:if test="record/metadata/schede/*/CU/CUP/CUPD">
+				<xsl:if test="CUPD">
 					<arco-core:description>
-						<xsl:value-of select="normalize-space(record/metadata/schede/*/CU/CUP/CUPD)" />
+						<xsl:value-of select="normalize-space(CUPD)" />
 					</arco-core:description>
 				</xsl:if>
 				<!-- involves age range -->
-				<xsl:for-each select="record/metadata/schede/*/CU/CUP/CUPE">
+				<xsl:for-each select="CUPE">
 					<arco-dd:involvesAgeRange>
 						<xsl:attribute name="rdf:resource">
 							<xsl:value-of select="concat($NS, 'AgeRange/', arco-fn:urify(normalize-space(.)))" />
@@ -3323,7 +3323,7 @@
 				</xsl:for-each>
 			</rdf:Description>
 			<!-- agerange -->
-			<xsl:for-each select="record/metadata/schede/*/CU/CUP/CUPE">
+			<xsl:for-each select="CUPE">
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
                       		<xsl:value-of select="concat($NS, 'AgeRange/', arco-fn:urify(normalize-space(.)))" />
@@ -3341,11 +3341,11 @@
 					</l0:name>
 				</rdf:Description>
 			</xsl:for-each>
-		</xsl:if>
+		</xsl:for-each>
 		<xsl:for-each select="record/metadata/schede/*/CU/CUR">
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-              		<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-written')" />
+              		<xsl:value-of select="concat($NS, 'CommunicationMedium/', $itemURI, '-written-', position())" />
               	</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
@@ -11425,13 +11425,13 @@
 					</arco-core:hasAgentRole>
 				</xsl:for-each>
 				<!-- at time -->
-				<xsl:if test="./VID/VIDD">
+				<xsl:for-each select="./VID/VIDD">
 					<tiapit:atTime>
 						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space(./VID/VIDD)))" />
+							<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space()))" />
 						</xsl:attribute>
 					</tiapit:atTime>
-				</xsl:if>
+				</xsl:for-each>
 				<!-- operatore -->
 				<xsl:for-each select="./VID/VIDO">
 					<arco-core:hasAgentRole>
@@ -13034,30 +13034,30 @@
 				</rdf:Description>
 			</xsl:for-each>
 			<!-- time interval -->
-			<xsl:if test="./VID/VIDD">
+			<xsl:for-each select="./VID/VIDD">
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-                           <xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space(./VID/VIDD)))" />
-                       </xsl:attribute>
+						<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space()))" />
+					</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
 							<xsl:value-of select="'https://w3id.org/italia/onto/TI/TimeInterval'" />
-                        </xsl:attribute>
+						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label>
-						<xsl:value-of select="normalize-space(./VID/VIDD)" />
+						<xsl:value-of select="normalize-space()" />
 					</rdfs:label>
 					<tiapit:time>
-						<xsl:value-of select="normalize-space(./VID/VIDD)" />
+						<xsl:value-of select="normalize-space()" />
 					</tiapit:time>
 				</rdf:Description>
-			</xsl:if>
+			</xsl:for-each>
 			<!-- storage medium  -->
 			<xsl:for-each select="./VIO">
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-                		<xsl:value-of select="concat($NS, 'StorageMedium/', $itemURI, '-integrative-video-recording-original-', position())" />
-               		</xsl:attribute>
+						<xsl:value-of select="concat($NS, 'StorageMedium/', $itemURI, '-integrative-video-recording-original-', position())" />
+					</xsl:attribute>
 					<rdf:type rdf:resource="https://w3id.org/arco/ontology/context-description/StorageMedium" />
 					<rdfs:label>
 						<xsl:value-of select="normalize-space(./VIOC)" />
