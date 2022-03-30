@@ -394,7 +394,7 @@
 			<xsl:when test="$sheetType='MODI'">
 				<xsl:choose>
 					<xsl:when test="record/metadata/schede/MODI/DT/DTR">					
-						<xsl:value-of select="concat(' (', record/metadata/schede/MODI/DT/DTR, ')')" /><!-- multiple DTF eg:ICCD8531832 -->
+						<xsl:value-of select="concat(' (', string-join(record/metadata/schede/MODI/DT/DTR,', '), ')')" /><!-- multiple DTR eg:ICCD14199697 -->
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="''" />
