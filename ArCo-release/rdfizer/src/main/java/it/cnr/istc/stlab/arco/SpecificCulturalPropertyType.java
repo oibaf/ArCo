@@ -39,6 +39,7 @@ public class SpecificCulturalPropertyType {
 		sheetPropertyTypeMap.put("A", NAMESPACE + "ArchitecturalOrLandscapeHeritage");
 		sheetPropertyTypeMap.put("CNS", NAMESPACE + "ArchitecturalOrLandscapeHeritage");
 		sheetPropertyTypeMap.put("PG", NAMESPACE + "ArchitecturalOrLandscapeHeritage");
+		sheetPropertyTypeMap.put("SU", NAMESPACE + "ArchitecturalOrLandscapeHeritage");
 		sheetPropertyTypeMap.put("BDI", NAMESPACE + "DemoEthnoAnthropologicalHeritage");
 		sheetPropertyTypeMap.put("BDM", NAMESPACE + "DemoEthnoAnthropologicalHeritage");
 		sheetPropertyTypeMap.put("F", NAMESPACE + "PhotographicHeritage");
