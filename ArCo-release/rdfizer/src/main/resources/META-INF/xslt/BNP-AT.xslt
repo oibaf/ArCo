@@ -553,7 +553,9 @@
 	            	</arco-spe:hasDirectHigherRank>
 	            </xsl:if>
     	        <rdf:type>
-        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Genus'" />      
+    	        <xsl:attribute name="rdf:resource">
+        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Genus'" />
+    	        </xsl:attribute>
             	</rdf:type>
 	            <rdfs:label>
     	        	 <xsl:value-of select="./SPSR" />
@@ -576,7 +578,9 @@
 	            	</arco-spe:hasDirectHigherRank>
 	            </xsl:if>
     	        <rdf:type>
-        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Family'" />      
+    	        <xsl:attribute name="rdf:resource">
+        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Family'" />
+    	        </xsl:attribute>
             	</rdf:type>
 	            <rdfs:label>
     	        	 <xsl:value-of select="./SPSF" />
@@ -599,7 +603,9 @@
 	            	</arco-spe:hasDirectHigherRank>
 	            </xsl:if>
     	        <rdf:type>
-        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Order'" />      
+    	        <xsl:attribute name="rdf:resource">
+        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Order'" />
+    	        </xsl:attribute>
             	</rdf:type>
 	            <rdfs:label>
     	        	 <xsl:value-of select="./SPSO" />
@@ -622,7 +628,9 @@
 	            	</arco-spe:hasDirectHigherRank>
 	            </xsl:if>
     	        <rdf:type>
-        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Class'" />      
+    	        <xsl:attribute name="rdf:resource">
+        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Class'" />
+    	        </xsl:attribute>
             	</rdf:type>
 	            <rdfs:label>
     	        	 <xsl:value-of select="./SPSB" />
@@ -645,7 +653,9 @@
 	            	</arco-spe:hasDirectHigherRank>
 	            </xsl:if>
     	        <rdf:type>
-        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Phylum'" />      
+    	        <xsl:attribute name="rdf:resource">
+        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Phylum'" />
+    	        </xsl:attribute>
             	</rdf:type>
 	            <rdfs:label>
     	        	 <xsl:value-of select="./SPSH" />
@@ -661,7 +671,9 @@
             	   <xsl:value-of select="concat($NS,'BiologicalTaxon/', arco-fn:urify(./SPSP))" />
 	            </xsl:attribute>
     	        <rdf:type>
-        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Kingdom'" />      
+    	        <xsl:attribute name="rdf:resource">
+        	    	<xsl:value-of select="'https://w3id.org/arco/ontology/natural-specimen-description/Kingdom'" />
+    	        </xsl:attribute>
             	</rdf:type>
 	            <rdfs:label>
     	        	 <xsl:value-of select="./SPSP" />
@@ -3036,7 +3048,7 @@
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./INIL))" />
 					</xsl:attribute>
-					<rdf:type rdf:resource="'https://w3id.org/italia/onto/l0/Agent'" />
+					<rdf:type rdf:resource="https://w3id.org/italia/onto/l0/Agent" />
 					<rdfs:label>
 						<xsl:value-of select="normalize-space(./INIL)" />
 					</rdfs:label>
@@ -3050,7 +3062,7 @@
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./INIO))" />
 					</xsl:attribute>
-					<rdf:type rdf:resource="'https://w3id.org/italia/onto/l0/Agent'" />
+					<rdf:type rdf:resource="https://w3id.org/italia/onto/l0/Agent" />
 					<rdfs:label>
 						<xsl:value-of select="normalize-space(./INIO)" />
 					</rdfs:label>
