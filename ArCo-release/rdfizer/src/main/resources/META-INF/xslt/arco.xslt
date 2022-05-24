@@ -13549,12 +13549,12 @@
 							</l0:name>
 							<arco-dd:hasMeasurement>
 								<xsl:attribute name="rdf:resource">
-									<xsl:value-of select="concat($NS, 'Measurement/Inscription/', (.))" />
+									<xsl:value-of select="concat($NS, 'Measurement/Inscription/', arco-fn:urify(normalize-space(.)))" />
 								</xsl:attribute>
 							</arco-dd:hasMeasurement>
 						</rdf:Description>
 						<rdf:Description>
-							<xsl:attribute name="rdf:about"   select="concat($NS, 'Measurement/Inscription/', (.))" />
+							<xsl:attribute name="rdf:about"   select="concat($NS, 'Measurement/Inscription/', arco-fn:urify(normalize-space(.)))" />
 							<rdf:type rdf:resource="https://w3id.org/arco/ontology/denotative-description/Measurement" />
 							<rdfs:label xml:lang="en">
 								<xsl:value-of select="concat('Measurement of inscription ', position(), ': ', (.))" />
@@ -13569,7 +13569,7 @@
 								<xsl:value-of select="concat('Misura dell&quot;iscrizione ',  position(), ': ', (.))" />
 							</l0:name>
 							<arco-dd:hasValue>
-								<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Inscription-', (.))" />
+								<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/Inscription-', arco-fn:urify(normalize-space(.)))" />
 							</arco-dd:hasValue>
 						</rdf:Description>	
 					</xsl:for-each>
