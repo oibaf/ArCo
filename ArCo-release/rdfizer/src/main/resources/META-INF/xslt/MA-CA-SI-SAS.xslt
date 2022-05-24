@@ -844,12 +844,12 @@
 				</l0:name>
 				<arco-dd:hasMeasurement>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="concat($NS, 'Measurement/VerticalElement/', (./ELEA))" />
+						<xsl:value-of select="concat($NS, 'Measurement/VerticalElement/', arco-fn:urify(normalize-space(./ELEA)))" />
 					</xsl:attribute>
 				</arco-dd:hasMeasurement>
 			</rdf:Description>
 			<rdf:Description>
-				<xsl:attribute name="rdf:about"   select="concat($NS, 'Measurement/VerticalElement/', (./ELEA))" />
+				<xsl:attribute name="rdf:about" select="concat($NS, 'Measurement/VerticalElement/', arco-fn:urify(normalize-space(./ELEA)))" />
 				<rdf:type rdf:resource="https://w3id.org/arco/ontology/denotative-description/Measurement" />
 				<rdfs:label xml:lang="en">
 					<xsl:value-of select="concat('Measurement of vertical element ', position(), ': ', (./ELEA))" />
@@ -864,7 +864,7 @@
 					<xsl:value-of select="concat('Misura delle strutture verticali ',  position(), ': ', (./ELEA))" />
 				</l0:name>
 				<arco-dd:hasValue>
-					<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/VerticalElement-', (./ELEA))" />
+					<xsl:attribute name="rdf:resource" select="concat($NS, 'Value/VerticalElement-', arco-fn:urify(normalize-space(./ELEA)))" />
 				</arco-dd:hasValue>
 			</rdf:Description>
 		</xsl:if>	
