@@ -4512,7 +4512,9 @@
             </xsl:attribute>
             </arco-mp:hasDirectHigherRank>
             <rdf:type>
-            	<xsl:value-of select="'https://w3id.org/arco/ontology/movable-property/Genus'" />      
+            <xsl:attribute name="rdf:resource">
+            	<xsl:value-of select="'https://w3id.org/arco/ontology/movable-property/Genus'" />
+            </xsl:attribute>
             </rdf:type>
             <rdfs:label>
             	 <xsl:value-of select="record/metadata/schede/BNB/SB/NAA/NAAA" />
@@ -4779,7 +4781,9 @@
             </xsl:attribute>
             </arco-mp:hasDirectHigherRank>
             <rdf:type>
-            	<xsl:value-of select="'https://w3id.org/arco/ontology/movable-property/Genus'" />      
+            <xsl:attribute name="rdf:resource">
+            	<xsl:value-of select="'https://w3id.org/arco/ontology/movable-property/Genus'" />
+            </xsl:attribute>
             </rdf:type>
             <rdfs:label>
             	 <xsl:value-of select="record/metadata/schede/BNB/SB/NAT/NATA" />
@@ -5033,7 +5037,7 @@
             	</xsl:attribute>
         	    <rdf:type>
 		            <xsl:attribute name="rdf:resource">
-        	    		<xsl:value-of select="'https://w3id.org/arco/ontology/movable-property/Genus'" />      
+        	    		<xsl:value-of select="'https://w3id.org/arco/ontology/movable-property/Genus'" />
     	    	    </xsl:attribute>
 	            </rdf:type>
             	<rdfs:label>
