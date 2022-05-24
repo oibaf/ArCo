@@ -280,6 +280,7 @@
 									</xsl:choose>
 								</xsl:when>
 								<xsl:otherwise>
+									<xsl:value-of select="'https://w3id.org/arco/ontology/arco/CulturalProperty'" />
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:attribute>
@@ -1483,7 +1484,7 @@
 				</xsl:if>
 				<!-- mibact scope of protection (AMB) - relation and individual -->
 				<xsl:if test="record/metadata/schede/*/OG/AMB">
-					<xsl:for-each select="record/metadata/schede/*/OG/AMB">
+					<xsl:for-each select="record/metadata/schede/*/OG/AMB[not(.='non individuabile')]">
 						<arco-arco:hasMibacScopeOfProtection>
 							<xsl:attribute name="rdf:resource">
                                 <xsl:choose>
