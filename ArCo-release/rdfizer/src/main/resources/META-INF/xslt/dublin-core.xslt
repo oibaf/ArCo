@@ -306,7 +306,7 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 			<xsl:value-of select="concat($NS, 'CatalogueRecord', $sheetType, '/', $itemURI)" />
 		</xsl:attribute>
 	</dcterms:isReferencedBy>
-	
+
 								<!-- dc:source  -->
 	<dc:source>
 		<xsl:attribute name="rdf:resource">
@@ -323,11 +323,11 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 	<xsl:if test="string-length($SOURCE)">
 	<dc:source>
 		<xsl:attribute name="rdf:resource">
-		    <xsl:choose>
-		    	<xsl:when test="$sheetType='MODI'">
+			<xsl:choose>
+				<xsl:when test="$sheetType='MODI' and contains($SOURCE,'.beniculturali.it/')">
 					<xsl:value-of select="concat('http://catalogo-old.beniculturali.it/oaitarget/OAIHandler?verb=GetRecord&amp;metadataPrefix=oai_dc&amp;identifier=oai:oaicat.iccd.org:@',$item,'@/xml/altre_normative')" />
-		    	</xsl:when>
-		    	<xsl:otherwise>
+				</xsl:when>
+				<xsl:otherwise>
 					<xsl:choose>
 						<xsl:when test="contains($SOURCE,'$(')">
 							<xsl:call-template name="sourceParser">
@@ -338,12 +338,13 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 							<xsl:value-of select="concat($SOURCE, $item)" />
 						</xsl:otherwise>
 					</xsl:choose>    
-		    	</xsl:otherwise>
+				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:attribute>
 	</dc:source>
 	</xsl:if>
-												<!-- dc:title -->	
+
+								<!-- dc:title -->
 
 	<xsl:if test="record/metadata/schede/*/OG">
 		<dc:title>
