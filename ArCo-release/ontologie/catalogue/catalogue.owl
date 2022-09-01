@@ -1901,6 +1901,21 @@ resource:CatalogueRecordS/0500212038
     
 
 
+    <!-- https://w3id.org/arco/ontology/catalogue/CatalogueRecordSCAN -->
+
+    <owl:Class rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordSCAN">
+        <rdfs:subClassOf rdf:resource="https://w3id.org/arco/ontology/catalogue/CatalogueRecord"/>
+        <rdfs:comment xml:lang="it">Questa classe rappresenta la scheda SCAN-Scheda anagrafica.</rdfs:comment>
+        <rdfs:comment xml:lang="en">This class represents the SCAN catalogue record.</rdfs:comment>
+        <rdfs:isDefinedBy rdf:resource="https://w3id.org/arco/ontology/catalogue"/>
+        <rdfs:label xml:lang="en">SCAN catalogue record</rdfs:label>
+        <rdfs:label xml:lang="it">Scheda SCAN</rdfs:label>
+        <owl:versionInfo xml:lang="it">instabile</owl:versionInfo>
+        <owl:versionInfo xml:lang="en">unstable</owl:versionInfo>
+    </owl:Class>
+    
+
+
     <!-- https://w3id.org/arco/ontology/catalogue/CatalogueRecordNU -->
 
     <owl:Class rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordNU">
@@ -2509,6 +2524,7 @@ resource:CatalogueRecordS/0500212038
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordFF"/>
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordMA"/>
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordMI"/>
+            <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordMODI"/>
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordNU"/>
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordOA"/>
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordOAC"/>
@@ -2517,6 +2533,7 @@ resource:CatalogueRecordS/0500212038
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordRA"/>
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordS"/>
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordSAS"/>
+            <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordSCAN"/>
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordSI"/>
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordSM"/>
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordSMO"/>

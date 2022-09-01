@@ -182,7 +182,12 @@
   			</xsl:otherwise>
   		</xsl:choose>
  	</xsl:variable>
-	<xsl:variable name="contenitoreFisico" select="concat('http://dati.beniculturali.it/iccd/cf/resource/CulturalInstituteOrSite/', $idCF)" />
+	<xsl:variable name="contenitoreFisico">
+	<xsl:choose>
+		<xsl:when test="contains($SOURCE,'.beniculturali.it/')"><xsl:value-of select="concat('http://dati.beniculturali.it/iccd/cf/resource/CulturalInstituteOrSite/', $idCF)" /></xsl:when>
+		<xsl:otherwise><xsl:value-of select="concat($NS, 'CulturalInstituteOrSite/', $idCF)" /></xsl:otherwise>
+	</xsl:choose>
+	</xsl:variable>	
 	<xsl:variable name="contenitoreGiuridico" select="concat($NS, 'CulturalInstituteOrSite/', $idCG)" />
 	<xsl:variable name="address">
 		<xsl:choose>

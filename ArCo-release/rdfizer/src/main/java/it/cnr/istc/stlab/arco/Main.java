@@ -51,7 +51,7 @@ public class Main {
 		}
 		String prefix = dp;
 		String sourceprefix = dsp;
-		logger.trace("inFolder {}, outFolder {}, prefix {}, sourcePrefix {}", inFolderString, outNtriplesFolder, prefix, sourceprefix);
+		logger.trace("inFolder {}, outFolder {}, prefix {}, sourcePrefix {}", inFolderString, outNtriplesFolder, prefix, sourceprefix);
 
 		File inFolder = new File(inFolderString);
 

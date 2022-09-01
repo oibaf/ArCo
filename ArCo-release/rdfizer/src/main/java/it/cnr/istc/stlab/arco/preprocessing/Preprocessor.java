@@ -210,17 +210,12 @@ public class Preprocessor {
 
 	public void preprocessMultimediaRecord(String syscode, Document xml, XPath xpath) throws XPathExpressionException {
 		String link = getLinkEMMFromEMM(xpath, xml); if (validateField(link)){
-			String ftan = getFieldFromEMM(xpath, xml, "FTAN"); if (validateField(ftan)) {logger.trace(syscode + " - " + ftan + " - " + link);
-				this.ftan2URL.put(ftan, link);}
-			String regn = getFieldFromEMM(xpath, xml, "REGN"); if (validateField(regn)) {logger.trace(syscode + " - " + regn + " - " + link);//System.out.println(""+syscode+" regn:"+regn);
-				this.ftan2URL.put(regn, link);}
-			String dran = getFieldFromEMM(xpath, xml, "DRAN"); if (validateField(dran)) {logger.trace(syscode + " - " + dran + " - " + link);//System.out.println(""+syscode+" dran:"+dran);
-				this.ftan2URL.put(dran, link);}
-			String vdcn = getFieldFromEMM(xpath, xml, "VDCN"); if (validateField(vdcn)) {logger.trace(syscode + " - " + vdcn + " - " + link);//System.out.println(""+syscode+" vdcn:"+vdcn);
-				this.ftan2URL.put(vdcn, link);}
-			String fnti = getFieldFromEMM(xpath, xml, "FNTI"); if (validateField(fnti)) {logger.trace(syscode + " - " + fnti + " - " + link);//System.out.println(""+syscode+" fnti:"+fnti);
-				this.ftan2URL.put(fnti, link);
-			}
+			String ftan = getFieldFromEMM(xpath, xml, "FTAN"); if (validateField(ftan)) {logger.trace(syscode + " - " + ftan + " - " + link); this.ftan2URL.put(ftan, link);}
+			String regn = getFieldFromEMM(xpath, xml, "REGN"); if (validateField(regn)) {logger.trace(syscode + " - " + regn + " - " + link); this.ftan2URL.put(regn, link);}
+			String dran = getFieldFromEMM(xpath, xml, "DRAN"); if (validateField(dran)) {logger.trace(syscode + " - " + dran + " - " + link); this.ftan2URL.put(dran, link);}
+			String vdcn = getFieldFromEMM(xpath, xml, "VDCN"); if (validateField(vdcn)) {logger.trace(syscode + " - " + vdcn + " - " + link); this.ftan2URL.put(vdcn, link);}
+			String fnti = getFieldFromEMM(xpath, xml, "FNTI"); if (validateField(fnti)) {logger.trace(syscode + " - " + fnti + " - " + link); this.ftan2URL.put(fnti, link);}
+			String dcmn = getFieldFromEMM(xpath, xml, "DCMN"); if (validateField(dcmn)) {logger.trace(syscode + " - " + dcmn + " - " + link); this.ftan2URL.put(dcmn, link);}
 		}
 	}
 	private void preprocessMultimediaRecord(Path f) {

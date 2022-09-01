@@ -94,6 +94,9 @@
 			<xsl:when test="$sheetType='MODI'">
 				<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(record/metadata/schede/MODI/OG/AMB)), '/', $itemURI)" />
 			</xsl:when>
+			<xsl:when test="$sheetType='SCAN'">
+				<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/*/OG/SET)))), '/', $itemURI)" />
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI)" />
 			</xsl:otherwise>
@@ -881,7 +884,7 @@
 				</xsl:if>
 			</xsl:for-each>
 			
-			<xsl:for-each select="record/metadata/schede/*/MT/MIS">
+			<xsl:for-each select="record/metadata/schede/*/MT/MIS[*[not(starts-with(lower-case(normalize-space(.)), 'nr') or starts-with(lower-case(normalize-space(.)), 'n.r'))]]">
 				<xsl:variable name="measurementCollection">
 					<xsl:choose>
 						<xsl:when test="($sheetVersion='4.00_ICCD0' or $sheetVersion='4.00') and ./MISP" >

@@ -12,12 +12,24 @@ public class SpecificCulturalPropertyType {
 	static{
 		sheetPropertyTypeMap = new HashMap<String, String>();
 		
-		/*  Catalogue records for MODI
+		/*  Catalogue records for SCAN (OG/SET)
+		*/
+		sheetPropertyTypeMap.put("beni architettonici e paesaggistici", NAMESPACE + "ArchitecturalOrLandscapeHeritage");
+		sheetPropertyTypeMap.put("beni storici e artistici",            NAMESPACE + "HistoricOrArtisticProperty");
+		sheetPropertyTypeMap.put("beni archeologici",                   NAMESPACE + "ArchaeologicalProperty");
+		sheetPropertyTypeMap.put("beni demoetnoantopologici",           NAMESPACE + "DemoEthnoAnthropologicalHeritage");
+		sheetPropertyTypeMap.put("beni fotografici",                    NAMESPACE + "PhotographicHeritage");
+		sheetPropertyTypeMap.put("beni musicali",                       NAMESPACE + "MusicHeritage");
+		sheetPropertyTypeMap.put("beni naturalistici",                  NAMESPACE + "NaturalHeritage");
+		sheetPropertyTypeMap.put("beni numismatici",                    NAMESPACE + "NumismaticProperty");
+		sheetPropertyTypeMap.put("beni scientifici e tecnologici",      NAMESPACE + "ScientificOrTechnologicalHeritage");
+		
+		/*  Catalogue records for MODI (OG/AMB)
 		 *  archeologico --> ArchaeologicalProperty
-            architettonico e paesaggistico -->  ArchitecturalOrLandscapeHeritage 
-            etnoantropologico --> DemoEthnoAnthropologicalHeritage
-            storico artistico --> HistoricOrArtisticProperty
-            non individuabile --> CulturalProperty
+			architettonico e paesaggistico -->  ArchitecturalOrLandscapeHeritage 
+			etnoantropologico --> DemoEthnoAnthropologicalHeritage
+			storico artistico --> HistoricOrArtisticProperty
+			non individuabile --> CulturalProperty
 		 */
 		sheetPropertyTypeMap.put("archeologico", NAMESPACE + "ArchaeologicalProperty");
 		sheetPropertyTypeMap.put("architettonico e paesaggistico", NAMESPACE + "ArchitecturalOrLandscapeHeritage");

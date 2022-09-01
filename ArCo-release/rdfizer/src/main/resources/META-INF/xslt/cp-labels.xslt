@@ -85,6 +85,9 @@
 			<xsl:when test="$sheetType='MODI'">
 				<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(record/metadata/schede/MODI/OG/AMB)), '/', $itemURI)" />
 			</xsl:when>
+			<xsl:when test="$sheetType='SCAN'">
+				<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/*/OG/SET)))), '/', $itemURI)" />
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI)" />
 			</xsl:otherwise>
@@ -312,7 +315,7 @@
 	<!-- variable date string -->
 	<xsl:variable name="date-string">
 		<xsl:choose>
-			<xsl:when test="$sheetType='A' and $sheetType='PG'">
+			<xsl:when test="$sheetType='A' or $sheetType='PG'">
 				<xsl:choose>
 					<xsl:when test="not(record/metadata/schede/A/RE/REN/RENS)">
 						<xsl:choose>
@@ -393,7 +396,7 @@
 			</xsl:when>
 			<xsl:when test="$sheetType='MODI'">
 				<xsl:choose>
-					<xsl:when test="record/metadata/schede/MODI/DT/DTR">					
+					<xsl:when test="record/metadata/schede/MODI/DT/DTR">
 						<xsl:value-of select="concat(' (', string-join(record/metadata/schede/MODI/DT/DTR,', '), ')')" /><!-- multiple DTR eg:ICCD14199697 -->
 					</xsl:when>
 					<xsl:otherwise>
@@ -1434,8 +1437,8 @@
 			</rdfs:label>
 		</xsl:if>
 
-		<!-- MODI -->
-		<xsl:if test="$sheetType='MODI'">
+		<!-- MODI or SCAN -->
+		<xsl:if test="$sheetType='MODI' or $sheetType='SCAN'">
 			<xsl:variable name="ogt">
 				<xsl:choose>
 					<xsl:when test="record/metadata/schede/*/OG/OGT and (not(starts-with(lower-case(normalize-space(record/metadata/schede/*/OG/OGT)), 'nr')) and not(starts-with(lower-case(normalize-space(record/metadata/schede/*/OG/OGT)), 'n.r')))">

@@ -68,6 +68,9 @@ public class NameCleaner implements ExtensionFunction {
 		if (name == null) {
 			return "";
 		}
+		if (name.indexOf(';')>0) { // multiple
+			return name;
+		}
 		String[] toSwap = name.split(",");
 		if (toSwap.length == 2) {
 			// case surname, name
@@ -119,11 +122,11 @@ public class NameCleaner implements ExtensionFunction {
 				tokensOrdered.add(tokens[i]);
 			}
 		} else {
+			/*
 			int startFistNames = -1;
 			int endFistNames = -1;
 			List<String> tokensList = new ArrayList<>(tokens.length);
 			for (int i = 0; i < firstNamesFlags.length; i++) {
-
 				// identify range for first names
 				if (firstNamesFlags[i]) {
 					if (startFistNames >= 0) {
@@ -133,11 +136,9 @@ public class NameCleaner implements ExtensionFunction {
 						endFistNames = i + 1;
 					}
 				}
-
 				// populate the array
 				tokensList.add(tokens[i]);
 			}
-
 			// Re order tokens
 			logger.trace(name + " " + startFistNames + " -> " + endFistNames + " size: " + tokensList.size());
 			List<String> firstNameTokens = tokensList.subList(startFistNames, endFistNames);
@@ -146,6 +147,19 @@ public class NameCleaner implements ExtensionFunction {
 				familyNameTokens = tokensList.subList(0, startFistNames);
 			} else {
 				familyNameTokens = tokensList.subList(endFistNames, tokensList.size());
+			}
+			tokensOrdered.addAll(firstNameTokens);
+			tokensOrdered.addAll(familyNameTokens);
+			*/
+			List<String> firstNameTokens = new ArrayList<String>();
+			List<String> familyNameTokens = new ArrayList<String>();
+			for (int i = 0; i < firstNamesFlags.length; i++) {
+				if (firstNamesFlags[i]) {
+					firstNameTokens.add(tokens[i]);
+				}
+				else {
+					familyNameTokens.add(tokens[i]);
+				}
 			}
 			tokensOrdered.addAll(firstNameTokens);
 			tokensOrdered.addAll(familyNameTokens);
