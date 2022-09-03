@@ -316,6 +316,7 @@
 	<xsl:variable name="date-string">
 		<xsl:choose>
 			<xsl:when test="$sheetType='A' or $sheetType='PG'">
+				<!--
 				<xsl:choose>
 					<xsl:when test="not(record/metadata/schede/A/RE/REN/RENS)">
 						<xsl:choose>
@@ -326,6 +327,26 @@
 								<xsl:value-of select="concat(' (', record/metadata/schede/A/RE/REL/RELS, ')')" />
 							</xsl:otherwise>
 						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="''" />
+					</xsl:otherwise>
+				</xsl:choose>
+				-->
+				<xsl:variable name="dateRel">
+					<xsl:for-each select="record/metadata/schede/A/RE[not(REN/RENS)]">
+						<xsl:if test="position()>1">
+							<xsl:value-of select="'; '"/>
+						</xsl:if>
+						<xsl:value-of select="REL/RELS" />
+						<xsl:if test="REL/RELF">
+							<xsl:value-of select="concat(', ', REL/RELF)" />
+						</xsl:if>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="string-length($dateRel)>0">
+						<xsl:value-of select="concat(' (',$dateRel,')')" />
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="''" />

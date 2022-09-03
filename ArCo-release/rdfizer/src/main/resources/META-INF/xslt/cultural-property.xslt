@@ -2083,6 +2083,13 @@
 	                	</xsl:attribute>
 					</arco-cd:hasDocumentation>
 				</xsl:for-each>
+				<xsl:for-each select="record/metadata/schede/*/DO/DCM">
+					<arco-cd:hasDocumentation>
+						<xsl:attribute name="rdf:resource">
+	                		<xsl:value-of select="concat($NS, 'Documentation/', $itemURI, '-documentation-', position())" />
+	                	</xsl:attribute>
+					</arco-cd:hasDocumentation>
+				</xsl:for-each>
 				<xsl:for-each select="record/metadata/schede/*/AL/FTA">
 					<arco-cd:hasDocumentation>
 						<xsl:attribute name="rdf:resource">
