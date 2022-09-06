@@ -19186,8 +19186,8 @@
 			</xsl:if>
 			<!-- Geometry of cultural property as an individual for GA (Area) -->
 			<xsl:if test="record/metadata/schede/*/GA/*/*">
-				<xsl:variable name="geometry-position" select="position()" />
 				<xsl:for-each select="record/metadata/schede/*/GA">
+					<xsl:variable name="geometry-position" select="position()" />
 					<rdf:Description>
 						<xsl:attribute name="rdf:about">
             				<xsl:value-of select="concat($NS, 'Geometry/', $itemURI, '-geometry-polygon-', position())" />
