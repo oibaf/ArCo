@@ -12164,10 +12164,10 @@
 							</xsl:attribute>
 						</tiapit:atTime>
 					</xsl:if>						
-					<xsl:if test="./ALBO">
+					<xsl:for-each select="./ALBO">
 						<arco-cd:hasActivityOperator>
 							<xsl:attribute name="rdf:resource">
-			        			<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./ALBO))" />
+			        			<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(.))" />
 							</xsl:attribute>
 						</arco-cd:hasActivityOperator>
 						<arco-core:hasAgentRole>
@@ -12175,7 +12175,7 @@
 								<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, '-laboratory-test-', $test-position, '-activity-operator')" />
 							</xsl:attribute>
 						</arco-core:hasAgentRole>
-					</xsl:if>
+					</xsl:for-each>
 					<xsl:if test="./ALBE and not($sheetType='TMA')">
 						<arco-cd:hasActivityResponsible>
 							<xsl:attribute name="rdf:resource">
@@ -12224,7 +12224,7 @@
 					</xsl:if>
 				</rdf:Description>
 				<!-- agent role of activity operator as an individual -->
-				<xsl:if test="./ALBO">
+				<xsl:for-each select="./ALBO">
 					<rdf:Description>
 						<xsl:attribute name="rdf:about">
 							<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, '-laboratory-test-', $test-position, '-activity-operator')" />
@@ -12235,16 +12235,16 @@
 							</xsl:attribute>
 						</rdf:type>
 						<rdfs:label xml:lang="it">
-							<xsl:value-of select="concat('Operatore del test di laboratorio ', $test-position, ' del bene culturale ', $itemURI, ': ', normalize-space(./ALBO))" />
+							<xsl:value-of select="concat('Operatore del test di laboratorio ', $test-position, ' del bene culturale ', $itemURI, ': ', normalize-space(.))" />
 						</rdfs:label>
 						<l0:name xml:lang="it">
-							<xsl:value-of select="concat('Operatore del test di laboratorio ', $test-position, ' del bene culturale ', $itemURI, ': ', normalize-space(./ALBO))" />
+							<xsl:value-of select="concat('Operatore del test di laboratorio ', $test-position, ' del bene culturale ', $itemURI, ': ', normalize-space(.))" />
 						</l0:name>
 						<rdfs:label xml:lang="en">
-							<xsl:value-of select="concat('Operator of laboratory test ', $test-position, ' of cultural property ', $itemURI, ': ', normalize-space(./ALBO))" />
+							<xsl:value-of select="concat('Operator of laboratory test ', $test-position, ' of cultural property ', $itemURI, ': ', normalize-space(.))" />
 						</rdfs:label>
 						<l0:name xml:lang="en">
-							<xsl:value-of select="concat('Operator of laboratory test ', $test-position, ' of cultural property ', $itemURI, ': ', normalize-space(./ALBO))" />
+							<xsl:value-of select="concat('Operator of laboratory test ', $test-position, ' of cultural property ', $itemURI, ': ', normalize-space(.))" />
 						</l0:name>
 						<arco-core:hasRole>
 							<xsl:attribute name="rdf:resource">
@@ -12253,7 +12253,7 @@
 						</arco-core:hasRole>
 						<arco-core:hasAgent>
 							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./ALBO))" />
+								<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(.))" />
 							</xsl:attribute>
 						</arco-core:hasAgent>
 					</rdf:Description>
@@ -12282,7 +12282,7 @@
 					<!-- agent of activity operator as an individual -->
 					<rdf:Description>
 						<xsl:attribute name="rdf:about">
-       			    	   	<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./ALBO))" />
+       			    	   	<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(.))" />
         	        	</xsl:attribute>
 		    	        <rdf:type>
 							<xsl:attribute name="rdf:resource">
@@ -12290,13 +12290,13 @@
 							</xsl:attribute>
 						</rdf:type>   
 						<rdfs:label>
-							<xsl:value-of select="./ALBO" />
+							<xsl:value-of select="." />
 						</rdfs:label>
 						<l0:name>
-							<xsl:value-of select="./ALBO" />
+							<xsl:value-of select="." />
 						</l0:name>
 					</rdf:Description>
-				</xsl:if>
+				</xsl:for-each>
 				<!-- agent role of activity responsible as an individual -->
 				<xsl:if test="./ALBE  and not($sheetType='TMA')">
 					<rdf:Description>
