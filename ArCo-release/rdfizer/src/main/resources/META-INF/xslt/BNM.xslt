@@ -3584,7 +3584,9 @@
 					<xsl:value-of select="record/metadata/schede/*/LR/LRI/LRIR" />
 				</l0:name>
 				<arco-core:hasType>
-					<xsl:value-of select="concat($NS, 'NaturalEnvironmentType/', arco-fn:urify(record/metadata/schede/*/LR/LRI/LRIR))" />
+					<xsl:attribute name="rdf:resource">
+						<xsl:value-of select="concat($NS, 'NaturalEnvironmentType/', arco-fn:urify(record/metadata/schede/*/LR/LRI/LRIR))" />
+					</xsl:attribute>
 				</arco-core:hasType>
 				<xsl:if test="record/metadata/schede/*/LR/LRI/LRIO">
 					<arco-dd:hasMeasurementCollection>
