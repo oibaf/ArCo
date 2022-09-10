@@ -5285,7 +5285,7 @@
 			<l0:name xml:lang="en">
 				<xsl:value-of	select="concat('Label ', position(), ' of cultural property ', $itemURI)" />
 			</l0:name>
-			<xsl:if test="./SBEC">
+			<xsl:if test="./SBEC[not(starts-with(lower-case(normalize-space()), 'nr'))][not(starts-with(lower-case(normalize-space()), 'n.r'))]">
 				<arco-dd:hasFontStyle>
 					<xsl:attribute name="rdf:resource">
 						<xsl:value-of select="concat($NS, 'FontStyle/', arco-fn:urify(normalize-space(./SBEC)))" />
@@ -5334,20 +5334,26 @@
 		</rdf:Description>
 	</xsl:for-each>
 									<!-- Font style as individual -->
-	<xsl:if test="record/metadata/schede/BNB/SB/SBE/SBEC and (not(starts-with(lower-case(normalize-space(record/metadata/schede/BNB/SB/SBE/SBEC)), 'nr')) and not(starts-with(lower-case(normalize-space(record/metadata/schede/BNB/SB/SBE/SBEC)), 'n.r')))">
+	<!--
+	<xsl:if test="SBEC and (not(starts-with(lower-case(normalize-space(SBEC)), 'nr')) and not(starts-with(lower-case(normalize-space(SBEC)), 'n.r')))">
+	-->
+	<xsl:for-each select="record/metadata/schede/BNB/SB/SBE[SBEC[not(starts-with(lower-case(normalize-space()), 'nr'))][not(starts-with(lower-case(normalize-space()), 'n.r'))]]">
 		<rdf:Description>
 			<xsl:attribute name="rdf:about">
-	           	<xsl:value-of select="concat($NS, 'FontStyle/', arco-fn:urify(normalize-space(record/metadata/schede/BNB/SB/SBE/SBEC)))" />
+	           	<xsl:value-of select="concat($NS, 'FontStyle/', arco-fn:urify(normalize-space(SBEC)))" />
 			</xsl:attribute>
 			<rdf:type rdf:resource="https://w3id.org/arco/ontology/denotative-description/FontStyle" />
 			<rdfs:label>
-				<xsl:value-of select="normalize-space(record/metadata/schede/BNB/SB/SBE/SBEC)" />
+				<xsl:value-of select="normalize-space(SBEC)" />
 			</rdfs:label>
 			<l0:name>
-				<xsl:value-of select="normalize-space(record/metadata/schede/BNB/SB/SBE/SBEC)" />
+				<xsl:value-of select="normalize-space(SBEC)" />
 			</l0:name>
 		</rdf:Description>
+	</xsl:for-each>
+	<!--
 	</xsl:if>
+	-->
 						<!-- Specimen Harvesting as individual -->
 	<xsl:if test="record/metadata/schede/BNB/LR">
 		<rdf:Description>
