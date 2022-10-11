@@ -117,6 +117,17 @@
 		<xsl:param name="text" />
 		<xsl:value-of select="translate(($text),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')" />
 	</xsl:template>
+ 
+	<xsl:template name="smapituri"><xsl:param name="uri" select="."/>
+		<smapit:URL>
+			<xsl:choose>
+				<xsl:when test="not(contains($uri,' '))">
+					<xsl:attribute name="rdf:resource"><xsl:value-of select="$uri"/></xsl:attribute>
+				</xsl:when>
+				<xsl:otherwise><xsl:value-of select="$uri"/></xsl:otherwise>
+			</xsl:choose>
+		</smapit:URL>
+	</xsl:template>
 
 	<xsl:param name="item" />
 	<xsl:param name="NS" />
@@ -2332,15 +2343,16 @@
 							</arco-catalogue:referenceProject>
 						</xsl:if>
 						<xsl:if test="./ACSW and (not(starts-with(lower-case(normalize-space(./ACSW)), 'nr')) and not(starts-with(lower-case(normalize-space(./ACSW)), 'n.r')))">
-							<smapit:URL>
-								<xsl:value-of select="normalize-space(./ACSW)" />
-							</smapit:URL>
+							<xsl:call-template name="smapituri"><xsl:with-param name="uri" select="normalize-space(./ACSW)"/></xsl:call-template>
+							<!--
+							<smapit:URL><xsl:value-of select="normalize-space(./ACSW)" /></smapit:URL>
+							-->
 						</xsl:if>
 						<xsl:if test="./ACSE and (not(starts-with(lower-case(normalize-space(./ACSE)), 'nr')) and not(starts-with(lower-case(normalize-space(./ACSE)), 'n.r')))">
 							<arco-cd:hasCulturalPropertyRecordResponsibleAgent>
 								<xsl:attribute name="rdf:resource">
-			                		<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./ACSE))" />
-			                	</xsl:attribute>
+									<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./ACSE))" />
+								</xsl:attribute>
 							</arco-cd:hasCulturalPropertyRecordResponsibleAgent>
 							<arco-core:hasAgentRole>
 								<xsl:attribute name="rdf:resource">
@@ -7424,6 +7436,18 @@
 							<xsl:value-of select="normalize-space(./DCMN)" />
 						</arco-cd:documentationIdentifier>
 					</xsl:if>
+					<!--
+					<xsl:if test="./DCMN and (not(starts-with(lower-case(normalize-space(./DCMN)), 'nr')) and not(starts-with(lower-case(normalize-space(./DCMN)), 'n.r')))">
+						<xsl:variable name="url" select="arco-fn:find-link-emm(./DCMN)" />
+						<xsl:for-each select="$url">
+							<foaf:depiction>
+								<xsl:attribute name="rdf:resource">
+									<xsl:value-of select="." />
+								</xsl:attribute>
+							</foaf:depiction>
+						</xsl:for-each>
+					</xsl:if>
+					-->
 					<xsl:if test="./DCMR">
 						<tiapit:atTime>
 							<xsl:attribute name="rdf:resource">
@@ -7452,9 +7476,10 @@
 						</arco-core:note>
 					</xsl:if>
 					<xsl:if test="./DCMW and (not(starts-with(lower-case(normalize-space(./DCMW)), 'nr')) and not(starts-with(lower-case(normalize-space(./DCMW)), 'n.r')))">
-						<smapit:URL>
-							<xsl:value-of select="normalize-space(./DCMW)" />
-						</smapit:URL>
+						<xsl:call-template name="smapituri"><xsl:with-param name="uri" select="normalize-space(./DCMW)"/></xsl:call-template>
+						<!--
+						<smapit:URL><xsl:value-of select="normalize-space(./DCMW)" /></smapit:URL>
+							-->
 					</xsl:if>
 					<xsl:if test="./DCML and (not(starts-with(lower-case(normalize-space(./DCML)), 'nr')) and not(starts-with(lower-case(normalize-space(./DCML)), 'n.r')))">
 						<arco-cd:hasLicense>
@@ -7668,9 +7693,10 @@
 						</arco-core:note>
 					</xsl:if>
 					<xsl:if test="./FTAW and (not(starts-with(lower-case(normalize-space(./FTAW)), 'nr')) and not(starts-with(lower-case(normalize-space(./FTAW)), 'n.r')))">
-						<smapit:URL>
-							<xsl:value-of select="normalize-space(./FTAW)" />
-						</smapit:URL>
+						<xsl:call-template name="smapituri"><xsl:with-param name="uri" select="normalize-space(./FTAW)"/></xsl:call-template>
+						<!--
+						<smapit:URL><xsl:value-of select="normalize-space(./FTAW)" /></smapit:URL>
+						-->
 					</xsl:if>
 					<xsl:if test="./FTAY and (not(starts-with(lower-case(normalize-space(./FTAY)), 'nr')) and not(starts-with(lower-case(normalize-space(./FTAY)), 'n.r')))">
 						<arco-cd:rights>
@@ -8062,9 +8088,10 @@
 						</arco-core:note>
 					</xsl:if>
 					<xsl:if test="./DRAW">
-						<smapit:URL>
-							<xsl:value-of select="normalize-space(./DRAW)" />
-						</smapit:URL>
+						<xsl:call-template name="smapituri"><xsl:with-param name="uri" select="normalize-space(./DRAW)"/></xsl:call-template>
+						<!--
+						<smapit:URL><xsl:value-of select="normalize-space(./DRAW)" /></smapit:URL>
+						-->
 					</xsl:if>
 					<xsl:if
 						test="./DRAY and (not(starts-with(lower-case(normalize-space(./DRAY)), 'nr')) and not(starts-with(lower-case(normalize-space(./DRAY)), 'n.r')))">
@@ -8416,8 +8443,8 @@
 							<xsl:for-each select="$url">
 								<smapit:URL>
 									<xsl:attribute name="rdf:resource">
-                                		<xsl:value-of select="." />
-                        			</xsl:attribute>
+										<xsl:value-of select="." />
+									</xsl:attribute>
 								</smapit:URL>
 							</xsl:for-each>
 						</xsl:for-each>
@@ -8450,13 +8477,11 @@
 						</arco-core:note>
 					</xsl:if>
 
-					<xsl:if
-						test="./VDCW and (not(starts-with(lower-case(normalize-space(./VDCW)), 'nr')) and not(starts-with(lower-case(normalize-space(./VDCW)), 'n.r')))">
-						<smapit:URL>
-							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="normalize-space(./VDCW)" />
-							</xsl:attribute>
-						</smapit:URL>
+					<xsl:if test="./VDCW and (not(starts-with(lower-case(normalize-space(./VDCW)), 'nr')) and not(starts-with(lower-case(normalize-space(./VDCW)), 'n.r')))">
+						<xsl:call-template name="smapituri"><xsl:with-param name="uri" select="normalize-space(./VDCW)"/></xsl:call-template>
+						<!--
+						<smapit:URL><xsl:attribute name="rdf:resource"><xsl:value-of select="normalize-space(./VDCW)" /></xsl:attribute></smapit:URL>
+						-->
 					</xsl:if>
 					<xsl:if
 						test="./VDCY and (not(starts-with(lower-case(normalize-space(./VDCY)), 'nr')) and not(starts-with(lower-case(normalize-space(./VDCY)), 'n.r')))">
@@ -8769,20 +8794,18 @@
 							<xsl:for-each select="$url">
 								<smapit:URL>
 									<xsl:attribute name="rdf:resource">
-                                	<xsl:value-of select="." />
-                        		</xsl:attribute>
+										<xsl:value-of select="." />
+									</xsl:attribute>
 								</smapit:URL>
 							</xsl:for-each>
 						</xsl:for-each>
 					</xsl:if>
-					<xsl:if
-						test="./REGD and (not(starts-with(lower-case(normalize-space(./REGD)), 'nr')) and not(starts-with(lower-case(normalize-space(./REGD)), 'n.r')))">
+					<xsl:if test="./REGD and (not(starts-with(lower-case(normalize-space(./REGD)), 'nr')) and not(starts-with(lower-case(normalize-space(./REGD)), 'n.r')))">
 						<tiapit:time>
 							<xsl:value-of select="normalize-space(./REGD)" />
 						</tiapit:time>
 					</xsl:if>
-					<xsl:if
-						test="./REGC and not(./REGC='N/R') and (not(starts-with(lower-case(normalize-space(./REGC)), 'nr')) and not(starts-with(lower-case(normalize-space(./REGC)), 'n.r')))">
+					<xsl:if test="./REGC and not(./REGC='N/R') and (not(starts-with(lower-case(normalize-space(./REGC)), 'nr')) and not(starts-with(lower-case(normalize-space(./REGC)), 'n.r')))">
 						<arco-cd:documentationLocation>
 							<xsl:value-of select="normalize-space(./REGC)" />
 						</arco-cd:documentationLocation>
@@ -8792,8 +8815,7 @@
 							<xsl:value-of select="normalize-space(./REGS)" />
 						</arco-core:specifications>
 					</xsl:if>
-					<xsl:if
-						test="./REGK and (not(starts-with(lower-case(normalize-space(./REGK)), 'nr')) and not(starts-with(lower-case(normalize-space(./REGK)), 'n.r')))">
+					<xsl:if test="./REGK and (not(starts-with(lower-case(normalize-space(./REGK)), 'nr')) and not(starts-with(lower-case(normalize-space(./REGK)), 'n.r')))">
 						<arco-cd:digitalFileName>
 							<xsl:value-of select="normalize-space(./REGK)" />
 						</arco-cd:digitalFileName>
@@ -8803,20 +8825,18 @@
 							<xsl:value-of select="normalize-space(./REGT)" />
 						</arco-core:note>
 					</xsl:if>
-					<xsl:if
-						test="./REGW and (not(starts-with(lower-case(normalize-space(./REGW)), 'nr')) and not(starts-with(lower-case(normalize-space(./REGW)), 'n.r')))">
-						<smapit:URL>
-							<xsl:value-of select="normalize-space(./REGW)" />
-						</smapit:URL>
+					<xsl:if test="./REGW and (not(starts-with(lower-case(normalize-space(./REGW)), 'nr')) and not(starts-with(lower-case(normalize-space(./REGW)), 'n.r')))">
+						<xsl:call-template name="smapituri"><xsl:with-param name="uri" select="normalize-space(./REGW)"/></xsl:call-template>
+						<!--
+						<smapit:URL><xsl:value-of select="normalize-space(./REGW)" /></smapit:URL>
+						-->
 					</xsl:if>
-					<xsl:if
-						test="./REGZ and (not(starts-with(lower-case(normalize-space(./REGZ)), 'nr')) and not(starts-with(lower-case(normalize-space(./REGZ)), 'n.r')))">
+					<xsl:if test="./REGZ and (not(starts-with(lower-case(normalize-space(./REGZ)), 'nr')) and not(starts-with(lower-case(normalize-space(./REGZ)), 'n.r')))">
 						<arco-cd:documentationTitle>
 							<xsl:value-of select="normalize-space(./REGZ)" />
 						</arco-cd:documentationTitle>
 					</xsl:if>
-					<xsl:if
-						test="./REGX and not(lower-case(normalize-space(./REGX))='nr' or lower-case(normalize-space(./REGX))='n.r.' or lower-case(normalize-space(./REGX))='nr (recupero pregresso)')">
+					<xsl:if test="./REGX and not(lower-case(normalize-space(./REGX))='nr' or lower-case(normalize-space(./REGX))='n.r.' or lower-case(normalize-space(./REGX))='nr (recupero pregresso)')">
 						<arco-core:hasCategory>
 							<xsl:attribute name="rdf:resource">
                                 <xsl:choose>
@@ -9176,9 +9196,10 @@
 						</arco-core:note>
 					</xsl:if>
 					<xsl:if test="./FNTW and (not(starts-with(lower-case(normalize-space(./FNTW)), 'nr')) and not(starts-with(lower-case(normalize-space(./FNTW)), 'n.r')))">
-						<smapit:URL>
-							<xsl:value-of select="normalize-space(./FNTW)" />
-						</smapit:URL>
+						<xsl:call-template name="smapituri"><xsl:with-param name="uri" select="normalize-space(./FNTW)"/></xsl:call-template>
+						<!--
+						<smapit:URL><xsl:value-of select="normalize-space(./FNTW)" /></smapit:URL>
+						-->
 					</xsl:if>
 					<xsl:if test="./FNTT and (not(starts-with(lower-case(normalize-space(./FNTT)), 'nr')) and not(starts-with(lower-case(normalize-space(./FNTT)), 'n.r')))">
 						<xsl:choose>
@@ -9614,9 +9635,10 @@
 						</arco-core:note>
 					</xsl:if>
 					<xsl:if test="./BIBW">
-						<smapit:URL>
-							<xsl:value-of select="normalize-space(./BIBW)" />
-						</smapit:URL>
+						<xsl:call-template name="smapituri"><xsl:with-param name="uri" select="normalize-space(./BIBW)"/></xsl:call-template>
+						<!--
+						<smapit:URL><xsl:value-of select="normalize-space(./BIBW)" /></smapit:URL>
+						-->
 					</xsl:if>
 					<xsl:if
 						test="./BIBJ and (not(starts-with(lower-case(normalize-space(./BIBJ)), 'nr')) and not(starts-with(lower-case(normalize-space(./BIBJ)), 'n.r')))">
@@ -10097,9 +10119,10 @@
 						</arco-cd:noticeDate>
 					</xsl:if>
 					<xsl:if test="./NVCW and (not(starts-with(lower-case(normalize-space(./NVCW)), 'nr')) and not(starts-with(lower-case(normalize-space(./NVCW)), 'n.r')))">
-						<smapit:URL>
-							<xsl:value-of select="normalize-space(./NVCW)" />
-						</smapit:URL>
+						<xsl:call-template name="smapituri"><xsl:with-param name="uri" select="normalize-space(./NVCW)"/></xsl:call-template>
+						<!--
+						<smapit:URL><xsl:value-of select="normalize-space(./NVCW)" /></smapit:URL>
+						-->
 					</xsl:if>
 					<xsl:if test="./NVCN">
 						<arco-core:note>
@@ -10320,9 +10343,10 @@
 						<xsl:value-of select="concat('Strumento urbanistico-territoriale ', position(), ' del bene culturale ', $itemURI, ': ', normalize-space(./STUT))" />
 					</l0:name>
 					<xsl:if test="./STUW and (not(starts-with(lower-case(normalize-space(./STUW)), 'nr')) and not(starts-with(lower-case(normalize-space(./STUW)), 'n.r')))">
-						<smapit:URL>
-							<xsl:value-of select="normalize-space(./STUW)" />
-						</smapit:URL>
+						<xsl:call-template name="smapituri"><xsl:with-param name="uri" select="normalize-space(./STUW)"/></xsl:call-template>
+						<!--
+						<smapit:URL><xsl:value-of select="normalize-space(./STUW)" /></smapit:URL>
+						-->
 					</xsl:if>
 					<xsl:if test="./STUS">
 						<arco-core:note>
@@ -18314,9 +18338,10 @@
 								</tiapit:date>
 							</xsl:if>
 							<xsl:if test="./GPB/GPBU and (not(starts-with(lower-case(normalize-space(./GPB/GPBU)), 'nr')) and not(starts-with(lower-case(normalize-space(./GPB/GPBU)), 'n.r')))">
-								<smapit:url>
-									<xsl:value-of select="normalize-space(./GPB/GPBU)" />
-								</smapit:url>
+								<xsl:call-template name="smapituri"><xsl:with-param name="uri" select="normalize-space(./GPB/GPBU)"/></xsl:call-template>
+								<!--
+								<smapit:url><xsl:value-of select="normalize-space(./GPB/GPBU)" /></smapit:url>
+								-->
 							</xsl:if>
 							<xsl:if test="./GPB/GPBO and (not(starts-with(lower-case(normalize-space(./GPB/GPBO)), 'nr')) and not(starts-with(lower-case(normalize-space(./GPB/GPBO)), 'n.r')))">
 								<arco-core:note>
@@ -20466,9 +20491,10 @@
 							</arco-catalogue:referenceProject>
 						</xsl:if>
 						<xsl:if test="./ACCW and (not(starts-with(lower-case(normalize-space(./ACCW)), 'nr')) and not(starts-with(lower-case(normalize-space(./ACCW)), 'n.r')))">
-							<smapit:URL>
-								<xsl:value-of select="normalize-space(./ACCW)" />
-							</smapit:URL>
+							<xsl:call-template name="smapituri"><xsl:with-param name="uri" select="normalize-space(./ACCW)"/></xsl:call-template>
+							<!--
+							<smapit:URL><xsl:value-of select="normalize-space(./ACCW)" /></smapit:URL>
+							-->
 						</xsl:if>
 						<xsl:if test="./ACCE and (not(starts-with(lower-case(normalize-space(./ACCE)), 'nr')) and not(starts-with(lower-case(normalize-space(./ACCE)), 'n.r')))">
 							<arco-core:hasAgentRole>
@@ -29875,7 +29901,7 @@
 		<xsl:if test="record/metadata/schede/SCAN/DA/CAM">
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-	    	   		<xsl:value-of select="concat($NS, 'TimeIndexedTypedLocation/', $itemURI, '-current')" />
+					<xsl:value-of select="concat($NS, 'TimeIndexedTypedLocation/', $itemURI, '-current')" />
 				</xsl:attribute>
 				<arco-location:hasNaturalEnvironment>
 					<xsl:attribute name="rdf:resource">
@@ -29885,7 +29911,7 @@
 			</rdf:Description>
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-        			<xsl:value-of select="concat($NS, 'NaturalEnvironment/', $itemURI)" />
+					<xsl:value-of select="concat($NS, 'NaturalEnvironment/', $itemURI)" />
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
@@ -29908,16 +29934,16 @@
 					<xsl:value-of select="normalize-space(record/metadata/schede/SCAN/DA/CAM)" />
 				</arco-core:description>
 			</rdf:Description>
-		</xsl:if>			
+		</xsl:if>
 			<xsl:if test="record/metadata/schede/SCAN/BI/RIL">
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-              			<xsl:value-of select="concat($NS, 'ObservationSurvey/', $itemURI)" />
-              		</xsl:attribute>
+						<xsl:value-of select="concat($NS, 'ObservationSurvey/', $itemURI)" />
+					</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-               				<xsl:value-of select="'https://w3id.org/arco/ontology/context-description/ObservationSurvey'" />
-               			</xsl:attribute>
+							<xsl:value-of select="'https://w3id.org/arco/ontology/context-description/ObservationSurvey'" />
+						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label xml:lang="en">
 						<xsl:value-of select="concat('Observation survey of cultural property ', $itemURI)" />

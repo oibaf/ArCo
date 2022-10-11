@@ -331,8 +331,9 @@
 		<xsl:if test="record/metadata/schede/*/CA">
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-	    	   		<xsl:value-of select="concat($NS, 'TimeIndexedTypedLocation/', $itemURI, '-current')" />
+					<xsl:value-of select="concat($NS, 'TimeIndexedTypedLocation/', $itemURI, '-current')" />
 				</xsl:attribute>
+				<rdf:type rdf:resource="https://w3id.org/arco/ontology/location/TimeIndexedTypedLocation" />
 				<arco-location:hasNaturalEnvironment>
 					<xsl:attribute name="rdf:resource">
 						<xsl:value-of select="concat($NS, 'NaturalEnvironment/', $itemURI)" />

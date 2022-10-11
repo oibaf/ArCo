@@ -4813,24 +4813,24 @@
 					<xsl:if test="../DUZ">
 						<arco-cd:hasLegalSituation>
 							<xsl:attribute name="rdf:resource">
-                				<xsl:value-of select="concat($NS, 'LegalSituation/', $itemURI, '-audio-recording-original')" />
-                			</xsl:attribute>
+								<xsl:value-of select="concat($NS, 'LegalSituation/', $itemURI, '-audio-recording-original')" />
+							</xsl:attribute>
 						</arco-cd:hasLegalSituation>
 					</xsl:if>
 					<!-- Acquisition of cultural property -->
 					<xsl:if test="../DUQ">
 						<arco-cd:hasAcquisition>
 							<xsl:attribute name="rdf:resource">
-	        	        		<xsl:value-of select="concat($NS, 'Acquisition/', $itemURI, '-storage-medium-acquisition')" />
-	            	    	</xsl:attribute>
+								<xsl:value-of select="concat($NS, 'Acquisition/', $itemURI, '-storage-medium-acquisition')" />
+							</xsl:attribute>
 						</arco-cd:hasAcquisition>
 					</xsl:if>
 					<!-- change of availability -->
 					<xsl:for-each select="../DUN">
 						<arco-cd:hasChangeOfAvailability>
 							<xsl:attribute name="rdf:resource">
-	    	            		<xsl:value-of select="concat($NS, 'ChangeOfAvailability/', $itemURI, '-change-of-availability', position())" />
-	        	        	</xsl:attribute>
+								<xsl:value-of select="concat($NS, 'ChangeOfAvailability/', $itemURI, '-change-of-availability', position())" />
+							</xsl:attribute>
 						</arco-cd:hasChangeOfAvailability>
 					</xsl:for-each>
 				</rdf:Description>
@@ -4838,8 +4838,8 @@
 				<xsl:if test="./DUOF[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))]">
 					<rdf:Description>
 						<xsl:attribute name="rdf:about">
-    	            		<xsl:value-of select="concat($NS, 'StorageMediumType/', arco-fn:urify(./DUOF))" />
-        	       		</xsl:attribute>
+							<xsl:value-of select="concat($NS, 'StorageMediumType/', arco-fn:urify(./DUOF))" />
+						</xsl:attribute>
 						<rdf:type rdf:resource="https://w3id.org/arco/ontology/context-description/StorageMediumType" />
 						<rdfs:label>
 							<xsl:value-of select="normalize-space(./DUOF)" />
