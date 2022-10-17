@@ -24508,8 +24508,8 @@
 				<xsl:if test="./CONR">
 					<rdf:Description>
 						<xsl:attribute name="rdf:about">
-	    	           		<xsl:value-of select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-reverse')" />
-	                	</xsl:attribute>
+							<xsl:value-of select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-reverse')" />
+						</xsl:attribute>
 						<rdf:type rdf:resource="https://w3id.org/arco/ontology/arco/CulturalPropertyPart" />
 						<rdfs:label xml:lang="it">
 							<xsl:value-of select="concat('Rovescio del bene numismatico ', $itemURI)" />
@@ -24535,12 +24535,12 @@
 			<xsl:if test="record/metadata/schede/*/LC">
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-                        <xsl:value-of select="concat($NS, 'TimeIndexedTypedLocation/', $itemURI, '-current')" />
-                    </xsl:attribute>
+						<xsl:value-of select="concat($NS, 'TimeIndexedTypedLocation/', $itemURI, '-current')" />
+					</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-                            <xsl:value-of select="'https://w3id.org/arco/ontology/location/TimeIndexedTypedLocation'" />
-                        </xsl:attribute>
+							<xsl:value-of select="'https://w3id.org/arco/ontology/location/TimeIndexedTypedLocation'" />
+						</xsl:attribute>
 					</rdf:type>
 					<arco-location:isTimeIndexedTypedLocationOf>
 						<xsl:attribute name="rdf:resource"> 
@@ -24561,14 +24561,14 @@
 					</l0:name>
 					<arco-location:hasLocationType>
 						<xsl:attribute name="rdf:resource">
-                            <xsl:value-of select="'https://w3id.org/arco/ontology/location/CurrentPhysicalLocation'" />
-                        </xsl:attribute>
+							<xsl:value-of select="'https://w3id.org/arco/ontology/location/CurrentPhysicalLocation'" />
+						</xsl:attribute>
 					</arco-location:hasLocationType>
 					<xsl:if test="record/metadata/schede/*/LC/LDC/LDCS">
 						<arco-core:specifications>
 							<xsl:value-of select="normalize-space(record/metadata/schede/*/LC/LDC/LDCS)" />
 						</arco-core:specifications>
-					</xsl:if>				
+					</xsl:if>
 					<xsl:if test="record/metadata/schede/*/LC/PVC/PVCV and not(lower-case(normalize-space(record/metadata/schede/*/LC/PVC/PVCV))='nr' or lower-case(normalize-space(record/metadata/schede/*/LC/PVC/PVCV))='n.r.' or lower-case(normalize-space(record/metadata/schede/*/LC/PVC/PVCV))='nr (recupero pregresso)' or lower-case(normalize-space(record/metadata/schede/*/LC/PVC/PVCV))='.' or lower-case(normalize-space(record/metadata/schede/*/LC/PVC/PVCV))='-')">
 						<arco-location:locationDetails>
 							<xsl:value-of select="normalize-space(record/metadata/schede/*/LC/PVC/PVCV)" />
@@ -24592,9 +24592,8 @@
 					<xsl:if test="record/metadata/schede/*/LC/LDC/LDCD">
 						<tiapit:atTime>
 							<xsl:attribute name="rdf:resource">
-                                <xsl:value-of
-								select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space(record/metadata/schede/*/LC/LDC/LDCD)))" />
-                            </xsl:attribute>
+								<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space(record/metadata/schede/*/LC/LDC/LDCD)))" />
+							</xsl:attribute>
 						</tiapit:atTime>
 					</xsl:if>
 					<xsl:if test="record/metadata/schede/*/LC/LDC/LDCM and (not(starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCM)), 'nr')) and not(starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCM)), 'n.r')))">
@@ -24609,12 +24608,12 @@
 				<xsl:if test="record/metadata/schede/*/LC/LDC/LDCD">
 					<rdf:Description>
 						<xsl:attribute name="rdf:about">
-                	        <xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space(record/metadata/schede/*/LC/LDC/LDCD)))" />
-                    	</xsl:attribute>
+							<xsl:value-of select="concat($NS, 'TimeInterval/', arco-fn:urify(normalize-space(record/metadata/schede/*/LC/LDC/LDCD)))" />
+						</xsl:attribute>
 						<rdf:type>
 							<xsl:attribute name="rdf:resource">
-        	                    <xsl:value-of select="'https://w3id.org/italia/onto/TI/TimeInterval'" />
-            	            </xsl:attribute>
+								<xsl:value-of select="'https://w3id.org/italia/onto/TI/TimeInterval'" />
+							</xsl:attribute>
 						</rdf:type>
 						<tiapit:time>
 							<xsl:value-of select="normalize-space(record/metadata/schede/*/LC/LDC/LDCD)" />
@@ -25057,12 +25056,12 @@
 				<xsl:if test="record/metadata/schede/*/LC/PVC/PVCE and (not(starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/PVC/PVCE)), 'nr')) and not(starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/PVC/PVCE)), 'n.r')))">
 					<rdf:Description>
 						<xsl:attribute name="rdf:about">
-                            <xsl:value-of select="concat($NS, 'AddressArea/', arco-fn:urify(record/metadata/schede/*/LC/PVC/PVCE))" />
-                        </xsl:attribute>
+							<xsl:value-of select="concat($NS, 'AddressArea/', arco-fn:urify(record/metadata/schede/*/LC/PVC/PVCE))" />
+						</xsl:attribute>
 						<rdf:type>
 							<xsl:attribute name="rdf:resource">
-                                <xsl:value-of select="'https://w3id.org/italia/onto/CLV/AddressArea'" />
-                            </xsl:attribute>
+								<xsl:value-of select="'https://w3id.org/italia/onto/CLV/AddressArea'" />
+							</xsl:attribute>
 						</rdf:type>
 						<rdfs:label>
 							<xsl:value-of select="normalize-space(record/metadata/schede/*/LC/PVC/PVCE)" />
@@ -25076,27 +25075,27 @@
 					<xsl:when test="record/metadata/schede/harvesting/idContenitoreFisico and count(arco-fn:find-cf(record/metadata/schede/harvesting/idContenitoreFisico)) > 0">
 						<rdf:Description>
 							<xsl:attribute name="rdf:about">
-                                <xsl:value-of select="concat($NS, 'TimeIndexedTypedLocation/', $itemURI, '-current')" />
-                            </xsl:attribute>
+								<xsl:value-of select="concat($NS, 'TimeIndexedTypedLocation/', $itemURI, '-current')" />
+							</xsl:attribute>
 							<xsl:variable name="CF" select="record/metadata/schede/harvesting/idContenitoreFisico" />
 							<xsl:variable name="idCF">
 								<xsl:value-of select="arco-fn:find-cf($CF)"/>
-							</xsl:variable>			
+							</xsl:variable>
 							<xsl:variable name="idCFisico">
 								<xsl:choose>
-						   			<xsl:when test="$idCF and contains($idCF, 'DBunico')">
-   										<xsl:value-of select="substring-after($idCF, 'DBunico')"/>
-						   			</xsl:when>
-						   			<xsl:otherwise>
-						   				<xsl:value-of select="$idCF"/>
-						   			</xsl:otherwise>
-						   		</xsl:choose>
- 							</xsl:variable>
+									<xsl:when test="$idCF and contains($idCF, 'DBunico')">
+										<xsl:value-of select="substring-after($idCF, 'DBunico')"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="$idCF"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
 							<xsl:variable name="contenitoreFisico">
-							<xsl:choose>
-								<xsl:when test="contains($SOURCE,'.beniculturali.it/')"><xsl:value-of select="concat('http://dati.beniculturali.it/iccd/cf/resource/CulturalInstituteOrSite/', $idCFisico)" /></xsl:when>
-								<xsl:otherwise><xsl:value-of select="concat($NS, 'CulturalInstituteOrSite/', $idCFisico)" /></xsl:otherwise>
-							</xsl:choose>
+								<xsl:choose>
+									<xsl:when test="contains($SOURCE,'.beniculturali.it/')"><xsl:value-of select="concat('http://dati.beniculturali.it/iccd/cf/resource/CulturalInstituteOrSite/', $idCFisico)" /></xsl:when>
+									<xsl:otherwise><xsl:value-of select="concat($NS, 'CulturalInstituteOrSite/', $idCFisico)" /></xsl:otherwise>
+								</xsl:choose>
 							</xsl:variable>
 							<arco-location:atSite>
 								<xsl:attribute name="rdf:resource">
@@ -25128,12 +25127,12 @@
 						</xsl:variable>
 						<rdf:Description>
 							<xsl:attribute name="rdf:about">
-                                <xsl:value-of select="$site" />
-                            </xsl:attribute>
+								<xsl:value-of select="$site" />
+							</xsl:attribute>
 							<rdf:type>
 								<xsl:attribute name="rdf:resource">
-                                    <xsl:value-of select="'http://dati.beniculturali.it/cis/Site'" />
-                                </xsl:attribute>
+									<xsl:value-of select="'http://dati.beniculturali.it/cis/Site'" />
+								</xsl:attribute>
 							</rdf:type>
 							<xsl:choose>
 								<xsl:when test="record/metadata/schede/*/LC/LDC/LDCN and (not(starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), 'nr')) and not(starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), 'n.r')))">
@@ -25858,24 +25857,24 @@
 				<xsl:variable name="CF" select="record/metadata/schede/harvesting/idContenitoreFisico" />
 				<xsl:variable name="idCF">
 					<xsl:if test="record/metadata/schede/harvesting/idContenitoreFisico">
-					<xsl:value-of select="arco-fn:find-cf($CF)"/>
+						<xsl:value-of select="arco-fn:find-cf($CF)"/>
 					</xsl:if>
-				</xsl:variable>			
+				</xsl:variable>
 				<xsl:variable name="idCFisico">
 					<xsl:choose>
 						<xsl:when test="$idCF and contains($idCF, 'DBunico')">
-   							<xsl:value-of select="substring-after($idCF, 'DBunico')"/>
+							<xsl:value-of select="substring-after($idCF, 'DBunico')"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="$idCF"/>
 						</xsl:otherwise>
 					</xsl:choose>
- 				</xsl:variable>
+				</xsl:variable>
 				<xsl:variable name="contenitoreFisico">
-				<xsl:choose>
-					<xsl:when test="contains($SOURCE,'.beniculturali.it/')"><xsl:value-of select="concat('http://dati.beniculturali.it/iccd/cf/resource/CulturalInstituteOrSite/', $idCFisico)" /></xsl:when>
-					<xsl:otherwise><xsl:value-of select="concat($NS, 'CulturalInstituteOrSite/', $idCFisico)" /></xsl:otherwise>
-				</xsl:choose>
+					<xsl:choose>
+						<xsl:when test="contains($SOURCE,'.beniculturali.it/')"><xsl:value-of select="concat('http://dati.beniculturali.it/iccd/cf/resource/CulturalInstituteOrSite/', $idCFisico)" /></xsl:when>
+						<xsl:otherwise><xsl:value-of select="concat($NS, 'CulturalInstituteOrSite/', $idCFisico)" /></xsl:otherwise>
+					</xsl:choose>
 				</xsl:variable>
 				<xsl:variable name="site">
 				<xsl:choose>
@@ -29689,70 +29688,71 @@
 				</rdf:Description>
 			</xsl:for-each>
 		
-							
-		
-				
 					<!-- Deprecated URI -->
 			<xsl:if test="record/metadata/schede/harvesting/idContenitoreFisico and count(arco-fn:find-cf(record/metadata/schede/harvesting/idContenitoreFisico)) > 0">
-			<xsl:if test="record/metadata/schede/*/LC/LDC/*">
-						<xsl:variable name="site">
-							<xsl:choose>
-								<xsl:when
-									test="record/metadata/schede/*/LC/PVC/PVCS and not(lower-case(normalize-space(record/metadata/schede/*/LC/PVC/PVCS))='italia')">
-									<xsl:value-of
-										select="concat($NS, 'Site/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCS)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCE)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)))))" />
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:choose>
-										<xsl:when test="record/metadata/schede/*/LC/LDC/LDCK">
-											<xsl:value-of
-												select="concat($NS, 'Site/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCP)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCC)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCF)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCL)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCU)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCK)))))" />
-										</xsl:when>
-										<xsl:when
-											test="record/metadata/schede/*/LC/LDC/LDCN and starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), 'nr') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '-') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '(*)') and starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '(?)') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '(denominazione assente)') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '?') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '.') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '590977') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '63904') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), 'non id.') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), 'non identificabile') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), 'n.r')">
-											<xsl:value-of
-												select="concat($NS, 'Site/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCP)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCC)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCF)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCL)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCU)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCT)))))" />
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of
-												select="concat($NS, 'Site/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCP)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCC)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCF)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCL)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCU)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCN)))))" />
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:variable>
-				<rdf:Description>
-					<xsl:attribute name="rdf:about">
-						<xsl:value-of select="$site" />
-					</xsl:attribute>
-					<owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
-				</rdf:Description>
-			</xsl:if>
-			</xsl:if>
-			
-			<xsl:if test="not ($sheetType='F' and ($sheetVersion='3.00' or $sheetVersion='3.00_ICCD0' or $sheetVersion='2.00' or $sheetVersion='2.00_ICCD0' or $sheetVersion='1.00' or $sheetVersion='1.00_ICCD0'))">
-			<xsl:for-each select="record/metadata/schede/*/AU/AUT">
-			<xsl:if test="./AUTN and (not(starts-with(lower-case(normalize-space(./AUTN)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUTN)), 'n.r')) and not(starts-with(lower-case(normalize-space(./AUTN)), '-')))">
-				<xsl:if test="./AUTA and (not(starts-with(lower-case(normalize-space(./AUTA)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUTA)), 'n.r')))">
-				<rdf:Description>
-					<xsl:attribute name="rdf:about">
-						<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AUTN))" />
-					</xsl:attribute>
-					<owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
-				</rdf:Description>
-				</xsl:if>
-				<xsl:if test="./AUTB and (not(starts-with(lower-case(normalize-space(./AUTB)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUTB)), 'n.r')))">
-					<rdf:Description>
-						<xsl:attribute name="rdf:about">
-							<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AUTN))" />
-						</xsl:attribute>
+
+				<xsl:variable name="CF" select="record/metadata/schede/harvesting/idContenitoreFisico" />
+				<xsl:variable name="idCF">
+					<xsl:value-of select="arco-fn:find-cf($CF)"/>
+				</xsl:variable>
+				<xsl:variable name="idCFisico">
+					<xsl:choose>
+						<xsl:when test="$idCF and contains($idCF, 'DBunico')"><xsl:value-of select="substring-after($idCF, 'DBunico')"/></xsl:when>
+						<xsl:otherwise><xsl:value-of select="$idCF"/></xsl:otherwise>
+					</xsl:choose>
+ 				</xsl:variable>
+				<xsl:variable name="contenitoreFisico" select="concat('http://dati.beniculturali.it/iccd/cf/resource/CulturalInstituteOrSite/', $idCFisico)" />
+
+				<xsl:if test="record/metadata/schede/*/LC/LDC/*">
+					<xsl:variable name="site">
+						<xsl:choose>
+							<xsl:when test="record/metadata/schede/*/LC/PVC/PVCS and not(lower-case(normalize-space(record/metadata/schede/*/LC/PVC/PVCS))='italia')">
+								<xsl:value-of select="concat($NS, 'Site/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCS)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCE)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)))))" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:choose>
+									<xsl:when test="record/metadata/schede/*/LC/LDC/LDCK">
+										<xsl:value-of select="concat($NS, 'Site/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCP)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCC)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCF)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCL)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCU)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCK)))))" />
+									</xsl:when>
+									<xsl:when test="record/metadata/schede/*/LC/LDC/LDCN and starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), 'nr') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '-') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '(*)') and starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '(?)') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '(denominazione assente)') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '?') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '.') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '590977') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), '63904') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), 'non id.') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), 'non identificabile') or starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCN)), 'n.r')">
+										<xsl:value-of select="concat($NS, 'Site/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCP)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCC)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCF)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCL)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCU)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCT)))))" />
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="concat($NS, 'Site/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCP)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCC)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCF)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCL)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCU)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCN)))))" />
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<rdf:Description rdf:about="{$site}">
 						<owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
+						<owl:sameAs rdf:resource="{$contenitoreFisico}"/>
 					</rdf:Description>
 				</xsl:if>
 			</xsl:if>
-			</xsl:for-each>
-			</xsl:if>
 			
+			<xsl:if test="not ($sheetType='F' and ($sheetVersion='3.00' or $sheetVersion='3.00_ICCD0' or $sheetVersion='2.00' or $sheetVersion='2.00_ICCD0' or $sheetVersion='1.00' or $sheetVersion='1.00_ICCD0'))">
+				<xsl:for-each select="record/metadata/schede/*/AU/AUT">
+					<xsl:if test="./AUTN and (not(starts-with(lower-case(normalize-space(./AUTN)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUTN)), 'n.r')) and not(starts-with(lower-case(normalize-space(./AUTN)), '-')))">
+						<xsl:if test="./AUTA and (not(starts-with(lower-case(normalize-space(./AUTA)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUTA)), 'n.r')))">
+						<rdf:Description>
+							<xsl:attribute name="rdf:about">
+								<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AUTN))" />
+							</xsl:attribute>
+							<owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
+						</rdf:Description>
+						</xsl:if>
+						<xsl:if test="./AUTB and (not(starts-with(lower-case(normalize-space(./AUTB)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUTB)), 'n.r')))">
+							<rdf:Description>
+								<xsl:attribute name="rdf:about">
+									<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AUTN))" />
+								</xsl:attribute>
+								<owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
+							</rdf:Description>
+						</xsl:if>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:if>
 			
 			<xsl:if test="record/metadata/schede/*/LC/LDC/LDCM and (not(starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCM)), 'nr')) and not(starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCM)), 'n.r')))">
 				<rdf:Description>
@@ -29776,6 +29776,7 @@
 					<owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
 				</rdf:Description>
 			</xsl:if>
+   
 			<xsl:if test="record/metadata/schede/harvesting/idContenitoreGiuridico and count(arco-fn:find-cg(record/metadata/schede/harvesting/idContenitoreGiuridico)) > 0">
 			<xsl:if test="record/metadata/schede/*/LC/LDC/LDCM and (not(starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCM)), 'nr')) and not(starts-with(lower-case(normalize-space(record/metadata/schede/*/LC/LDC/LDCM)), 'n.r')))">
 				<rdf:Description>
@@ -29810,6 +29811,7 @@
 						</xsl:choose>
 					</xsl:attribute>
 					<owl:deprecated rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:deprecated>
+					<owl:sameAs rdf:resource="{$cis}"/>
 				</rdf:Description>
 			</xsl:if>
 			</xsl:if>
