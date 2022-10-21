@@ -313,7 +313,7 @@
 											<xsl:otherwise>
 												<xsl:value-of select="concat($NS, 'CulturalInstituteOrSite/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCP)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCC)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCF)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCL)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCM)))))" />
 											</xsl:otherwise>
-										</xsl:choose>								
+										</xsl:choose>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:when>
@@ -327,19 +327,19 @@
 			<!-- We firstly introduce the sheet. -->
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-                    <xsl:value-of select="concat($NS, 'CatalogueRecord', $sheetType, '/', $itemURI)" />
-                </xsl:attribute>
+					<xsl:value-of select="concat($NS, 'CatalogueRecord', $sheetType, '/', $itemURI)" />
+				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-                        <xsl:value-of select="concat('https://w3id.org/arco/ontology/catalogue/', 'CatalogueRecord', $sheetType)" />
-                    </xsl:attribute>
+						<xsl:value-of select="concat('https://w3id.org/arco/ontology/catalogue/', 'CatalogueRecord', $sheetType)" />
+					</xsl:attribute>
 				</rdf:type>
 				<xsl:if test="not ($sheetType='AT') ">
 					<xsl:if test="record/metadata/schede/*/OG/OGC/OGCT and (not(lower-case(normalize-space(record/metadata/schede/*/OG/OGC/OGCT))='bene semplice') and not(lower-case(normalize-space(record/metadata/schede/*/OG/OGC/OGCT))='bene complesso/bene composito - parte componente') and not(record/metadata/schede/AT/OG/OGC/OGCT))">
 						<rdf:type>
 							<xsl:attribute name="rdf:resource">
-                         		<xsl:value-of select="'https://w3id.org/arco/ontology/catalogue/ComplexCPCatalogueRecord'" />
-                    		</xsl:attribute>
+								<xsl:value-of select="'https://w3id.org/arco/ontology/catalogue/ComplexCPCatalogueRecord'" />
+							</xsl:attribute>
 						</rdf:type>
 					</xsl:if>
 				</xsl:if>
@@ -359,16 +359,16 @@
 				<xsl:if test="not ($sheetType='AT') ">
 					<xsl:if test="record/metadata/schede/*/OG/OGC/OGCS">
 						<arco-core:note>
-                         	<xsl:value-of select="record/metadata/schede/*/OG/OGC/OGCS" />
-                    	</arco-core:note>
+							<xsl:value-of select="record/metadata/schede/*/OG/OGC/OGCS" />
+						</arco-core:note>
 					</xsl:if>
 				</xsl:if>
 				<!-- hasCataloguingLevel (record/metadata/schede/*/CD/LIR) -->
 				<xsl:for-each select="record/metadata/schede/*/CD/LIR">
 					<arco-catalogue:hasCataloguingLevel>
 						<xsl:attribute name="rdf:resource">
-                            <xsl:value-of select="concat('https://w3id.org/arco/ontology/catalogue/', upper-case(arco-fn:urify(.)))" />
-                        </xsl:attribute>
+							<xsl:value-of select="concat('https://w3id.org/arco/ontology/catalogue/', upper-case(arco-fn:urify(.)))" />
+						</xsl:attribute>
 					</arco-catalogue:hasCataloguingLevel>
 				</xsl:for-each>
 				<!-- identifier:sheetIdentifier - concat of NCTR + NCTN + NCTS + - +RVEL. 
@@ -386,7 +386,7 @@
 						</xsl:choose>
 					</arco-catalogue:catalogueRecordIdentifier>
 				</xsl:if>
-				<xsl:if test="record/metadata/schede/MODI/CD">
+				<xsl:if test="record/metadata/schede/MODI/CD/CDM">
 					<arco-catalogue:catalogueRecordIdentifier>
 						<xsl:value-of select="concat(record/metadata/schede/*/CD/CDR, '-', record/metadata/schede/*/CD/CDM)" />
 					</arco-catalogue:catalogueRecordIdentifier>
@@ -408,29 +408,42 @@
 						</arco-catalogue:deletedICCDIdentifier>
 					</xsl:for-each>
 				</xsl:if>
+				<!-- alternative identifier (CD/ACC) -->
+				<xsl:for-each select="record/metadata/schede/*/CD/ACC">
+					<l0:identifier>
+						<xsl:choose>
+							<xsl:when test="./*"><xsl:value-of select="normalize-space(./ACCC)" /></xsl:when>
+							<xsl:otherwise><xsl:value-of select="normalize-space(.)" /></xsl:otherwise>
+						</xsl:choose>
+					</l0:identifier>
+				</xsl:for-each>
 				<!-- alternative identifier (AC/ACC) -->
-				<xsl:if test="record/metadata/schede/*/AC/ACC">
-					<xsl:for-each select="record/metadata/schede/*/AC/ACC">
-						<arco-catalogue:hasAlternativeIdentifier>
-							<xsl:attribute name="rdf:resource">
-	                			<xsl:value-of select="concat($NS, 'AlternativeIdentifier/', $itemURI, '-', position())" />
-	                		</xsl:attribute>
-						</arco-catalogue:hasAlternativeIdentifier>
-					</xsl:for-each>
-				</xsl:if>
+				<xsl:for-each select="record/metadata/schede/*/AC/ACC">
+					<l0:identifier>
+						<xsl:choose>
+							<xsl:when test="./*"><xsl:value-of select="normalize-space(./ACCC)" /></xsl:when>
+							<xsl:otherwise><xsl:value-of select="normalize-space(.)" /></xsl:otherwise>
+						</xsl:choose>
+					</l0:identifier>
+					<arco-catalogue:hasAlternativeIdentifier>
+						<xsl:attribute name="rdf:resource">
+							<xsl:value-of select="concat($NS, 'AlternativeIdentifier/', $itemURI, '-', position())" />
+						</xsl:attribute>
+					</arco-catalogue:hasAlternativeIdentifier>
+				</xsl:for-each>
 				<!-- access profile -->
 				<xsl:if test="record/metadata/schede/*/AD/ADS">
 					<arco-catalogue:hasAccessProfile>
 						<xsl:attribute name="rdf:resource">
-	                		<xsl:value-of select="concat($NS, 'AccessProfile/', $itemURI, '-', arco-fn:urify(normalize-space(record/metadata/schede/*/AD/ADS/ADSP)))" />
-	                	</xsl:attribute>
+							<xsl:value-of select="concat($NS, 'AccessProfile/', $itemURI, '-', arco-fn:urify(normalize-space(record/metadata/schede/*/AD/ADS/ADSP)))" />
+						</xsl:attribute>
 					</arco-catalogue:hasAccessProfile>
 				</xsl:if>
 				<xsl:if test="record/metadata/schede/*/AD/ADP">
 					<arco-catalogue:hasAccessProfile>
 						<xsl:attribute name="rdf:resource">
-	                		<xsl:value-of select="concat($NS, 'AccessProfile/', $itemURI, '-', arco-fn:urify(normalize-space(record/metadata/schede/*/AD/ADP)))" />
-	                	</xsl:attribute>
+							<xsl:value-of select="concat($NS, 'AccessProfile/', $itemURI, '-', arco-fn:urify(normalize-space(record/metadata/schede/*/AD/ADP)))" />
+						</xsl:attribute>
 					</arco-catalogue:hasAccessProfile>
 				</xsl:if>
 				<xsl:if test="record/metadata/schede/*/CM/ADP">
@@ -20400,12 +20413,12 @@
 					<xsl:if test="./FRUF and (not(starts-with(lower-case(normalize-space(./FRUF)), 'nr')) and not(starts-with(lower-case(normalize-space(./FRUF)), 'n.r')))">
 						<rdf:Description>
 							<xsl:attribute name="rdf:about">
-                				<xsl:value-of select="concat($NS, 'InterpretationCriterion/', arco-fn:urify(normalize-space(./FRUF)))" />
-                			</xsl:attribute>
+								<xsl:value-of select="concat($NS, 'InterpretationCriterion/', arco-fn:urify(normalize-space(./FRUF)))" />
+							</xsl:attribute>
 							<rdf:type>
 								<xsl:attribute name="rdf:resource">
-                            		<xsl:value-of select="'https://w3id.org/arco/ontology/context-description/InterpretationCriterion'" />
-                        		</xsl:attribute>
+									<xsl:value-of select="'https://w3id.org/arco/ontology/context-description/InterpretationCriterion'" />
+								</xsl:attribute>
 							</rdf:type>
 							<rdfs:label>
 								<xsl:value-of select="normalize-space(./FRUF)" />
@@ -20422,12 +20435,12 @@
 				<xsl:for-each select="record/metadata/schede/*/AC/ACC">
 					<rdf:Description>
 						<xsl:attribute name="rdf:about">
-                        	<xsl:value-of select="concat($NS, 'AlternativeIdentifier/', $itemURI, '-', position())" />
-                    	</xsl:attribute>
+							<xsl:value-of select="concat($NS, 'AlternativeIdentifier/', $itemURI, '-', position())" />
+								</xsl:attribute>
 						<rdf:type>
 							<xsl:attribute name="rdf:resource">
-                            	<xsl:value-of select="'https://w3id.org/arco/ontology/catalogue/AlternativeIdentifier'" />
-                        	</xsl:attribute>
+								<xsl:value-of select="'https://w3id.org/arco/ontology/catalogue/AlternativeIdentifier'" />
+							</xsl:attribute>
 						</rdf:type>
 						<rdfs:label xml:lang="it">
 							<xsl:choose>
