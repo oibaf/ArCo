@@ -408,17 +408,8 @@
 						</arco-catalogue:deletedICCDIdentifier>
 					</xsl:for-each>
 				</xsl:if>
-				<!-- alternative identifier (CD/ACC) -->
-				<xsl:for-each select="record/metadata/schede/*/CD/ACC">
-					<l0:identifier>
-						<xsl:choose>
-							<xsl:when test="./*"><xsl:value-of select="normalize-space(./ACCC)" /></xsl:when>
-							<xsl:otherwise><xsl:value-of select="normalize-space(.)" /></xsl:otherwise>
-						</xsl:choose>
-					</l0:identifier>
-				</xsl:for-each>
-				<!-- alternative identifier (AC/ACC) -->
-				<xsl:for-each select="record/metadata/schede/*/AC/ACC">
+				<!-- alternative identifier (ACC) -->
+				<xsl:for-each select="record/metadata/schede/*/*/ACC">
 					<l0:identifier>
 						<xsl:choose>
 							<xsl:when test="./*"><xsl:value-of select="normalize-space(./ACCC)" /></xsl:when>
@@ -2786,8 +2777,8 @@
 								<xsl:if test="./ROFA and (not(starts-with(lower-case(normalize-space(./ROFA)), 'nr')) and not(starts-with(lower-case(normalize-space(./ROFA)), 'n.r')))">
 									<arco-cd:hasAuthor>
 										<xsl:attribute name="rdf:resource">
-			            					<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./ROFA))" />
-			            				</xsl:attribute>
+											<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./ROFA))" />
+										</xsl:attribute>
 									</arco-cd:hasAuthor>
 								</xsl:if>
 							</rdf:Description>
@@ -2802,7 +2793,7 @@
 							<rdf:type>
 								<xsl:attribute name="rdf:resource">
 									<xsl:value-of select="'https://w3id.org/arco/ontology/context-description/CulturalPropertyStage'" />
-	                       		</xsl:attribute>
+								</xsl:attribute>
 							</rdf:type>
 							<l0:name>
 								<xsl:value-of select="normalize-space(./ROFF)" />
@@ -20430,172 +20421,170 @@
 					</xsl:if>
 				</xsl:for-each>
 			</xsl:if>
-			<!-- Alternative Identifier as an individual (AC/ACC) -->
-			<xsl:if test="record/metadata/schede/*/AC/ACC">
-				<xsl:for-each select="record/metadata/schede/*/AC/ACC">
+			<!-- alternative identifier as an individual (ACC) -->
+			<xsl:for-each select="record/metadata/schede/*/*/ACC">
+				<rdf:Description>
+					<xsl:attribute name="rdf:about">
+						<xsl:value-of select="concat($NS, 'AlternativeIdentifier/', $itemURI, '-', position())" />
+							</xsl:attribute>
+					<rdf:type>
+						<xsl:attribute name="rdf:resource">
+							<xsl:value-of select="'https://w3id.org/arco/ontology/catalogue/AlternativeIdentifier'" />
+						</xsl:attribute>
+					</rdf:type>
+					<rdfs:label xml:lang="it">
+						<xsl:choose>
+							<xsl:when test="./*">
+								<xsl:value-of select="concat('Codice alternativo ', normalize-space(./ACCC), ' del bene culturale: ', $itemURI)" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="concat('Codice alternativo ', normalize-space(.), ' del bene culturale: ', $itemURI)" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</rdfs:label>
+					<l0:name xml:lang="it">
+						<xsl:choose>
+							<xsl:when test="./*">
+								<xsl:value-of select="concat('Codice alternativo ', normalize-space(./ACCC), ' del bene culturale: ', $itemURI)" />
+							</xsl:when>
+							<xsl:otherwise> 
+								<xsl:value-of select="concat('Codice alternativo ', normalize-space(.), ' del bene culturale: ', $itemURI)" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</l0:name>
+					<rdfs:label xml:lang="en">
+						<xsl:choose>
+							<xsl:when test="./*">
+								<xsl:value-of select="concat('Alternative identifier ', normalize-space(./ACCC), ' of cultural property: ', $itemURI)" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="concat('Alternative identifier ', normalize-space(.), ' of cultural property: ', $itemURI)" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</rdfs:label>
+					<l0:name xml:lang="en">
+						<xsl:choose>
+							<xsl:when test="./*">
+								<xsl:value-of select="concat('Alternative identifier ', normalize-space(./ACCC), ' of cultural property: ', $itemURI)" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="concat('Alternative identifier ', normalize-space(.), ' of cultural property: ', $itemURI)" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</l0:name>
+					<l0:identifier>
+						<xsl:choose>
+							<xsl:when test="./*">
+								<xsl:value-of select="./ACCC" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of
+									select="normalize-space(.)" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</l0:identifier>
+					<xsl:if test="./ACCS">
+						<arco-core:note>
+							<xsl:value-of select="normalize-space(./ACCS)" />
+						</arco-core:note>
+					</xsl:if>
+					<xsl:if test="./ACCP and (not(starts-with(lower-case(normalize-space(./ACCP)), 'nr')) and not(starts-with(lower-case(normalize-space(./ACCP)), 'n.r')))">
+						<arco-catalogue:referenceProject>
+							<xsl:value-of select="normalize-space(./ACCP)" />
+						</arco-catalogue:referenceProject>
+					</xsl:if>
+					<xsl:if test="./ACCW and (not(starts-with(lower-case(normalize-space(./ACCW)), 'nr')) and not(starts-with(lower-case(normalize-space(./ACCW)), 'n.r')))">
+						<xsl:call-template name="smapituri"><xsl:with-param name="uri" select="normalize-space(./ACCW)"/></xsl:call-template>
+						<!--
+						<smapit:URL><xsl:value-of select="normalize-space(./ACCW)" /></smapit:URL>
+						-->
+					</xsl:if>
+					<xsl:if test="./ACCE and (not(starts-with(lower-case(normalize-space(./ACCE)), 'nr')) and not(starts-with(lower-case(normalize-space(./ACCE)), 'n.r')))">
+						<arco-core:hasAgentRole>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, '-catalogue-record-responsible')" />
+							</xsl:attribute>
+						</arco-core:hasAgentRole>
+					</xsl:if>
+				</rdf:Description>
+				<!-- agent role for catalogue record responsible for alternative identifier as an individual -->
+				<xsl:if test="./ACCE and (not(starts-with(lower-case(normalize-space(./ACCE)), 'nr')) and not(starts-with(lower-case(normalize-space(./ACCE)), 'n.r')))">
 					<rdf:Description>
 						<xsl:attribute name="rdf:about">
-							<xsl:value-of select="concat($NS, 'AlternativeIdentifier/', $itemURI, '-', position())" />
-								</xsl:attribute>
+							<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, '-catalogue-record-responsible')" />
+						</xsl:attribute>
 						<rdf:type>
 							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="'https://w3id.org/arco/ontology/catalogue/AlternativeIdentifier'" />
+								<xsl:value-of select="'https://w3id.org/arco/ontology/core/AgentRole'" />
 							</xsl:attribute>
 						</rdf:type>
 						<rdfs:label xml:lang="it">
-							<xsl:choose>
-								<xsl:when test="./*">
-									<xsl:value-of select="concat('Codice alternativo ', normalize-space(./ACCC), ' del bene culturale: ', $itemURI)" />
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="concat('Codice alternativo ', normalize-space(.), ' del bene culturale: ', $itemURI)" />
-								</xsl:otherwise>
-							</xsl:choose>
+							<xsl:value-of select="concat('Ente responsabile della scheda del bene ', $itemURI, ': ', normalize-space(./ACCE))" />
+						</rdfs:label>
+						<rdfs:label xml:lang="en">
+							<xsl:value-of select="concat('Responsible agency for catalogue record of cultural property ', $itemURI, ': ', normalize-space(./ACCE))" />
 						</rdfs:label>
 						<l0:name xml:lang="it">
-							<xsl:choose>
-								<xsl:when test="./*">
-									<xsl:value-of select="concat('Codice alternativo ', normalize-space(./ACCC), ' del bene culturale: ', $itemURI)" />
-								</xsl:when>
-								<xsl:otherwise> 
-									<xsl:value-of select="concat('Codice alternativo ', normalize-space(.), ' del bene culturale: ', $itemURI)" />
-								</xsl:otherwise>
-							</xsl:choose>
+							<xsl:value-of select="concat('Ente responsabile della scheda del bene ', $itemURI, ': ', normalize-space(./ACCE))" />
 						</l0:name>
-						<rdfs:label xml:lang="en">
-							<xsl:choose>
-								<xsl:when test="./*">
-									<xsl:value-of select="concat('Alternative identifier ', normalize-space(./ACCC), ' of cultural property: ', $itemURI)" />
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="concat('Alternative identifier ', normalize-space(.), ' of cultural property: ', $itemURI)" />
-								</xsl:otherwise>
-							</xsl:choose>
-						</rdfs:label>
 						<l0:name xml:lang="en">
-							<xsl:choose>
-								<xsl:when test="./*">
-									<xsl:value-of select="concat('Alternative identifier ', normalize-space(./ACCC), ' of cultural property: ', $itemURI)" />
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="concat('Alternative identifier ', normalize-space(.), ' of cultural property: ', $itemURI)" />
-								</xsl:otherwise>
-							</xsl:choose>
+							<xsl:value-of select="concat('Responsible agency for catalogue record of cultural property ', $itemURI, ': ', normalize-space(./ACCE))" />
 						</l0:name>
-						<l0:identifier>
-							<xsl:choose>
-								<xsl:when test="./*">
-									<xsl:value-of select="./ACCC" />
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of
-										select="normalize-space(.)" />
-								</xsl:otherwise>
-							</xsl:choose>
-						</l0:identifier>
-						<xsl:if test="./ACCS">
-							<arco-core:note>
-								<xsl:value-of select="normalize-space(./ACCS)" />
-							</arco-core:note>
-						</xsl:if>
-						<xsl:if test="./ACCP and (not(starts-with(lower-case(normalize-space(./ACCP)), 'nr')) and not(starts-with(lower-case(normalize-space(./ACCP)), 'n.r')))">
-							<arco-catalogue:referenceProject>
-								<xsl:value-of select="normalize-space(./ACCP)" />
-							</arco-catalogue:referenceProject>
-						</xsl:if>
-						<xsl:if test="./ACCW and (not(starts-with(lower-case(normalize-space(./ACCW)), 'nr')) and not(starts-with(lower-case(normalize-space(./ACCW)), 'n.r')))">
-							<xsl:call-template name="smapituri"><xsl:with-param name="uri" select="normalize-space(./ACCW)"/></xsl:call-template>
-							<!--
-							<smapit:URL><xsl:value-of select="normalize-space(./ACCW)" /></smapit:URL>
-							-->
-						</xsl:if>
-						<xsl:if test="./ACCE and (not(starts-with(lower-case(normalize-space(./ACCE)), 'nr')) and not(starts-with(lower-case(normalize-space(./ACCE)), 'n.r')))">
-							<arco-core:hasAgentRole>
-								<xsl:attribute name="rdf:resource">
-									<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, '-catalogue-record-responsible')" />
-								</xsl:attribute>
-							</arco-core:hasAgentRole>
-						</xsl:if>
-					</rdf:Description>
-					<!-- agent role for catalogue record responsible for alternative identifier as an individual -->
-					<xsl:if test="./ACCE and (not(starts-with(lower-case(normalize-space(./ACCE)), 'nr')) and not(starts-with(lower-case(normalize-space(./ACCE)), 'n.r')))">
-						<rdf:Description>
-							<xsl:attribute name="rdf:about">
-								<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, '-catalogue-record-responsible')" />
-							</xsl:attribute>
-							<rdf:type>
-								<xsl:attribute name="rdf:resource">
-									<xsl:value-of select="'https://w3id.org/arco/ontology/core/AgentRole'" />
-								</xsl:attribute>
-							</rdf:type>
-							<rdfs:label xml:lang="it">
-								<xsl:value-of select="concat('Ente responsabile della scheda del bene ', $itemURI, ': ', normalize-space(./ACCE))" />
-							</rdfs:label>
-							<rdfs:label xml:lang="en">
-								<xsl:value-of select="concat('Responsible agency for catalogue record of cultural property ', $itemURI, ': ', normalize-space(./ACCE))" />
-							</rdfs:label>
-							<l0:name xml:lang="it">
-								<xsl:value-of select="concat('Ente responsabile della scheda del bene ', $itemURI, ': ', normalize-space(./ACCE))" />
-							</l0:name>
-							<l0:name xml:lang="en">
-								<xsl:value-of select="concat('Responsible agency for catalogue record of cultural property ', $itemURI, ': ', normalize-space(./ACCE))" />
-							</l0:name>
-							<arco-core:hasRole>
-								<xsl:attribute name="rdf:resource">
-									<xsl:value-of select="concat($NS, 'Role/CatalogueRecordResponsible')" />
-								</xsl:attribute>
-							</arco-core:hasRole>
-							<arco-core:hasAgent>
-								<xsl:attribute name="rdf:resource">
-									<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./ACCE))" />
-								</xsl:attribute>
-							</arco-core:hasAgent>
-						</rdf:Description>
-						<rdf:Description>
-							<xsl:attribute name="rdf:about">
+						<arco-core:hasRole>
+							<xsl:attribute name="rdf:resource">
 								<xsl:value-of select="concat($NS, 'Role/CatalogueRecordResponsible')" />
 							</xsl:attribute>
-							<rdf:type>
-								<xsl:attribute name="rdf:resource">
-									<xsl:value-of select="'https://w3id.org/italia/onto/RO/Role'" />
-								</xsl:attribute>
-							</rdf:type>
-							<rdfs:label xml:lang="it">
-								<xsl:value-of select="'Ente responsabile della scheda catalografica'" />
-							</rdfs:label>
-							<rdfs:label xml:lang="en">
-								<xsl:value-of select="'Responsible agency for catalogue record'" />
-							</rdfs:label>
-							<arco-core:isRoleOf>
-								<xsl:attribute name="rdf:resource">
-									<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, '-catalogue-record-responsible')" />
-								</xsl:attribute>
-							</arco-core:isRoleOf>
-						</rdf:Description>
-						<rdf:Description>
-							<xsl:attribute name="rdf:about">
+						</arco-core:hasRole>
+						<arco-core:hasAgent>
+							<xsl:attribute name="rdf:resource">
 								<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./ACCE))" />
 							</xsl:attribute>
-							<rdf:type>
-								<xsl:attribute name="rdf:resource">
-									<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
-								</xsl:attribute>
-							</rdf:type>
-							<rdfs:label>
-								<xsl:value-of select="normalize-space(./ACCE)" />
-							</rdfs:label>
-							<l0:name>
-								<xsl:value-of select="normalize-space(./ACCE)" />
-							</l0:name>
-							<arco-core:isAgentOf>
-								<xsl:attribute name="rdf:resource">
-									<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, '-catalogue-record-responsible')" />
-								</xsl:attribute>
-							</arco-core:isAgentOf>
-						</rdf:Description>
-					</xsl:if>
-				</xsl:for-each>
-			</xsl:if>
+						</arco-core:hasAgent>
+					</rdf:Description>
+					<rdf:Description>
+						<xsl:attribute name="rdf:about">
+							<xsl:value-of select="concat($NS, 'Role/CatalogueRecordResponsible')" />
+						</xsl:attribute>
+						<rdf:type>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of select="'https://w3id.org/italia/onto/RO/Role'" />
+							</xsl:attribute>
+						</rdf:type>
+						<rdfs:label xml:lang="it">
+							<xsl:value-of select="'Ente responsabile della scheda catalografica'" />
+						</rdfs:label>
+						<rdfs:label xml:lang="en">
+							<xsl:value-of select="'Responsible agency for catalogue record'" />
+						</rdfs:label>
+						<arco-core:isRoleOf>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, '-catalogue-record-responsible')" />
+							</xsl:attribute>
+						</arco-core:isRoleOf>
+					</rdf:Description>
+					<rdf:Description>
+						<xsl:attribute name="rdf:about">
+							<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./ACCE))" />
+						</xsl:attribute>
+						<rdf:type>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
+							</xsl:attribute>
+						</rdf:type>
+						<rdfs:label>
+							<xsl:value-of select="normalize-space(./ACCE)" />
+						</rdfs:label>
+						<l0:name>
+							<xsl:value-of select="normalize-space(./ACCE)" />
+						</l0:name>
+						<arco-core:isAgentOf>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of select="concat($NS, 'AgentRole/', $itemURI, '-catalogue-record-responsible')" />
+							</xsl:attribute>
+						</arco-core:isAgentOf>
+					</rdf:Description>
+				</xsl:if>
+			</xsl:for-each>
 			<!-- Access profile as an individual -->
 			<xsl:if test="record/metadata/schede/*/AD/ADS">
 				<rdf:Description>
