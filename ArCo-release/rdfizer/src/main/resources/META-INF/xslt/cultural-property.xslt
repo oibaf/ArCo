@@ -635,7 +635,7 @@
 													<xsl:otherwise>
 														<xsl:value-of select="concat($NS, 'CulturalInstituteOrSite/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCP)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCC)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCF)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCL)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCM)))))" />
 													</xsl:otherwise>
-												</xsl:choose>								
+												</xsl:choose>
 											</xsl:otherwise>
 										</xsl:choose>
 									</xsl:attribute>
@@ -3802,6 +3802,14 @@
 						<xsl:value-of select="concat(' ', string-join(record/metadata/schede/*/OG/SGT/SGTI,', '))" />
 					</xsl:if>
 				</rdfs:comment>
+				<!-- Natural environment for modi -->
+				<xsl:if test="record/metadata/schede/MODI/CA/CAT">
+					<arco-location:hasNaturalEnvironment>
+						<xsl:attribute name="rdf:resource">
+							<xsl:value-of select="concat($NS, 'NaturalEnvironment/', $itemURI)" />
+						</xsl:attribute>
+					</arco-location:hasNaturalEnvironment>
+				</xsl:if>
 				<!-- hasCulturalPropertyType -->
 				<xsl:if test="not($sheetType='MODI')">
 					<xsl:for-each select="record/metadata/schede/*/OG/OGT">
@@ -3951,6 +3959,11 @@
 						</xsl:attribute>
 					</arco-dd:hasCulturalPropertyType>
 				</xsl:if>
+				<xsl:for-each select="record/metadata/schede/*/*/SGT/SGTD">
+					<arco-cd:subjectDescription>
+						<xsl:value-of select="." />
+					</arco-cd:subjectDescription>
+				</xsl:for-each>
 				<!-- scan -->
 				<xsl:for-each select="record/metadata/schede/SCAN/BI/RIL/RILA">
 					<arco-core:hasAgentRole>
