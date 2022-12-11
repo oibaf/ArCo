@@ -122,6 +122,7 @@
 	<xsl:variable name="sheetVersion" select="record/metadata/schede/*/@version" />
 	<xsl:variable name="idCG" select="record/metadata/schede/CG/CD/CCG" />
 	<xsl:variable name="cp-name" select="''" />
+ <!--
 	<xsl:variable name="itemURI">
 		<xsl:choose>
 			<xsl:when test="record/metadata/schede/*/CD/NCT/NCTN">
@@ -172,16 +173,17 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
+ -->
 	<xsl:variable name="idCF">
 		<xsl:choose>
-   			<xsl:when test="record/metadata/schede/*/CD/CCF and contains(record/metadata/schede/*/CD/CCF, 'DBunico')">
-   				<xsl:value-of select="substring-after(record/metadata/schede/*/CD/CCF, 'DBunico')"/>
-   			</xsl:when>
-  			<xsl:otherwise>
-  				<xsl:value-of select="record/metadata/schede/*/CD/CCF"/>
-  			</xsl:otherwise>
-  		</xsl:choose>
- 	</xsl:variable>
+			<xsl:when test="record/metadata/schede/*/CD/CCF and contains(record/metadata/schede/*/CD/CCF, 'DBunico')">
+				<xsl:value-of select="substring-after(record/metadata/schede/*/CD/CCF, 'DBunico')"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="record/metadata/schede/*/CD/CCF"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 	<xsl:variable name="contenitoreFisico">
 	<xsl:choose>
 		<xsl:when test="contains($SOURCE,'.beniculturali.it/')"><xsl:value-of select="concat('http://dati.beniculturali.it/iccd/cf/resource/CulturalInstituteOrSite/', $idCF)" /></xsl:when>
@@ -210,8 +212,7 @@
 	<xsl:if test="$sheetType='CF'" >
 		<rdf:Description>
 			<xsl:attribute name="rdf:about">
-                <xsl:value-of
-					select="concat($NS, 'CatalogueRecord', $sheetType, '/', $idCF)" />
+				<xsl:value-of select="concat($NS, 'CatalogueRecord', $sheetType, '/', $idCF)" />
 			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
@@ -261,7 +262,7 @@
 					<arco-catalogue:hasAlternativeIdentifier>
 						<xsl:attribute name="rdf:resource">
 							<xsl:value-of select="concat($NS, 'AlternativeIdentifier/', $idCF, '-', position())" />
-	                	</xsl:attribute>
+								</xsl:attribute>
 						</arco-catalogue:hasAlternativeIdentifier>
 				</xsl:for-each>
 			</xsl:if>
@@ -269,10 +270,10 @@
 			<xsl:if test="record/metadata/schede/*/AD/ADS">
 				<arco-catalogue:hasAccessProfile>
 					<xsl:attribute name="rdf:resource">
-	               		<xsl:value-of select="concat($NS, 'AccessProfile/', $idCF, '-', arco-fn:urify(normalize-space(record/metadata/schede/*/AD/ADS/ADSP)))" />
-	                </xsl:attribute>
+						<xsl:value-of select="concat($NS, 'AccessProfile/', $idCF, '-', arco-fn:urify(normalize-space(record/metadata/schede/*/AD/ADS/ADSP)))" />
+					</xsl:attribute>
 				</arco-catalogue:hasAccessProfile>
-			</xsl:if>		
+			</xsl:if>
 		</rdf:Description>
 		<xsl:if test="record/metadata/schede/*/CM/CMP or record/metadata/schede/*/CM/RSR or record/metadata/schede/*/CM/FUR">
 			<rdf:Description>
@@ -442,11 +443,11 @@
 			<xsl:if test=". and (not(starts-with(lower-case(normalize-space(.)), 'nr')) and not(starts-with(lower-case(normalize-space(.)), 'n.r')))">
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-	                       <xsl:value-of select="concat($NS, 'TimeIndexedRole/', $idCF, '-', arco-fn:arcofy(concat(./@hint, '-', .)))" />
-	                </xsl:attribute>
+						<xsl:value-of select="concat($NS, 'TimeIndexedRole/', $idCF, '-', arco-fn:arcofy(concat(./@hint, '-', .)))" />
+					</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-	                          <xsl:value-of select="'https://w3id.org/italia/onto/RO/TimeIndexedRole'" />
+							<xsl:value-of select="'https://w3id.org/italia/onto/RO/TimeIndexedRole'" />
 						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label xml:lang="it">
@@ -457,24 +458,24 @@
 					</rdfs:label>
 					<roapit:withRole>
 						<xsl:attribute name="rdf:resource">
-                            <xsl:value-of select="concat($NS, 'Role/ScientificDirector')" />
-                        </xsl:attribute>
+							<xsl:value-of select="concat($NS, 'Role/ScientificDirector')" />
+						</xsl:attribute>
 					</roapit:withRole>
 					<roapit:isRoleInTimeOf>
 						<xsl:attribute name="rdf:resource">
-                            <xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(.))" />
-                        </xsl:attribute>
+							<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(.))" />
+						</xsl:attribute>
 					</roapit:isRoleInTimeOf>
 				</rdf:Description>
 				<!-- Agent: Referente verifica scientifica -->
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-                        <xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(.))" />
-                    </xsl:attribute>
+							<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(.))" />
+						</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-                            <xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
-	                    </xsl:attribute>
+							<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
+						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label>
 						<xsl:value-of select="normalize-space(.)" />
@@ -483,11 +484,11 @@
 					<!-- Role: Referente verifica scientifica -->
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-	                       <xsl:value-of select="concat($NS, 'Role/ScientificDirector')" />
-	                </xsl:attribute>
+						<xsl:value-of select="concat($NS, 'Role/ScientificDirector')" />
+					</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-	                           <xsl:value-of select="'https://w3id.org/italia/onto/RO/Role'" />
+							<xsl:value-of select="'https://w3id.org/italia/onto/RO/Role'" />
 						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label xml:lang="it">
@@ -504,12 +505,12 @@
 			<xsl:if test="(not(starts-with(lower-case(normalize-space(.)), 'nr')) and not(starts-with(lower-case(normalize-space(.)), 'n.r')))">
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-	                       <xsl:value-of select="concat($NS, 'TimeIndexedRole/', $idCF, '-', arco-fn:arcofy(concat(./@hint, '-', .)))" />
-	                </xsl:attribute>
+						<xsl:value-of select="concat($NS, 'TimeIndexedRole/', $idCF, '-', arco-fn:arcofy(concat(./@hint, '-', .)))" />
+					</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-	                           <xsl:value-of select="'https://w3id.org/italia/onto/RO/TimeIndexedRole'" />
-	                    </xsl:attribute>
+							<xsl:value-of select="'https://w3id.org/italia/onto/RO/TimeIndexedRole'" />
+						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label xml:lang="it">
 						<xsl:value-of select="concat(./@hint, ': ', normalize-space(.))" />
@@ -519,24 +520,24 @@
 					</rdfs:label>
 					<roapit:withRole>
 						<xsl:attribute name="rdf:resource">
-                            <xsl:value-of select="concat($NS, 'Role/OfficialInCharge')" />
-	                    </xsl:attribute>
+							<xsl:value-of select="concat($NS, 'Role/OfficialInCharge')" />
+						</xsl:attribute>
 					</roapit:withRole>
 					<roapit:isRoleInTimeOf>
 						<xsl:attribute name="rdf:resource">
-                            <xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(.))" />
-	                     </xsl:attribute>
+							<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(.))" />
+						</xsl:attribute>
 					</roapit:isRoleInTimeOf>
 				</rdf:Description>
 					<!-- Agent: Funzionario responsabile -->
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-                        <xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(.))" />
-	                </xsl:attribute>
+						<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(.))" />
+					</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-	                           <xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
-	                    </xsl:attribute>
+							<xsl:value-of select="'https://w3id.org/italia/onto/l0/Agent'" />
+						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label>
 						<xsl:value-of select="normalize-space(.)" />
@@ -545,12 +546,12 @@
 					<!-- Role: Funzionario responsabile -->
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-	                      <xsl:value-of select="concat($NS, 'Role/OfficialInCharge')" />
-	                </xsl:attribute>
+						<xsl:value-of select="concat($NS, 'Role/OfficialInCharge')" />
+					</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-	                           <xsl:value-of select="'https://w3id.org/italia/onto/RO/Role'" />
-	                    </xsl:attribute>
+							<xsl:value-of select="'https://w3id.org/italia/onto/RO/Role'" />
+						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label xml:lang="it">
 						<xsl:value-of select="normalize-space(./@hint)" />
@@ -745,7 +746,7 @@
 			<arco-catalogue:isDescribedByCatalogueRecord>
 				<xsl:attribute name="rdf:resource">
 					<xsl:value-of select="concat($NS, 'CatalogueRecord', $sheetType, '/', $idCF)" />
-                </xsl:attribute>
+				</xsl:attribute>
 			</arco-catalogue:isDescribedByCatalogueRecord>
 			<xsl:choose>
 				<xsl:when test="record/metadata/schede/*/CF/CFN">
@@ -769,23 +770,23 @@
 				</arco-core:description>
 			</xsl:if>
 			<xsl:if test="contains(record/metadata/schede/*/CD/CCF/text(), 'DBunico')">
-    			<rdfs:seeAlso>
-    				<xsl:attribute name="rdf:resource">
-    					<xsl:value-of select="concat('http://dati.beniculturali.it/mibact/luoghi/resource/CulturalInstituteOrSite/', substring-after(record/metadata/schede/*/CD/CCF,'DBunicoCF') )"/>
-     				</xsl:attribute>
-     			</rdfs:seeAlso>
-   			</xsl:if>
+				<rdfs:seeAlso>
+					<xsl:attribute name="rdf:resource">
+						<xsl:value-of select="concat('http://dati.beniculturali.it/mibact/luoghi/resource/CulturalInstituteOrSite/', substring-after(record/metadata/schede/*/CD/CCF,'DBunicoCF') )"/>
+					</xsl:attribute>
+				</rdfs:seeAlso>
+			</xsl:if>
 			<xsl:if test="record/metadata/schede/*/CF/CFN">
 				<arco-dd:hasDesignationInTime>
 					<xsl:attribute name="rdf:resource">
-                       	<xsl:value-of select="concat($NS,'DesignationInTime/', $idCF, '-', arco-fn:urify(normalize-space(record/metadata/schede/*/CF/CFN)))" />                      	                            
+						<xsl:value-of select="concat($NS,'DesignationInTime/', $idCF, '-', arco-fn:urify(normalize-space(record/metadata/schede/*/CF/CFN)))" />                      	                            
 					</xsl:attribute>
 				</arco-dd:hasDesignationInTime>
 			</xsl:if>
 			<xsl:for-each select="record/metadata/schede/*/CF/CFA">
 				<arco-dd:hasDesignationInTime>
 					<xsl:attribute name="rdf:resource">
-                       	<xsl:value-of select="concat($NS,'DesignationInTime/', $idCF, '-', arco-fn:urify(normalize-space(.)))" />                      	                            
+						<xsl:value-of select="concat($NS,'DesignationInTime/', $idCF, '-', arco-fn:urify(normalize-space(.)))" />                      	                            
 					</xsl:attribute>
 				</arco-dd:hasDesignationInTime>
 			</xsl:for-each>	
@@ -793,8 +794,8 @@
 				<xsl:for-each select="record/metadata/schede/*/GE">
 					<clvapit:hasGeometry>
 						<xsl:attribute name="rdf:resource">
-	        	        	<xsl:value-of select="concat($NS, 'Geometry/', $idCF, '-geometry-', position())" />
-	            	    </xsl:attribute>
+							<xsl:value-of select="concat($NS, 'Geometry/', $idCF, '-geometry-', position())" />
+						</xsl:attribute>
 					</clvapit:hasGeometry>
 				</xsl:for-each>
 			</xsl:if>
@@ -868,6 +869,13 @@
 					</xsl:attribute>
 				</arco-location:hasSiteType>
 			</xsl:if>
+			<xsl:variable name="cbc" select="record/metadata/schede/*/CD/CBC"/>
+			<xsl:if test="string-length($cbc)>0">
+				<xsl:variable name="cri2cp" select="arco-fn:catalogue-record-identifier-to-cultural-property($cbc)" />
+				<xsl:if test="string-length($cri2cp)>0">
+					<owl:sameAs rdf:resource="{$cri2cp}"/>
+				</xsl:if>
+			</xsl:if>
 		</rdf:Description>
 						<!-- site use function as an individual -->
 		<xsl:if test="record/metadata/schede/*/CF/CFU">
@@ -906,7 +914,7 @@
 				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-                         <xsl:value-of select="'https://w3id.org/arco/ontology/location/SiteType'" />
+						<xsl:value-of select="'https://w3id.org/arco/ontology/location/SiteType'" />
 					</xsl:attribute>
 				</rdf:type>
 				<rdfs:label xml:lang="it">
@@ -951,7 +959,7 @@
 				</l0:name>
 				<arco-location:hasSiteDefinition>
 					<xsl:attribute name="rdf:resource">
-                        <xsl:value-of select="concat($NS,'SiteDefinition/', arco-fn:urify(normalize-space(record/metadata/schede/*/CF/CFT)))" />
+						<xsl:value-of select="concat($NS,'SiteDefinition/', arco-fn:urify(normalize-space(record/metadata/schede/*/CF/CFT)))" />
 					</xsl:attribute>
 				</arco-location:hasSiteDefinition>
 				<xsl:if test="record/metadata/schede/*/CF/CFQ">
@@ -1018,8 +1026,8 @@
 		<xsl:if test="record/metadata/schede/*/LC/PVC">
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
-                       <xsl:value-of select="$address" />
-                </xsl:attribute>
+					<xsl:value-of select="$address" />
+				</xsl:attribute>
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
 						<xsl:value-of select="'https://w3id.org/italia/onto/CLV/Address'" />
