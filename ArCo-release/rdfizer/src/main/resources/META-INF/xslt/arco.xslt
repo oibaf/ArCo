@@ -18683,12 +18683,12 @@
 				<!-- Geometry of cultural property as an individual for geocoding|puntoPrincipale -->
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-            			<xsl:value-of select="concat($NS, 'Geometry/', $itemURI, '-geometry-point')" />
-            		</xsl:attribute>
+						<xsl:value-of select="concat($NS, 'Geometry/', $itemURI, '-geometry-point')" />
+					</xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-            				<xsl:value-of select="'https://w3id.org/italia/onto/CLV/Geometry'" />
-            			</xsl:attribute>
+							<xsl:value-of select="'https://w3id.org/italia/onto/CLV/Geometry'" />
+						</xsl:attribute>
 					</rdf:type>
 					<rdfs:label xml:lang="en">
 						<xsl:value-of select="concat('Geometry (point) of cultural property: ', $itemURI)" />
@@ -18704,13 +18704,13 @@
 					</l0:name>
 					<clvapit:isGeometryFor>
 						<xsl:attribute name="rdf:resource">
-				           <xsl:value-of select="$culturalProperty" />
-				        </xsl:attribute>
+							<xsl:value-of select="$culturalProperty" />
+						</xsl:attribute>
 					</clvapit:isGeometryFor>
 					<clvapit:hasGeometryType>
 						<xsl:attribute name="rdf:resource">
-                            <xsl:value-of select="'https://w3id.org/italia/onto/CLV/Point'" />
-                        </xsl:attribute>
+							<xsl:value-of select="'https://w3id.org/italia/onto/CLV/Point'" />
+						</xsl:attribute>
 					</clvapit:hasGeometryType>
 					<!-- http://www.openlinksw.com/schemas/virtrdf#Geometry virtuoso datatype for geometry -->
 					<!-- http://www.opengis.net/ont/geosparql#wktLiteral virtuoso datatype for geometry -->
@@ -18722,15 +18722,15 @@
 					</clvapit:serialization>
 					<arco-location:hasCoordinates>
 						<xsl:attribute name="rdf:resource">
-            				<xsl:value-of select="concat($NS, 'Coordinates/', $itemURI, '-geometry-', 'coordinates')" />
-            			</xsl:attribute>
+							<xsl:value-of select="concat($NS, 'Coordinates/', $itemURI, '-geometry-', 'coordinates')" />
+						</xsl:attribute>
 					</arco-location:hasCoordinates>
 				</rdf:Description>
 				<!-- geometry coordinates for geocoding|puntoPrincipale as an individual -->
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-		            	<xsl:value-of select="concat($NS, 'Coordinates/', $itemURI, '-geometry-', 'coordinates')" />
-		            </xsl:attribute>
+						<xsl:value-of select="concat($NS, 'Coordinates/', $itemURI, '-geometry-', 'coordinates')" />
+					</xsl:attribute>
 					<rdf:type rdf:resource="https://w3id.org/arco/ontology/location/Coordinates" />
 					<rdfs:label xml:lang="en">
 						<xsl:value-of select="concat('Coordinates of cultural property: ', $itemURI)" />
@@ -19485,13 +19485,11 @@
 			<xsl:for-each select="record/metadata/schede/*/OG/OGD">
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
-                        	<xsl:value-of
-						select="concat($NS,'DesignationInTime/', $itemURI, '-', arco-fn:urify(normalize-space(./OGDN)))" />
+                        	<xsl:value-of select="concat($NS,'DesignationInTime/', $itemURI, '-', arco-fn:urify(normalize-space(./OGDN)))" />
                     </xsl:attribute>
 					<rdf:type>
 						<xsl:attribute name="rdf:resource">
-                            <xsl:value-of
-							select="'https://w3id.org/arco/ontology/denotative-description/DesignationInTime'" />
+                            <xsl:value-of select="'https://w3id.org/arco/ontology/denotative-description/DesignationInTime'" />
                         </xsl:attribute>
 					</rdf:type>
 					<rdfs:label>
@@ -19500,8 +19498,7 @@
 					<l0:name>
 						<xsl:value-of select="normalize-space(./OGDN)" />
 					</l0:name>
-					<xsl:if
-						test="./OGDR and (not(starts-with(lower-case(normalize-space(./OGDR)), 'nr')) and not(starts-with(lower-case(normalize-space(./OGDR)), 'n.r')))">
+					<xsl:if test="./OGDR and (not(starts-with(lower-case(normalize-space(./OGDR)), 'nr')) and not(starts-with(lower-case(normalize-space(./OGDR)), 'n.r')))">
 						<tiapit:time>
 							<xsl:value-of select="normalize-space(./OGDR)" />
 						</tiapit:time>
@@ -29764,14 +29761,14 @@
 								<xsl:value-of select="concat($NS, 'CulturalInstituteOrSite/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCS)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCE)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)))))" />
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:choose>	
+								<xsl:choose>
 									<xsl:when test="record/metadata/schede/*/LC/LDC/LDCN">
 										<xsl:value-of select="concat($NS, 'CulturalInstituteOrSite/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCP)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCC)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCF)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCL)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCM)))))" />
 									</xsl:when>
 									<xsl:when test="record/metadata/schede/*/LC/LDC/LDCC">
 										<xsl:value-of select="concat($NS, 'CulturalInstituteOrSite/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCP)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCC)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCF)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCL)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCM)))))" />
 									</xsl:when>
-								</xsl:choose>				
+								</xsl:choose>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
@@ -29785,7 +29782,7 @@
 					<xsl:attribute name="rdf:about">
 						<xsl:choose>
 							<xsl:when test="record/metadata/schede/*/LC/PVC/PVCS and not(lower-case(normalize-space(record/metadata/schede/*/LC/PVC/PVCS))='italia')">
-								<xsl:choose>	
+								<xsl:choose>
 									<xsl:when test="record/metadata/schede/*/LC/LDC/LDCN">
 										<xsl:value-of select="concat($NS, 'CulturalInstituteOrSite/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCS)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCE)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCM)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCN)))))" />
 									</xsl:when>
@@ -29798,7 +29795,7 @@
 								</xsl:choose>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:choose>	
+								<xsl:choose>
 									<xsl:when test="record/metadata/schede/*/LC/LDC/LDCN">
 										<xsl:value-of select="concat($NS, 'CulturalInstituteOrSite/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCP)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCC)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCF)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCL)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCM)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCN)))))" />
 									</xsl:when>
@@ -29808,7 +29805,7 @@
 									<xsl:otherwise>
 										<xsl:value-of select="concat($NS, 'CulturalInstituteOrSite/', arco-fn:arcofy(concat(normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCP)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCC)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCF)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCL)), normalize-space(lower-case(record/metadata/schede/*/LC/PVC/PVCI)), normalize-space(lower-case(record/metadata/schede/*/LC/LDC/LDCM)))))" />
 									</xsl:otherwise>
-								</xsl:choose>								
+								</xsl:choose>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
@@ -30179,7 +30176,7 @@
 					</l0:name>
 				</rdf:Description>
 			</xsl:for-each>
-			<xsl:if test="record/metadata/schede/SCAN/BI/DTC/DTCP">				
+			<xsl:if test="record/metadata/schede/SCAN/BI/DTC/DTCP">
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
 						<xsl:value-of select="concat($NS, 'RecurrentSituationSeries/', $itemURI)" />
