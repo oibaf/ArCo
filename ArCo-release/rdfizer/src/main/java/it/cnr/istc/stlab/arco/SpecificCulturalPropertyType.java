@@ -48,6 +48,7 @@ public class SpecificCulturalPropertyType {
 		sheetPropertyTypeMap.put("SAS", NAMESPACE + "ArchaeologicalProperty");
 		sheetPropertyTypeMap.put("SI", NAMESPACE + "ArchaeologicalProperty");
 		sheetPropertyTypeMap.put("TMA", NAMESPACE + "ArchaeologicalProperty");
+		sheetPropertyTypeMap.put("MINP", NAMESPACE + "ArchaeologicalProperty");
 		sheetPropertyTypeMap.put("A", NAMESPACE + "ArchitecturalOrLandscapeHeritage");
 		sheetPropertyTypeMap.put("CNS", NAMESPACE + "ArchitecturalOrLandscapeHeritage");
 		sheetPropertyTypeMap.put("PG", NAMESPACE + "ArchitecturalOrLandscapeHeritage");

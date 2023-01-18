@@ -81,11 +81,20 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
-			<xsl:when test="record/metadata/schede/MODI/CD/CDM">
-				<xsl:value-of select="concat(arco-fn:urify(record/metadata/schede/*/CD/CDR), arco-fn:urify(record/metadata/schede/*/CD/CDM))" />
-			</xsl:when>
-			<xsl:when test="record/metadata/schede/*/CD/CBC">
-				<xsl:value-of select="record/metadata/schede/*/CD/CBC" />
+			<xsl:when test="record/metadata/schede/*/CD/CDM">
+				<xsl:choose>
+    <!--
+					<xsl:when test="record/metadata/schede/*/CD/CBC">
+						<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/CD/CBC)" />
+					</xsl:when>
+     -->
+					<xsl:when test="record/metadata/schede/*/CD/CDR">
+						<xsl:value-of select="concat(arco-fn:urify(record/metadata/schede/*/CD/CDR), arco-fn:urify(record/metadata/schede/*/CD/CDM))" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/CD/CDM)" />
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:variable name="accc-space">
@@ -155,6 +164,11 @@
 					<l0:name xml:lang="en">
 						<xsl:value-of select="concat('Cadastral identity ', position(), ' of cultural property: ', $itemURI)" />
 					</l0:name>
+					<xsl:if test="./CTN">
+						<arco-core:note>
+							<xsl:value-of select="normalize-space(./CTN)" />
+						</arco-core:note>
+					</xsl:if>
 					<xsl:if test="./CTL and not(./CTL='.' or ./CTL='-' or ./CTL='/') and (not(starts-with(lower-case(normalize-space(./CTL)), 'nr')) and not(starts-with(lower-case(normalize-space(./CTL)), 'n.r')))">
 						<arco-location:hasLocationType>
 							<xsl:attribute name="rdf:resource">

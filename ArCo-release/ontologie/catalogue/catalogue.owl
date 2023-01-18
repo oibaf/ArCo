@@ -1886,6 +1886,21 @@ resource:CatalogueRecordS/0500212038
     
 
 
+    <!-- https://w3id.org/arco/ontology/catalogue/CatalogueRecordMINP -->
+
+    <owl:Class rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordMINP">
+        <rdfs:subClassOf rdf:resource="https://w3id.org/arco/ontology/catalogue/CatalogueRecord"/>
+        <rdfs:comment xml:lang="it">Questa classe rappresenta la scheda catalografica che descrive il modulo per l'inventariazione patrimoniale.</rdfs:comment>
+        <rdfs:comment xml:lang="en">This class represents the catalogue record describing the asset inventory module.</rdfs:comment>
+        <rdfs:isDefinedBy rdf:resource="https://w3id.org/arco/ontology/catalogue"/>
+        <rdfs:label xml:lang="en">Asset inventory module</rdfs:label>
+        <rdfs:label xml:lang="it">Modulo per l'inventariazione patrimoniale</rdfs:label>
+        <owl:versionInfo xml:lang="it">instabile</owl:versionInfo>
+        <owl:versionInfo xml:lang="en">unstable</owl:versionInfo>
+    </owl:Class>
+    
+
+
     <!-- https://w3id.org/arco/ontology/catalogue/CatalogueRecordMODI -->
 
     <owl:Class rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordMODI">
@@ -2526,7 +2541,8 @@ resource:CatalogueRecordS/0500212038
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordFF"/>
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordMA"/>
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordMI"/>
-            <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordMODI"/>
+            <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordMINP"/>
+            <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordMODI"/>                                                                                                     
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordNU"/>
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordOA"/>
             <rdf:Description rdf:about="https://w3id.org/arco/ontology/catalogue/CatalogueRecordOAC"/>

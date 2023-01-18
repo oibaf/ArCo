@@ -76,11 +76,20 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
-			<xsl:when test="record/metadata/schede/MODI/CD/CDM">
-				<xsl:value-of select="concat(arco-fn:urify(record/metadata/schede/*/CD/CDR), arco-fn:urify(record/metadata/schede/*/CD/CDM))" />
-			</xsl:when>
-			<xsl:when test="record/metadata/schede/*/CD/CBC">
-				<xsl:value-of select="record/metadata/schede/*/CD/CBC" />
+			<xsl:when test="record/metadata/schede/*/CD/CDM">
+				<xsl:choose>
+    <!--
+					<xsl:when test="record/metadata/schede/*/CD/CBC">
+						<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/CD/CBC)" />
+					</xsl:when>
+     -->
+					<xsl:when test="record/metadata/schede/*/CD/CDR">
+						<xsl:value-of select="concat(arco-fn:urify(record/metadata/schede/*/CD/CDR), arco-fn:urify(record/metadata/schede/*/CD/CDM))" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/CD/CDM)" />
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
 			<xsl:variable name="accc-space" >
@@ -151,16 +160,25 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 				</xsl:choose>
 				-->
 			</xsl:when>
+   <!--
+			<xsl:when test="$sheetType='MINP'">
+				<xsl:value-of select="concat($NS, 'ArchaeologicalProperty/', $itemURI)" />
+			</xsl:when>
+   -->
 			<xsl:otherwise>
 				<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI)" />
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
 	<xsl:variable name="culturalPropertyComponent" select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI, '-component')" />
+	<xsl:variable name="culturalPropertyResidual" select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI, '-residual')" />
 	<xsl:variable name="objectOfDescription">
 		<xsl:choose>
 			<xsl:when test="record/metadata/schede/*/OG/OGT/OGTP and ($sheetVersion='4.00_ICCD0' or $sheetVersion='4.00')">
 				<xsl:value-of select="$culturalPropertyComponent" />
+			</xsl:when>
+			<xsl:when test="record/metadata/schede/*/OG/OGT/OGTW and ($sheetVersion='4.00_ICCD0' or $sheetVersion='4.00')">
+				<xsl:value-of select="$culturalPropertyResidual" />
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$culturalProperty" />
@@ -204,7 +222,7 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 				<!-- xsl:variable name="sheetType" select="record/metadata/schede/*/CD/TSK/text()"></xsl:variable -->
 			
 											<!-- dc:type -->
-	<xsl:if test="not($sheetType='MODI') and not($sheetType='SCAN')">
+	<xsl:if test="not($sheetType='MODI') and not($sheetType='SCAN') and not($sheetType='MINP')">
 	<xsl:for-each select="record/metadata/schede/*/OG/OGT">
 	<xsl:choose>
 		<xsl:when test="not($sheetType='BNB') and not($sheetType='A' and ($sheetVersion='3.00' or $sheetVersion='3.00_ICCD0')) and not($sheetType='A' and ($sheetVersion='2.00' or $sheetVersion='2.00_ICCD0'))">
@@ -318,37 +336,23 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 	</xsl:choose>
 	</xsl:for-each>
 	</xsl:if>
-	<xsl:if test="record/metadata/schede/MODI/OG">
-		<dc:type>
-			<xsl:choose>
-				<xsl:when test="record/metadata/schede/MODI/OG/OGT">
-					<xsl:call-template name="CamelCase1">
-						<xsl:with-param name="text" select="concat(record/metadata/schede/MODI/OG/OGD, ' ', record/metadata/schede/MODI/OG/OGT)" />
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:call-template name="CamelCase1">
-						<xsl:with-param name="text" select="record/metadata/schede/MODI/OG/OGD" />
-					</xsl:call-template>
-				</xsl:otherwise>
-			</xsl:choose>
-		</dc:type>
-	</xsl:if>
-	<xsl:if test="record/metadata/schede/SCAN/OG">
-		<dc:type>
-			<xsl:choose>
-				<xsl:when test="record/metadata/schede/SCAN/OG/OGT">
-					<xsl:call-template name="CamelCase1">
-						<xsl:with-param name="text" select="concat(record/metadata/schede/SCAN/OG/OGD, ' ', record/metadata/schede/SCAN/OG/OGT)" />
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:call-template name="CamelCase1">
-						<xsl:with-param name="text" select="record/metadata/schede/SCAN/OG/OGD" />
-					</xsl:call-template>
-				</xsl:otherwise>
-			</xsl:choose>
-		</dc:type>
+	<xsl:if test="$sheetType='MODI' or $sheetType='SCAN' or $sheetType='MINP'">
+		<xsl:if test="record/metadata/schede/*/OG">
+			<dc:type>
+				<xsl:choose>
+					<xsl:when test="record/metadata/schede/*/OG/OGT">
+						<xsl:call-template name="CamelCase1">
+							<xsl:with-param name="text" select="concat(record/metadata/schede/*/OG/OGD, ' ', record/metadata/schede/*/OG/OGT)" />
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:call-template name="CamelCase1">
+							<xsl:with-param name="text" select="record/metadata/schede/*/OG/OGD" />
+						</xsl:call-template>
+					</xsl:otherwise>
+				</xsl:choose>
+			</dc:type>
+		</xsl:if>
 	</xsl:if>
 								<!-- dcterms:isReferencedBy  -->
 	<dcterms:isReferencedBy>
@@ -374,7 +378,7 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 	<dc:source>
 		<xsl:attribute name="rdf:resource">
 			<xsl:choose>
-				<xsl:when test="$sheetType='MODI' and contains($SOURCE,'.beniculturali.it/')">
+				<xsl:when test="($sheetType='MODI' or $sheetType='MINP') and contains($SOURCE,'.beniculturali.it/')">
 					<xsl:value-of select="concat('http://catalogo-old.beniculturali.it/oaitarget/OAIHandler?verb=GetRecord&amp;metadataPrefix=oai_dc&amp;identifier=oai:oaicat.iccd.org:@',$item,'@/xml/altre_normative')" />
 				</xsl:when>
 				<xsl:otherwise>
@@ -536,23 +540,23 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 					</xsl:otherwise>
 				</xsl:choose>	
 			</xsl:if>
-			<xsl:if test="$sheetType='MODI'">
+			<xsl:if test="$sheetType='MODI' or $sheetType='SCAN'">
 				<xsl:choose>
-					<xsl:when test="record/metadata/schede/MODI/OG/OGT">
-						<xsl:value-of select="concat(record/metadata/schede/MODI/OG/OGD, ' ', record/metadata/schede/MODI/OG/OGT)" />
+					<xsl:when test="record/metadata/schede/*/OG/OGT">
+						<xsl:value-of select="concat(record/metadata/schede/*/OG/OGD, ' ', record/metadata/schede/*/OG/OGT)" />
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="record/metadata/schede/MODI/OG/OGD" />
+						<xsl:value-of select="record/metadata/schede/*/OG/OGD" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>
-			<xsl:if test="$sheetType='SCAN'">
+			<xsl:if test="$sheetType='MINP'">
 				<xsl:choose>
-					<xsl:when test="record/metadata/schede/SCAN/OG/OGT">
-						<xsl:value-of select="concat(record/metadata/schede/SCAN/OG/OGD, ' ', record/metadata/schede/SCAN/OG/OGT)" />
+					<xsl:when test="record/metadata/schede/MINP/OG/OGW">
+						<xsl:value-of select="concat(record/metadata/schede/MINP/OG/OGW, ' di ', record/metadata/schede/MINP/OG/OGD, ' ',record/metadata/schede/MINP/OG/OGT)"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="record/metadata/schede/SCAN/OG/OGD" />
+						<xsl:value-of select="concat(record/metadata/schede/MINP/OG/OGD, ' ',record/metadata/schede/MINP/OG/OGT)"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>
@@ -636,17 +640,17 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 			</xsl:choose>
 		</dc:identifier>
 	</xsl:if>
-	<xsl:if test="record/metadata/schede/MODI/CD">
+	<xsl:if test="$sheetType='MODI' or $sheetType='MINP'">
 		<dc:identifier>
 			<xsl:choose>
-				 <xsl:when	test="record/metadata/schede/MODI/CD/CBC">
-					<xsl:value-of select="record/metadata/schede/MODI/CD/CBC" />
+			 <xsl:when	test="record/metadata/schede/*/CD/CBC">
+					<xsl:value-of select="record/metadata/schede/*/CD/CBC" />
 				</xsl:when>
-				<xsl:when	test="record/metadata/schede/MODI/CD/CDM">
-					<xsl:value-of select="record/metadata/schede/MODI/CD/CDM" />
+				<xsl:when	test="record/metadata/schede/*/CD/CDM">
+					<xsl:value-of select="record/metadata/schede/*/CD/CDM" />
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="record/metadata/schede/MODI/CD/ACC/ACCC" />
+					<xsl:value-of select="record/metadata/schede/*/CD/ACC/ACCC" />
 				</xsl:otherwise>
 			</xsl:choose>
 		</dc:identifier>
@@ -841,6 +845,18 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 			    		<xsl:value-of select="concat($startDate, '-',  $endDate)" />
 				</dc:date>
 			</xsl:if>
+			<xsl:if test="./DTR">
+				<dc:date>
+					<xsl:choose>
+						<xsl:when test="./DTG">
+							<xsl:value-of select="concat(normalize-space(./DTR), ' ', normalize-space(./DTG))" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="normalize-space(./DTR)" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</dc:date>
+			</xsl:if>
 		</xsl:if>
 	</xsl:for-each>
 	<xsl:for-each select="record/metadata/schede/A/RE">
@@ -870,8 +886,7 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 		</dc:date>
 	</xsl:if>
 	</xsl:for-each>
-								
-
+	
 							<!-- dcterms:bibliographicCitation -->
 	<xsl:for-each select="record/metadata/schede/*/DO/BIB">
 	<xsl:if test="./BIBA and ./BIBD">
@@ -886,8 +901,7 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 			</xsl:choose>
 		</dcterms:bibliographicCitation>
 	</xsl:if>
-	</xsl:for-each>							
-
+	</xsl:for-each>
 	
 								<!-- dc:format -->
 	<xsl:for-each select="record/metadata/schede/*/MT/MIS[*[not(starts-with(lower-case(normalize-space(.)), 'nr') or starts-with(lower-case(normalize-space(.)), 'n.r'))]]">	
@@ -911,7 +925,6 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 		</dc:format>
 	</xsl:for-each>
 	
-	
 								<!-- pico:materialAndTechnique -->
 	<xsl:if test="not(record/metadata/schede/*/MT/MTC/*)">
 		<xsl:for-each select="record/metadata/schede/*/MT/MTC[not(starts-with(lower-case(normalize-space()), 'nr') or starts-with(lower-case(normalize-space()), 'n.r'))]"><!-- allow multiple values es: ICCD14711365 -->
@@ -932,7 +945,7 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 	</xsl:for-each>
 	<xsl:for-each select="record/metadata/schede/VeAC/MT/MTC/MTCF[not(starts-with(lower-case(normalize-space()), 'nr'))]"><!-- allow multiple values es: ICCD11268160 -->
 		<pico:materialAndTechnique>
-           	<xsl:value-of select="." />
+			<xsl:value-of select="." />
 		</pico:materialAndTechnique>
 	</xsl:for-each>
 	<xsl:for-each select="record/metadata/schede/*/MT/MTC/MTCT[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))]"><!-- allow multiple values es: ICCD13689315 -->
@@ -971,30 +984,25 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 <xsl:if test="$sheetType='SM'"> <dc:subject rdf:resource="http://culturaitalia.it/pico/thesaurus/4.1#strumenti_musicali" /> </xsl:if>
 <xsl:if test="$sheetType='SMO'"> <dc:subject rdf:resource="http://culturaitalia.it/pico/thesaurus/4.1#strumenti_musicali" /> </xsl:if>
 
-
-				<!-- pico:preview
+	<!-- pico:preview
 	<xsl:variable name="image-link" select="arco-fn:find-image($item)" />
 	<xsl:if test="$image-link != ''">
 		<pico:preview>
-        	<xsl:attribute name="rdf:resource">
-            	<xsl:value-of	select="$image-link" />
+			<xsl:attribute name="rdf:resource">
+				<xsl:value-of	select="$image-link" />
 			</xsl:attribute>
 		</pico:preview>
 	</xsl:if>
-							
-					
-					 -->
-					
+	-->
 					<!-- dc:subject -->
-	
 	<xsl:for-each select="record/metadata/schede/*/*/SGT">
 		<xsl:if test="not(starts-with(lower-case(normalize-space(.)), 'nr')) and not(starts-with(lower-case(normalize-space(.)), 'n.r'))">
-			<dc:subject>
+			<xsl:variable name="subject">
 				<xsl:if test="./SGTI">
 					<xsl:variable name="sgti" select="string-join(SGTI,' ; ')" /><!-- multiple SGTI eg:ICCD13074493 -->
 					<xsl:choose>
 						<xsl:when test="./SGTD">
-							<xsl:value-of select="concat($sgti, ', ', ./SGTD)" />   
+							<xsl:value-of select="concat($sgti, ', ', ./SGTD)" />
 						</xsl:when>
 						<xsl:when test="./SGTT and not (./SGTD)">
 							<xsl:variable name="sgtt" select="string-join(SGTT,' ; ')" /><!-- multiple SGTT eg:ICCD11314516 -->
@@ -1005,19 +1013,24 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 								<xsl:otherwise>
 									<xsl:value-of select="concat($sgti, ', ', $sgtt)" />
 								</xsl:otherwise>
-							</xsl:choose>						
+							</xsl:choose>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="$sgti" />
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:if>
-			</dc:subject>
+			</xsl:variable>
+			<xsl:if test="string-length(normalize-space($subject))>0">
+				<dc:subject>
+					<xsl:value-of select="normalize-space($subject)"/>
+				</dc:subject>
+			</xsl:if>
 		</xsl:if>
 	</xsl:for-each>
 	
 	<xsl:if test="record/metadata/schede/*/OG/OGT and not (record/metadata/schede/*/*/SGT or $sheetType='AT' or $sheetType='SCAN' or $sheetType='NU' or $sheetType='BDI' or $sheetType='BDM' or $sheetType='BNB' or $sheetType='BNM' or $sheetType='BNP' or $sheetType='BNPE' or $sheetType='BNPL' or $sheetType='BNZ')">
-		<dc:subject>
+		<xsl:variable name="subject">
 			<xsl:choose>
 				<xsl:when test="record/metadata/schede/*/OG/OGT/OGTN">
 					<xsl:value-of select="record/metadata/schede/*/OG/OGT/OGTN" />
@@ -1049,68 +1062,74 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 					<xsl:value-of select="record/metadata/schede/*/OG/OGT/OGTD" />
 				</xsl:otherwise>
 			</xsl:choose>
-		</dc:subject>
+		</xsl:variable>
+		<xsl:if test="string-length(normalize-space($subject))>0">
+			<dc:subject>
+				<xsl:value-of select="normalize-space($subject)"/>
+			</dc:subject>
+		</xsl:if>
 	</xsl:if>
-	<xsl:if test="$sheetType='AT'">
+	
+	<xsl:variable name="ssubject">
+		<xsl:choose>
+			<xsl:when test="$sheetType='AT'">
+				<xsl:value-of select="concat(record/metadata/schede/*/OG/OGT/OGTT, ' ', record/metadata/schede/*/OG/OGT/OGTM)" />
+			</xsl:when>
+			<xsl:when test="$sheetType='BDI'">
+				<xsl:value-of select="string-join(record/metadata/schede/BDI/DB/DBD|record/metadata/schede/BDI/DB/DBL,', ')" /><!-- multiple values es: ICCD11172428 -->
+			</xsl:when>
+			<xsl:when test="$sheetType='BDM' and not (record/metadata/schede/BDM/*/SGT/SGTT)">
+				<xsl:choose>
+					<xsl:when test="record/metadata/schede/BDM/OG/OGD/OGDN">
+						<xsl:value-of select="record/metadata/schede/BDM/OG/OGD/OGDN" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="record/metadata/schede/BDM/OG/OGT/OGTD" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$sheetType='MODI'">
+				<xsl:choose>
+					<xsl:when test="record/metadata/schede/*/OG/OGN">
+						<xsl:value-of select="record/metadata/schede/*/OG/OGN" />
+					</xsl:when>
+					<xsl:when test="record/metadata/schede/MODI/OG/OGT">
+						<xsl:value-of select="concat(record/metadata/schede/MODI/OG/OGD, ' ', record/metadata/schede/MODI/OG/OGT)" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="record/metadata/schede/MODI/OG/OGD" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$sheetType='SCAN'">
+				<xsl:choose>
+					<xsl:when test="record/metadata/schede/*/OG/OGN">
+						<xsl:value-of select="record/metadata/schede/*/OG/OGN" />
+					</xsl:when>
+					<xsl:when test="record/metadata/schede/MODI/OG/OGT">
+						<xsl:value-of select="concat(record/metadata/schede/MODI/OG/OGD, ' ', record/metadata/schede/MODI/OG/OGT)" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="record/metadata/schede/MODI/OG/OGD" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:if test="string-length(normalize-space($ssubject))>0">
 		<dc:subject>
-			<xsl:value-of select="concat(record/metadata/schede/*/OG/OGT/OGTT, ' ', record/metadata/schede/*/OG/OGT/OGTM)" />
-		</dc:subject>
-		
-	</xsl:if>
-	<xsl:if test="$sheetType='BDI'">
-		<dc:subject>
-			<xsl:value-of select="string-join(record/metadata/schede/BDI/DB/DBD|record/metadata/schede/BDI/DB/DBL,', ')" /><!-- multiple values es: ICCD11172428 -->
+			<xsl:value-of select="normalize-space($ssubject)"/>
 		</dc:subject>
 	</xsl:if>
-	<xsl:if test="$sheetType='BDM' and not (record/metadata/schede/BDM/*/SGT/SGTT)">
-		<dc:subject>
-			<xsl:choose>
-				<xsl:when test="record/metadata/schede/BDM/OG/OGD/OGDN">
-					<xsl:value-of select="record/metadata/schede/BDM/OG/OGD/OGDN" />
-				</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="record/metadata/schede/BDM/OG/OGT/OGTD" />
-			</xsl:otherwise>
-			</xsl:choose>
-		</dc:subject>
-	</xsl:if>
+	
 	<xsl:for-each select="record/metadata/schede/NU/DA/DES/DESU">
 		<xsl:if test="not(starts-with(lower-case(normalize-space(.)), 'nr')) and not(starts-with(lower-case(normalize-space(.)), 'n.r'))">
 			<dc:subject>
-	            	<xsl:value-of select="." />
+				<xsl:value-of select="." />
 			</dc:subject>
 		</xsl:if>
 	</xsl:for-each>	
-	<xsl:if test="$sheetType='MODI'">
-		<dc:subject>
-			<xsl:choose>
-				<xsl:when test="record/metadata/schede/*/OG/OGN">
-					<xsl:value-of select="record/metadata/schede/*/OG/OGN" />
-				</xsl:when>
-				<xsl:when test="record/metadata/schede/MODI/OG/OGT">
-					<xsl:value-of select="concat(record/metadata/schede/MODI/OG/OGD, ' ', record/metadata/schede/MODI/OG/OGT)" />
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="record/metadata/schede/MODI/OG/OGD" />
-				</xsl:otherwise>
-			</xsl:choose>
-		</dc:subject>
-	</xsl:if>
-	<xsl:if test="$sheetType='SCAN'">
-		<dc:subject>
-			<xsl:choose>
-				<xsl:when test="record/metadata/schede/*/OG/OGN">
-					<xsl:value-of select="record/metadata/schede/*/OG/OGN" />
-				</xsl:when>
-				<xsl:when test="record/metadata/schede/MODI/OG/OGT">
-					<xsl:value-of select="concat(record/metadata/schede/MODI/OG/OGD, ' ', record/metadata/schede/MODI/OG/OGT)" />
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="record/metadata/schede/MODI/OG/OGD" />
-				</xsl:otherwise>
-			</xsl:choose>
-		</dc:subject>
-	</xsl:if>
+	
 	</rdf:Description>
 
 	</xsl:if>

@@ -779,14 +779,14 @@
 			<xsl:if test="record/metadata/schede/*/CF/CFN">
 				<arco-dd:hasDesignationInTime>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="concat($NS,'DesignationInTime/', $idCF, '-', arco-fn:urify(normalize-space(record/metadata/schede/*/CF/CFN)))" />                      	                            
+						<xsl:value-of select="concat($NS,'DesignationInTime/', $idCF, '-', arco-fn:urify(normalize-space(record/metadata/schede/*/CF/CFN)))" />
 					</xsl:attribute>
 				</arco-dd:hasDesignationInTime>
 			</xsl:if>
 			<xsl:for-each select="record/metadata/schede/*/CF/CFA">
 				<arco-dd:hasDesignationInTime>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="concat($NS,'DesignationInTime/', $idCF, '-', arco-fn:urify(normalize-space(.)))" />                      	                            
+						<xsl:value-of select="concat($NS,'DesignationInTime/', $idCF, '-', arco-fn:urify(normalize-space(.)))" />
 					</xsl:attribute>
 				</arco-dd:hasDesignationInTime>
 			</xsl:for-each>	
@@ -1321,6 +1321,11 @@
                         	</xsl:attribute>
 						</clvapit:hasGeometryType>
 					</xsl:if>
+					<clvapit:isGeometryFor>
+						<xsl:attribute name="rdf:resource">
+							<xsl:value-of select="$contenitoreFisico" />
+						</xsl:attribute>
+					</clvapit:isGeometryFor>
 					<xsl:for-each select="./GEC">
 						<xsl:if test="./GECX and (not(starts-with(lower-case(normalize-space(./GECX)), 'nr')) and not(starts-with(lower-case(normalize-space(./GECX)), 'n.r'))) or ./GECY and (not(starts-with(lower-case(normalize-space(./GECY)), 'nr')) and not(starts-with(lower-case(normalize-space(./GECY)), 'n.r'))) or ./GECZ">
 							<arco-location:hasCoordinates>
