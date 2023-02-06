@@ -356,8 +356,9 @@
 			</xsl:for-each>
 			
 			<!-- part of cultural property when there is AUIY (author) -->
+<!-- TODO missing rdf:Description
 			<xsl:for-each select="record/metadata/schede/*/AU/AUI">
-				<xsl:if test="./AUIY and not(lower-case(normalize-space(./AUIY))='intero bene') and not(lower-case(normalize-space(./AUIY))='integrale') and not(lower-case(normalize-space(./AUIY))='tutta') and not(lower-case(normalize-space(./AUIY))='totale') and (not(starts-with(lower-case(normalize-space(./AUIY)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUIY)), 'n.r')) and not(starts-with(lower-case(normalize-space(./AUIY)), 'intero')) and not(starts-with(lower-case(normalize-space(./AUIY)), 'intera')) and not(starts-with(lower-case(normalize-space(./AUIY)), 'esemplar')))">
+				<xsl:if test="./AUIY[not(lower-case(normalize-space())='intero bene' or lower-case(normalize-space())='integrale' or lower-case(normalize-space())='tutta' or lower-case(normalize-space())='totale' or starts-with(lower-case(normalize-space()), 'nr') or starts-with(lower-case(normalize-space(./AUIY)), 'n.r') or starts-with(lower-case(normalize-space()), 'intero') or starts-with(lower-case(normalize-space()), 'intera') or starts-with(lower-case(normalize-space()), 'esemplar'))]">
 					<xsl:if test="./AUIN and (not(starts-with(lower-case(normalize-space(./AUIN)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUIN)), 'n.r')) and not(starts-with(lower-case(normalize-space(./AUIN)), '-')))">
 						<arco-cd:hasAuthorshipAttribution>
 							<xsl:attribute name="rdf:resource">
@@ -366,7 +367,7 @@
 						</arco-cd:hasAuthorshipAttribution>
 						<arco-cd:hasAuthor>
 							<xsl:attribute name="rdf:resource">
-		                   		<xsl:variable name="author">
+								<xsl:variable name="author">
 									<xsl:choose>
 										<xsl:when test="./AUIA and (not(starts-with(lower-case(normalize-space(./AUIA)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUIA)), 'n.r')))">
 											<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(concat(./AUIN, '-', ./AUIA)))" />
@@ -377,7 +378,7 @@
 									</xsl:choose>
 								</xsl:variable>
 								<xsl:value-of select="$author" />
-		                    </xsl:attribute>
+							</xsl:attribute>
 						</arco-cd:hasAuthor>
 					</xsl:if>
 					<xsl:if test="./AUIB and (not(starts-with(lower-case(normalize-space(./AUIB)), 'nr')) and not(starts-with(lower-case(normalize-space(./AUIB)), 'n.r')) and not(starts-with(lower-case(normalize-space(./AUIB)), '-')))">
@@ -388,12 +389,13 @@
 						</arco-cd:hasAuthorshipAttribution>
 						<arco-cd:hasAuthor>
 							<xsl:attribute name="rdf:resource">
-		                   		<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AUIB))" />
-		                    </xsl:attribute>
+								<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./AUIB))" />
+							</xsl:attribute>
 						</arco-cd:hasAuthor>
 					</xsl:if>
 				</xsl:if>
 			</xsl:for-each>
+-->
 			<!-- part of cultural property when there is NVCP (protective measure) -->
 			<xsl:for-each select="record/metadata/schede/*/TU/NVC">
 				<xsl:variable name="protectiveMeasure">
@@ -403,10 +405,8 @@
 				<xsl:variable name="parentPosition">
 					<xsl:value-of select="position()" />
 				</xsl:variable>
-				<xsl:if
-					test="./NVCP and not(lower-case(normalize-space(./NVCP))='intero bene') and not(lower-case(normalize-space(./NVCP))='integrale') and not(lower-case(normalize-space(./NVCP))='tutta') and not(lower-case(normalize-space(./NVCP))='totale') and (not(starts-with(lower-case(normalize-space(./NVCP)), 'nr')) and not(starts-with(lower-case(normalize-space(./NVCP)), 'n.r')) and not(starts-with(lower-case(normalize-space(./NVCP)), 'intero')) and not(starts-with(lower-case(normalize-space(./NVCP)), 'intera')) and not(starts-with(lower-case(normalize-space(./NVCP)), 'esemplar')))">
+				<xsl:if test="./NVCP and not(lower-case(normalize-space(./NVCP))='intero bene') and not(lower-case(normalize-space(./NVCP))='integrale') and not(lower-case(normalize-space(./NVCP))='tutta') and not(lower-case(normalize-space(./NVCP))='totale') and (not(starts-with(lower-case(normalize-space(./NVCP)), 'nr')) and not(starts-with(lower-case(normalize-space(./NVCP)), 'n.r')) and not(starts-with(lower-case(normalize-space(./NVCP)), 'intero')) and not(starts-with(lower-case(normalize-space(./NVCP)), 'intera')) and not(starts-with(lower-case(normalize-space(./NVCP)), 'esemplar')))">
 					<xsl:for-each select="./NVCP">
-
 						<rdf:Description>
 							<xsl:attribute name="rdf:about">
 						 		<xsl:value-of
