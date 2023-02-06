@@ -211,11 +211,11 @@
 		</xsl:for-each>
 		<xsl:element name="rdf:Description">
 			<xsl:attribute name="rdf:about">
-                <xsl:value-of select="concat($NS, 'AddressArea/', arco-fn:urify(normalize-space($ctx)))" />
-	            </xsl:attribute>
+				<xsl:value-of select="concat($NS, 'AddressArea/', arco-fn:urify(normalize-space($ctx)))" />
+			</xsl:attribute>
 			<rdf:type>
 				<xsl:attribute name="rdf:resource">
-                    <xsl:value-of select="'https://w3id.org/italia/onto/CLV/AddressArea'" />
+					<xsl:value-of select="'https://w3id.org/italia/onto/CLV/AddressArea'" />
 				</xsl:attribute>
 			</rdf:type>
 			<rdfs:label>
@@ -231,13 +231,13 @@
 		</xsl:element>
 	</xsl:template>
 	<xsl:variable name="aco">
-		<xsl:if test="record/metadata/schede/*/AC/ACO">
-			<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/AC/ACO)" />
+		<xsl:if test="record/metadata/schede/*/AC/ACO"><!-- codice collezione -->
+			<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/AC/ACO[1])" />
 		</xsl:if>
 	</xsl:variable>
 	<xsl:variable name="acm">
-		<xsl:if test="record/metadata/schede/*/AC/ACM">
-			<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/AC/ACM)" />
+		<xsl:if test="record/metadata/schede/*/AC/ACM"><!-- codice museo -->
+			<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/AC/ACM[1])" />
 		</xsl:if>
 	</xsl:variable>
 	<xsl:variable name="ldcm"><xsl:for-each select="record/metadata/schede/*/LC/LDC/LDCM"><xsl:value-of select="arco-fn:urify(.)"/></xsl:for-each></xsl:variable>
@@ -246,7 +246,7 @@
 	<xsl:variable name="ogtc"><xsl:for-each select="record/metadata/schede/*/OG/OGT/OGTC"><xsl:value-of select="arco-fn:urify(.)"/></xsl:for-each></xsl:variable>
 	<xsl:variable name="specimencollection">
 		<xsl:choose>
-			<xsl:when test="record/metadata/schede/*/AC/ACO">				
+			<xsl:when test="record/metadata/schede/*/AC/ACO">
 				<xsl:value-of select="concat($NS, 'SpecimenCollection/', $acm, '-', $aco)" />
 			</xsl:when>
 			<xsl:when test="record/metadata/schede/*/LC/LDC/LDCM">
@@ -9159,12 +9159,14 @@
 	</xsl:if>
 				<!-- natural heritage collection membership membership -->
  	<xsl:if test="$sheetType='BNM' or $sheetType='BNPE' or $sheetType='BNPL' or $sheetType='BNZ'">
-	<xsl:variable name="aco" select="arco-fn:urify(record/metadata/schede/*/AC/ACO)"></xsl:variable>
+			<!--
+			<xsl:variable name="aco" select="arco-fn:urify(record/metadata/schede/*/AC/ACO)"></xsl:variable>
 			<xsl:variable name="acm" select="arco-fn:urify(record/metadata/schede/*/AC/ACM)"></xsl:variable>
 			<xsl:variable name="ldcm" select="arco-fn:urify(record/metadata/schede/*/LC/LDC/LDCM)"></xsl:variable>
 			<xsl:variable name="pvcc" select="arco-fn:urify(record/metadata/schede/*/LC/PVC/PVCC)"></xsl:variable>
 			<xsl:variable name="ecp" select="record/metadata/schede/*/CD/ECP"></xsl:variable>
-			<xsl:variable name="ogtc" select="record/metadata/schede/*/OG/OGT/OGTC"></xsl:variable>	
+			<xsl:variable name="ogtc" select="record/metadata/schede/*/OG/OGT/OGTC"></xsl:variable>
+			-->
 		<rdf:Description>
 			<xsl:attribute name="rdf:about">
 				<xsl:value-of select="concat($NS, 'SpecimenCollectionMembership/', $itemURI)" />
