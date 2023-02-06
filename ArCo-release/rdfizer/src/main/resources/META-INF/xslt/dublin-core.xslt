@@ -1088,29 +1088,16 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
-			<xsl:when test="$sheetType='MODI'">
+			<xsl:when test="$sheetType='MODI' or $sheetType='SCAN'">
 				<xsl:choose>
 					<xsl:when test="record/metadata/schede/*/OG/OGN">
 						<xsl:value-of select="record/metadata/schede/*/OG/OGN" />
 					</xsl:when>
-					<xsl:when test="record/metadata/schede/MODI/OG/OGT">
-						<xsl:value-of select="concat(record/metadata/schede/MODI/OG/OGD, ' ', record/metadata/schede/MODI/OG/OGT)" />
+					<xsl:when test="record/metadata/schede/*/OG/OGT">
+						<xsl:value-of select="concat(record/metadata/schede/*/OG/OGD, ' ', record/metadata/schede/*/OG/OGT)" />
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="record/metadata/schede/MODI/OG/OGD" />
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			<xsl:when test="$sheetType='SCAN'">
-				<xsl:choose>
-					<xsl:when test="record/metadata/schede/*/OG/OGN">
-						<xsl:value-of select="record/metadata/schede/*/OG/OGN" />
-					</xsl:when>
-					<xsl:when test="record/metadata/schede/MODI/OG/OGT">
-						<xsl:value-of select="concat(record/metadata/schede/MODI/OG/OGD, ' ', record/metadata/schede/MODI/OG/OGT)" />
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="record/metadata/schede/MODI/OG/OGD" />
+						<xsl:value-of select="record/metadata/schede/*/OG/OGD" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
