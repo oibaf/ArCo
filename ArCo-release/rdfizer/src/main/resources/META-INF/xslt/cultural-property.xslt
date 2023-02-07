@@ -565,20 +565,27 @@
 				<xsl:for-each select="(record/metadata/schede/*/*/FTA/FTAN[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])|(record/metadata/schede/SCAN/DO/DCM/DCMN[../DCMP='NR (recupero VIR)' or ../DCMP='fotografia digitale (file)'][not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])">
 				-->
 				<xsl:for-each select="(record/metadata/schede/*/*/FTA/FTAN[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])|(record/metadata/schede/SCAN/DO/DCM/DCMN[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])"><!-- xslt2 multiple nodes normalize-space exception  -->
-				    <xsl:variable name="url" select="arco-fn:find-link-emm(.)" />
-				    <xsl:for-each select="$url">
-				        <foaf:depiction>
-				            <xsl:attribute name="rdf:resource">
-				                <xsl:value-of select="." />
-				            </xsl:attribute>
-				        </foaf:depiction>
-				        <pico:preview>
-				            <xsl:attribute name="rdf:resource">
-				                <xsl:value-of select="." />
-				            </xsl:attribute>
-				        </pico:preview>
-				    </xsl:for-each>
+					<xsl:variable name="url" select="arco-fn:find-link-emm(.)" />
+					<xsl:for-each select="$url">
+						<foaf:depiction>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of select="." />
+							</xsl:attribute>
+						</foaf:depiction>
+						<pico:preview>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of select="." />
+							</xsl:attribute>
+						</pico:preview>
+					</xsl:for-each>
 				</xsl:for-each>
+				<xsl:if test="($sheetType='MODI' or $sheetType='MINP') and string-length(record/metadata/schede/harvesting/idAttivita)>0">
+					<xsl:for-each select="record/metadata/schede/*/DO/FTA/FTAK[not(starts-with(lower-case(normalize-space()), 'nr') or starts-with(lower-case(normalize-space()), 'n.r'))]">
+						<xsl:variable name="pic" select="concat('https://sigecweb.beniculturali.it/images/fullsize/',/record/metadata/schede/harvesting/idAttivita,'/',$item,'_',encode-for-uri(.))" />
+						<foaf:depiction rdf:resource="{$pic}"/>
+						<pico:preview rdf:resource="{$pic}"/>
+					</xsl:for-each>
+				</xsl:if>
 				<!-- isDescribedByCatalogueRecord -->
 				<arco-catalogue:isDescribedByCatalogueRecord>
 					<xsl:attribute name="rdf:resource">
