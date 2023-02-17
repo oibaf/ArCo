@@ -2159,6 +2159,27 @@
 	                	</xsl:attribute>
 					</arco-cd:hasDocumentation>
 				</xsl:for-each>
+				<xsl:for-each select="record/metadata/schede/*/DO/ADM">
+					<arco-cd:hasDocumentation>
+						<xsl:attribute name="rdf:resource">
+	                		<xsl:value-of select="concat($NS, 'MultimediaDocumentation/', $itemURI, '-multimedia-documentation-', position())" />
+	                	</xsl:attribute>
+					</arco-cd:hasDocumentation>
+				</xsl:for-each>
+				<xsl:for-each select="record/metadata/schede/*/DO/CTF">
+					<arco-cd:hasDocumentation>
+						<xsl:attribute name="rdf:resource">
+	                		<xsl:value-of select="concat($NS, 'Documentation/', $itemURI, '-documentation-', position())" />
+	                	</xsl:attribute>
+					</arco-cd:hasDocumentation>
+				</xsl:for-each>
+				<xsl:for-each select="record/metadata/schede/*/AL/DVA">
+					<arco-cd:hasDocumentation>
+						<xsl:attribute name="rdf:resource">
+	                		<xsl:value-of select="concat($NS, 'Documentation/', $itemURI, '-documentation-', position())" />
+	                	</xsl:attribute>
+					</arco-cd:hasDocumentation>
+				</xsl:for-each>
 				<!-- Bibliography of cultural property -->
 				<xsl:for-each select="record/metadata/schede/*/DO/BIB">
 					<arco-cd:hasBibliography>
