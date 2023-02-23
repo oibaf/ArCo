@@ -41,6 +41,52 @@
         -->
         <xsl:value-of select="string-join(record/metadata/schede/*/OG/SGT/SGTI[not(starts-with(lower-case(normalize-space()), 'nr') or starts-with(lower-case(normalize-space()), 'n.r'))],', ')"/>
 	</xsl:template>
+ 
+	<xsl:template name="comment">
+		<xsl:for-each select="record/metadata/schede/SCAN/OG/OGN">
+			<xsl:choose>
+				<xsl:when test="position() = 1">
+					<xsl:value-of select="./text()" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat(', ', ./text())" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:for-each>
+		<xsl:if test="record/metadata/schede/MINP/OG/OGD">
+			<xsl:choose>
+				<xsl:when test="record/metadata/schede/MINP/OG/OGW">
+					<xsl:value-of select="concat(record/metadata/schede/MINP/OG/OGW, ' di ', record/metadata/schede/MINP/OG/OGD, ' ',record/metadata/schede/MINP/OG/OGT)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat(record/metadata/schede/MINP/OG/OGD, ' ',record/metadata/schede/MINP/OG/OGT)"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+		<xsl:for-each select="record/metadata/schede/*/OG/OGT/*">
+			<xsl:choose>
+				<xsl:when test="position() = 1">
+					<xsl:value-of select="./text()" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat(', ', ./text())" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:for-each>
+		<xsl:for-each select="record/metadata/schede/*/DB/*">
+			<xsl:choose>
+				<xsl:when test="position() = 1">
+					<xsl:value-of select="./text()" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat(', ', ./text())" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:for-each>
+		<xsl:if test="record/metadata/schede/*/OG/SGT/SGTI">
+			<xsl:value-of select="concat(' ', string-join(record/metadata/schede/*/OG/SGT/SGTI,', '))" />
+		</xsl:if>
+	</xsl:template>
     
 	<xsl:template match="/">
 
@@ -3815,51 +3861,10 @@
                     </xsl:attribute>
 				</rdf:type>
 				<!-- rdfs:comment of cultural property -->
-				<rdfs:comment>
-					<xsl:for-each select="record/metadata/schede/SCAN/OG/OGN">
-						<xsl:choose>
-							<xsl:when test="position() = 1">
-								<xsl:value-of select="./text()" />
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="concat(', ', ./text())" />
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:for-each>
-					<xsl:if test="record/metadata/schede/MINP/OG/OGD">
-						<xsl:choose>
-							<xsl:when test="record/metadata/schede/MINP/OG/OGW">
-								<xsl:value-of select="concat(record/metadata/schede/MINP/OG/OGW, ' di ', record/metadata/schede/MINP/OG/OGD, ' ',record/metadata/schede/MINP/OG/OGT)"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="concat(record/metadata/schede/MINP/OG/OGD, ' ',record/metadata/schede/MINP/OG/OGT)"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:if>
-					<xsl:for-each select="record/metadata/schede/*/OG/OGT/*">
-						<xsl:choose>
-							<xsl:when test="position() = 1">
-								<xsl:value-of select="./text()" />
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="concat(', ', ./text())" />
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:for-each>
-					<xsl:for-each select="record/metadata/schede/*/DB/*">
-						<xsl:choose>
-							<xsl:when test="position() = 1">
-								<xsl:value-of select="./text()" />
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="concat(', ', ./text())" />
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:for-each>
-					<xsl:if test="record/metadata/schede/*/OG/SGT/SGTI">
-						<xsl:value-of select="concat(' ', string-join(record/metadata/schede/*/OG/SGT/SGTI,', '))" />
-					</xsl:if>
-				</rdfs:comment>
+				<xsl:variable name="comment"><xsl:call-template name="comment"/></xsl:variable>
+				<xsl:if test="string-length($comment)>0">
+					<rdfs:comment><xsl:value-of select="$comment"/></rdfs:comment>
+				</xsl:if>
 				<!-- Natural environment for modi -->
 				<xsl:if test="record/metadata/schede/MODI/CA/CAT">
 					<arco-location:hasNaturalEnvironment>
