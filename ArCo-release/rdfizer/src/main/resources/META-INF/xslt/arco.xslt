@@ -7597,13 +7597,17 @@
 							<xsl:value-of select="normalize-space(./DCMM)" />
 						</arco-cd:caption>
 					</xsl:if>
+					<!--
 					<xsl:if test="./DCMN">
 						<arco-cd:documentationIdentifier>
 							<xsl:value-of select="normalize-space(./DCMN)" />
 						</arco-cd:documentationIdentifier>
 					</xsl:if>
-					<!--
+					-->
 					<xsl:if test="./DCMN and (not(starts-with(lower-case(normalize-space(./DCMN)), 'nr')) and not(starts-with(lower-case(normalize-space(./DCMN)), 'n.r')))">
+						<arco-cd:documentationIdentifier>
+							<xsl:value-of select="normalize-space(./DCMN)" />
+						</arco-cd:documentationIdentifier>
 						<xsl:variable name="url" select="arco-fn:find-link-emm(./DCMN)" />
 						<xsl:for-each select="$url">
 							<foaf:depiction>
@@ -7613,7 +7617,6 @@
 							</foaf:depiction>
 						</xsl:for-each>
 					</xsl:if>
-					-->
 					<xsl:if test="./DCMR">
 						<tiapit:atTime>
 							<xsl:attribute name="rdf:resource">
