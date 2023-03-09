@@ -7608,6 +7608,7 @@
 						<arco-cd:documentationIdentifier>
 							<xsl:value-of select="normalize-space(./DCMN)" />
 						</arco-cd:documentationIdentifier>
+      <xsl:if test="not($sheetType='MODI' or $sheetType='MINP')">
 						<xsl:variable name="url" select="arco-fn:find-link-emm(./DCMN)" />
 						<xsl:for-each select="$url">
 							<foaf:depiction>
@@ -7616,6 +7617,7 @@
 								</xsl:attribute>
 							</foaf:depiction>
 						</xsl:for-each>
+      </xsl:if>
 					</xsl:if>
 					<xsl:if test="./DCMR">
 						<tiapit:atTime>
@@ -7823,6 +7825,7 @@
 						<arco-cd:documentationIdentifier>
 							<xsl:value-of select="normalize-space(./FTAN)" />
 						</arco-cd:documentationIdentifier>
+      <xsl:if test="not($sheetType='MODI' or $sheetType='MINP')">
 						<xsl:variable name="url" select="arco-fn:find-link-emm(./FTAN)" />
 						<xsl:for-each select="$url">
 							<foaf:depiction>
@@ -7831,6 +7834,7 @@
 								</xsl:attribute>
 							</foaf:depiction>
 						</xsl:for-each>
+      </xsl:if>
 					</xsl:if>
 					<xsl:if test="./FTAD and (not(starts-with(lower-case(normalize-space(./FTAD)), 'nr')) and not(starts-with(lower-case(normalize-space(./FTAD)), 'n.r')))">
 						<tiapit:time>
@@ -8122,8 +8126,7 @@
 						<arco-cd:documentationIdentifier>
 							<xsl:value-of select="normalize-space(./FTAN)" />
 						</arco-cd:documentationIdentifier>
-					</xsl:if>
-					<xsl:if test="./FTAN and (not(starts-with(lower-case(normalize-space(./FTAN)), 'nr')) and not(starts-with(lower-case(normalize-space(./FTAN)), 'n.r')))">
+      <xsl:if test="not($sheetType='MODI' or $sheetType='MINP')">
 						<xsl:for-each select="./FTAN">
 							<xsl:variable name="url" select="arco-fn:find-link-emm(.)" />
 							<xsl:for-each select="$url">
@@ -8134,6 +8137,7 @@
 								</foaf:depiction>
 							</xsl:for-each>
 						</xsl:for-each>
+      </xsl:if>
 					</xsl:if>
 					<xsl:if test="./FTAT and (not(starts-with(lower-case(normalize-space(./FTAT)), 'nr')) and not(starts-with(lower-case(normalize-space(./FTAT)), 'n.r')))">
 						<arco-core:note>
@@ -8208,13 +8212,11 @@
 							select="$culturalProperty" /> 
 						</xsl:attribute>
 					</arco-cd:isDocumentationOf>
-					<xsl:if
-						test="./DRAN and (not(starts-with(lower-case(normalize-space(./DRAN)), 'nr')) and not(starts-with(lower-case(normalize-space(./DRAN)), 'n.r')))">
+					<xsl:if test="./DRAN and (not(starts-with(lower-case(normalize-space(./DRAN)), 'nr')) and not(starts-with(lower-case(normalize-space(./DRAN)), 'n.r')))">
 						<arco-cd:documentationIdentifier>
 							<xsl:value-of select="normalize-space(./DRAN)" />
 						</arco-cd:documentationIdentifier>
-					</xsl:if>
-					<xsl:if test="./DRAN and (not(starts-with(lower-case(normalize-space(./DRAN)), 'nr')) and not(starts-with(lower-case(normalize-space(./DRAN)), 'n.r')))">
+      <xsl:if test="not($sheetType='MODI' or $sheetType='MINP')">
 						<xsl:for-each select="./DRAN">
 							<xsl:variable name="url" select="arco-fn:find-link-emm(.)" />
 							<xsl:for-each select="$url">
@@ -8225,6 +8227,7 @@
 								</smapit:URL>
 							</xsl:for-each>
 						</xsl:for-each>
+      </xsl:if>
 					</xsl:if>
 					<xsl:if test="./DRAD and (not(starts-with(lower-case(normalize-space(./DRAD)), 'nr')) and not(starts-with(lower-case(normalize-space(./DRAD)), 'n.r')))">
 						<tiapit:time>
@@ -8599,13 +8602,11 @@
 							<xsl:value-of select="$culturalProperty" /> 
 						</xsl:attribute>
 					</arco-cd:isDocumentationOf>
-					<xsl:if
-						test="./VDCN and (not(starts-with(lower-case(normalize-space(./VDCN)), 'nr')) and not(starts-with(lower-case(normalize-space(./VDCN)), 'n.r')))">
+					<xsl:if test="./VDCN and (not(starts-with(lower-case(normalize-space(./VDCN)), 'nr')) and not(starts-with(lower-case(normalize-space(./VDCN)), 'n.r')))">
 						<arco-cd:documentationIdentifier>
 							<xsl:value-of select="normalize-space(./VDCN)" />
 						</arco-cd:documentationIdentifier>
-					</xsl:if>
-					<xsl:if test="./VDCN and (not(starts-with(lower-case(normalize-space(./VDCN)), 'nr')) and not(starts-with(lower-case(normalize-space(./VDCN)), 'n.r')))">
+      <xsl:if test="not($sheetType='MODI' or $sheetType='MINP')">
 						<xsl:for-each select="./VDCN">
 							<xsl:variable name="url" select="arco-fn:find-link-emm(.)" />
 							<xsl:for-each select="$url">
@@ -8616,6 +8617,7 @@
 								</smapit:URL>
 							</xsl:for-each>
 						</xsl:for-each>
+      </xsl:if>
 					</xsl:if>
 					<xsl:if test="./VDCD and (not(starts-with(lower-case(normalize-space(./VDCD)), 'nr')) and not(starts-with(lower-case(normalize-space(./VDCD)), 'n.r')))">
 						<tiapit:time>
@@ -8955,8 +8957,7 @@
 						<arco-cd:documentationIdentifier>
 							<xsl:value-of select="normalize-space(./REGN)" />
 						</arco-cd:documentationIdentifier>
-					</xsl:if>
-					<xsl:if test="./REGN and (not(starts-with(lower-case(normalize-space(./REGN)), 'nr')) and not(starts-with(lower-case(normalize-space(./REGN)), 'n.r')))">
+      <xsl:if test="not($sheetType='MODI' or $sheetType='MINP')">
 						<xsl:for-each select="./REGN">
 							<xsl:variable name="url" select="arco-fn:find-link-emm(.)" />
 							<xsl:for-each select="$url">
@@ -8967,6 +8968,7 @@
 								</smapit:URL>
 							</xsl:for-each>
 						</xsl:for-each>
+      </xsl:if>
 					</xsl:if>
 					<xsl:if test="./REGD and (not(starts-with(lower-case(normalize-space(./REGD)), 'nr')) and not(starts-with(lower-case(normalize-space(./REGD)), 'n.r')))">
 						<tiapit:time>
@@ -9300,13 +9302,11 @@
 							select="$culturalProperty" /> 
 						</xsl:attribute>
 					</arco-cd:isDocumentationOf>
-					<xsl:if
-						test="./FNTI and (not(starts-with(lower-case(normalize-space(./FNTI)), 'nr')) and not(starts-with(lower-case(normalize-space(./FNTI)), 'n.r')))">
+					<xsl:if test="./FNTI and (not(starts-with(lower-case(normalize-space(./FNTI)), 'nr')) and not(starts-with(lower-case(normalize-space(./FNTI)), 'n.r')))">
 						<arco-cd:documentationIdentifier>
 							<xsl:value-of select="normalize-space(./FNTI)" />
 						</arco-cd:documentationIdentifier>
-					</xsl:if>
-					<xsl:if test="./FNTI and (not(starts-with(lower-case(normalize-space(./FNTI)), 'nr')) and not(starts-with(lower-case(normalize-space(./FNTI)), 'n.r')))">
+      <xsl:if test="not($sheetType='MODI' or $sheetType='MINP')">
 						<xsl:for-each select="./FNTI">
 							<xsl:variable name="url" select="arco-fn:find-link-emm(.)" />
 							<xsl:for-each select="$url">
@@ -9317,6 +9317,7 @@
 								</smapit:URL>
 							</xsl:for-each>
 						</xsl:for-each>
+      </xsl:if>
 					</xsl:if>
 					<!-- A 2.00 -->
 					<xsl:if test="./FNTH and (not(starts-with(lower-case(normalize-space(./FNTH)), 'nr')) and not(starts-with(lower-case(normalize-space(./FNTH)), 'n.r')))">
