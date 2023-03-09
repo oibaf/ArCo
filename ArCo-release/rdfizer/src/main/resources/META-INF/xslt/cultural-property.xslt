@@ -610,6 +610,7 @@
 				<!--
 				<xsl:for-each select="(record/metadata/schede/*/*/FTA/FTAN[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])|(record/metadata/schede/SCAN/DO/DCM/DCMN[../DCMP='NR (recupero VIR)' or ../DCMP='fotografia digitale (file)'][not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])">
 				-->
+    <xsl:if test="not($sheetType='MODI' or $sheetType='MINP')">
 				<xsl:for-each select="(record/metadata/schede/*/*/FTA/FTAN[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])|(record/metadata/schede/SCAN/DO/DCM/DCMN[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])"><!-- xslt2 multiple nodes normalize-space exception  -->
 					<xsl:variable name="url" select="arco-fn:find-link-emm(.)" />
 					<xsl:for-each select="$url">
@@ -625,6 +626,7 @@
 						</pico:preview>
 					</xsl:for-each>
 				</xsl:for-each>
+    </xsl:if>
 				<xsl:if test="($sheetType='MODI' or $sheetType='MINP') and string-length(record/metadata/schede/harvesting/idAttivita)>0">
 					<xsl:for-each select="record/metadata/schede/*/DO/FTA/FTAK[not(starts-with(lower-case(normalize-space()), 'nr') or starts-with(lower-case(normalize-space()), 'n.r'))]">
 						<xsl:variable name="pic" select="concat('https://sigecweb.beniculturali.it/images/fullsize/',/record/metadata/schede/harvesting/idAttivita,'/',$item,'_',encode-for-uri(.))" />
