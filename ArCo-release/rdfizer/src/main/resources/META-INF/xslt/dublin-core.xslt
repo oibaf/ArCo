@@ -45,8 +45,15 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 				</xsl:call-template> 
 			</xsl:when>
 			<xsl:when test="contains($source,'$(PROPERTYTYPE)')">
+				<xsl:variable name="culturalProperty">
+					<xsl:choose>
+						<xsl:when test="$sheetType='MODI'"><xsl:value-of select="arco-fn:local-name(arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/MODI/OG/AMB))))" /></xsl:when>
+						<xsl:when test="$sheetType='SCAN'"><xsl:value-of select="arco-fn:local-name(arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/SCAN/OG/SET))))" /></xsl:when>
+						<xsl:otherwise><xsl:value-of select="arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType))" /></xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:call-template name="sourceParser">
-					<xsl:with-param name="source" select="concat(substring-before($source,'$(PROPERTYTYPE)'),arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)),substring-after($source,'$(PROPERTYTYPE)'))"/>
+					<xsl:with-param name="source" select="concat(substring-before($source,'$(PROPERTYTYPE)'),$culturalProperty,substring-after($source,'$(PROPERTYTYPE)'))"/>
 					<xsl:with-param name="itemURI" select="$itemURI"/>
 				</xsl:call-template>
 			</xsl:when>
@@ -124,47 +131,11 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 	<xsl:variable name="culturalProperty">
 		<xsl:choose>
 			<xsl:when test="$sheetType='MODI'">
-				<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(record/metadata/schede/MODI/OG/AMB)), '/', $itemURI)" />
+				<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/MODI/OG/AMB)))), '/', $itemURI)" />
 			</xsl:when>
 			<xsl:when test="$sheetType='SCAN'">
-				<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/*/OG/SET)))), '/', $itemURI)" />
-				<!--
-				<xsl:choose>
-					<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni architettonici e paesaggistici'">
-						<xsl:value-of select="concat($NS, 'ArchitecturalOrLandscapeHeritage/', $itemURI)" />
-					</xsl:when>
-					<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni storici e artistici'">
-						<xsl:value-of select="concat($NS, 'HistoricOrArtisticProperty/', $itemURI)" />
-					</xsl:when>
-					<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni archeologici'">
-						<xsl:value-of select="concat($NS, 'ArchaeologicalProperty/', $itemURI)" />
-					</xsl:when>
-					<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni demoetnoantopologici'">
-						<xsl:value-of select="concat($NS, 'DemoEthnoAnthropologicalHeritage/', $itemURI)" />
-					</xsl:when>
-					<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni fotografici'">
-						<xsl:value-of select="concat($NS, 'PhotographicHeritage/', $itemURI)" />
-					</xsl:when>
-					<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni musicali'">
-						<xsl:value-of select="concat($NS, 'MusicHeritage/', $itemURI)" />
-					</xsl:when>
-					<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni naturalistici'">
-						<xsl:value-of select="concat($NS, 'NaturalHeritage/', $itemURI)" />
-					</xsl:when>
-					<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni numismatici'">
-						<xsl:value-of select="concat($NS, 'NumismaticProperty/', $itemURI)" />
-					</xsl:when>
-					<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni scientifici e tecnologici'">
-						<xsl:value-of select="concat($NS, 'ScientificOrTechnologicalHeritage/', $itemURI)" />
-					</xsl:when>
-				</xsl:choose>
-				-->
+				<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/SCAN/OG/SET)))), '/', $itemURI)" />
 			</xsl:when>
-   <!--
-			<xsl:when test="$sheetType='MINP'">
-				<xsl:value-of select="concat($NS, 'ArchaeologicalProperty/', $itemURI)" />
-			</xsl:when>
-   -->
 			<xsl:otherwise>
 				<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI)" />
 			</xsl:otherwise>
@@ -377,11 +348,13 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 	<xsl:if test="string-length($SOURCE)">
 	<dc:source>
 		<xsl:attribute name="rdf:resource">
+			<!--
 			<xsl:choose>
 				<xsl:when test="($sheetType='MODI' or $sheetType='MINP') and contains($SOURCE,'.beniculturali.it/')">
 					<xsl:value-of select="concat('http://catalogo-old.beniculturali.it/oaitarget/OAIHandler?verb=GetRecord&amp;metadataPrefix=oai_dc&amp;identifier=oai:oaicat.iccd.org:@',$item,'@/xml/altre_normative')" />
 				</xsl:when>
 				<xsl:otherwise>
+			-->
 					<xsl:choose>
 						<xsl:when test="contains($SOURCE,'$(')">
 							<xsl:call-template name="sourceParser">
@@ -391,9 +364,11 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 						<xsl:otherwise>
 							<xsl:value-of select="concat($SOURCE, $item)" />
 						</xsl:otherwise>
-					</xsl:choose>    
+					</xsl:choose>
+			<!--  
 				</xsl:otherwise>
 			</xsl:choose>
+			-->
 		</xsl:attribute>
 	</dc:source>
 	</xsl:if>
