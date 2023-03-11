@@ -165,47 +165,11 @@
 			<xsl:variable name="culturalProperty">
 				<xsl:choose>
 					<xsl:when test="$sheetType='MODI'">
-						<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(record/metadata/schede/MODI/OG/AMB)), '/', $itemURI)" />
+						<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/MODI/OG/AMB)))), '/', $itemURI)" />
 					</xsl:when>
 					<xsl:when test="$sheetType='SCAN'">
-						<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/*/OG/SET)))), '/', $itemURI)" />
-						<!--
-						<xsl:choose>
-							<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni architettonici e paesaggistici'">
-								<xsl:value-of select="concat($NS, 'ArchitecturalOrLandscapeHeritage/', $itemURI)" />
-							</xsl:when>
-							<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni storici e artistici'">
-								<xsl:value-of select="concat($NS, 'HistoricOrArtisticProperty/', $itemURI)" />
-							</xsl:when>
-							<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni archeologici'">
-								<xsl:value-of select="concat($NS, 'ArchaeologicalProperty/', $itemURI)" />
-							</xsl:when>
-							<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni demoetnoantopologici'">
-								<xsl:value-of select="concat($NS, 'DemoEthnoAnthropologicalHeritage/', $itemURI)" />
-							</xsl:when>
-							<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni fotografici'">
-								<xsl:value-of select="concat($NS, 'PhotographicHeritage/', $itemURI)" />
-							</xsl:when>
-							<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni musicali'">
-								<xsl:value-of select="concat($NS, 'MusicHeritage/', $itemURI)" />
-							</xsl:when>
-							<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni naturalistici'">
-								<xsl:value-of select="concat($NS, 'NaturalHeritage/', $itemURI)" />
-							</xsl:when>
-							<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni numismatici'">
-								<xsl:value-of select="concat($NS, 'NumismaticProperty/', $itemURI)" />
-							</xsl:when>
-							<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni scientifici e tecnologici'">
-								<xsl:value-of select="concat($NS, 'ScientificOrTechnologicalHeritage/', $itemURI)" />
-							</xsl:when>
-						</xsl:choose>
-						-->
+						<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/SCAN/OG/SET)))), '/', $itemURI)" />
 					</xsl:when>
-     <!--
-					<xsl:when test="$sheetType='MINP'">
-						<xsl:value-of select="concat($NS, 'ArchaeologicalProperty/', $itemURI)" />
-					</xsl:when>
-     -->
 					<xsl:otherwise>
 						<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI)" />
 					</xsl:otherwise>
@@ -344,65 +308,63 @@
 				</xsl:if>
 				</xsl:if>		
 				<xsl:if test="$sheetType='MODI'">
-					<rdf:type>
-						<xsl:attribute name="rdf:resource">
-							<xsl:choose>
-								<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/OG/AMB))='architettonico e paesaggistico'">
-									<xsl:value-of select="'https://w3id.org/arco/ontology/arco/ImmovableCulturalProperty'" />
-								</xsl:when>
-								<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/OG/AMB))='storico artistico'">
-									<xsl:value-of select="'https://w3id.org/arco/ontology/arco/MovableCulturalProperty'" />
-								</xsl:when>
-								<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/OG/AMB))='archeologico'">
-									<xsl:choose>
-										<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/CM/IMD/IMDT))='ra' or lower-case(normalize-space(record/metadata/schede/MODI/CM/IMD/IMDT))='tma'">
-											<xsl:value-of select="'https://w3id.org/arco/ontology/arco/MovableCulturalProperty'" />
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="'https://w3id.org/arco/ontology/arco/ImmovableCulturalProperty'" />
-										</xsl:otherwise>									
-									</xsl:choose>
-								</xsl:when>
-								<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/OG/AMB))='etnoantropologico'">
-									<xsl:choose>
-										<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/CM/IMD/IMDT))='bdm'">
-											<xsl:value-of select="'https://w3id.org/arco/ontology/arco/MovableCulturalProperty'" />
-										</xsl:when>
-										<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/CM/IMD/IMDT))='bdi'">
-											<xsl:value-of select="'https://w3id.org/arco/ontology/arco/IntangibleCulturalProperty'" />
-										</xsl:when>	
-										<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/OG/AMA))='entità immateriali'">
-											<xsl:value-of select="'https://w3id.org/arco/ontology/arco/IntangibleCulturalProperty'" />
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="'https://w3id.org/arco/ontology/arco/MovableCulturalProperty'" />
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:when>
-								<xsl:otherwise>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:attribute>
-					</rdf:type>
+					<xsl:variable name="type">
+						<xsl:choose>
+							<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/OG/AMB))='architettonico e paesaggistico'">
+								<xsl:value-of select="'https://w3id.org/arco/ontology/arco/ImmovableCulturalProperty'" />
+							</xsl:when>
+							<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/OG/AMB))='storico artistico'">
+								<xsl:value-of select="'https://w3id.org/arco/ontology/arco/MovableCulturalProperty'" />
+							</xsl:when>
+							<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/OG/AMB))='archeologico'">
+								<xsl:choose>
+									<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/CM/IMD/IMDT))='ra' or lower-case(normalize-space(record/metadata/schede/MODI/CM/IMD/IMDT))='tma'">
+										<xsl:value-of select="'https://w3id.org/arco/ontology/arco/MovableCulturalProperty'" />
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="'https://w3id.org/arco/ontology/arco/ImmovableCulturalProperty'" />
+									</xsl:otherwise>									
+								</xsl:choose>
+							</xsl:when>
+							<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/OG/AMB))='etnoantropologico'">
+								<xsl:choose>
+									<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/CM/IMD/IMDT))='bdm'">
+										<xsl:value-of select="'https://w3id.org/arco/ontology/arco/MovableCulturalProperty'" />
+									</xsl:when>
+									<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/CM/IMD/IMDT))='bdi'">
+										<xsl:value-of select="'https://w3id.org/arco/ontology/arco/IntangibleCulturalProperty'" />
+									</xsl:when>	
+									<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/OG/AMA))='entità immateriali'">
+										<xsl:value-of select="'https://w3id.org/arco/ontology/arco/IntangibleCulturalProperty'" />
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="'https://w3id.org/arco/ontology/arco/MovableCulturalProperty'" />
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:otherwise>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<xsl:if test="string-length($type)>0"><rdf:type rdf:resource="{$type}"/></xsl:if>
 				</xsl:if>
 				<xsl:if test="$sheetType='SCAN'">
-					<rdf:type>
-						<xsl:attribute name="rdf:resource">
-							<xsl:choose>
-								<xsl:when test="lower-case(normalize-space(record/metadata/schede/SCAN/OG/CTB))='beni immobili'">
-									<xsl:value-of select="'https://w3id.org/arco/ontology/arco/ImmovableCulturalProperty'" />
-								</xsl:when>
-								<xsl:when test="lower-case(normalize-space(record/metadata/schede/SCAN/OG/CTB))='beni mobili'">
-									<xsl:value-of select="'https://w3id.org/arco/ontology/arco/MovableCulturalProperty'" />
-								</xsl:when>
-								<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/OG/CTB))='beni immateriali'">
-									<xsl:value-of select="'https://w3id.org/arco/ontology/arco/IntangibleCulturalProperty'" />
-								</xsl:when>
-								<xsl:otherwise>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:attribute>
-					</rdf:type>
+					<xsl:variable name="type">
+						<xsl:choose>
+							<xsl:when test="lower-case(normalize-space(record/metadata/schede/SCAN/OG/CTB))='beni immobili'">
+								<xsl:value-of select="'https://w3id.org/arco/ontology/arco/ImmovableCulturalProperty'" />
+							</xsl:when>
+							<xsl:when test="lower-case(normalize-space(record/metadata/schede/SCAN/OG/CTB))='beni mobili'">
+								<xsl:value-of select="'https://w3id.org/arco/ontology/arco/MovableCulturalProperty'" />
+							</xsl:when>
+							<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/OG/CTB))='beni immateriali'">
+								<xsl:value-of select="'https://w3id.org/arco/ontology/arco/IntangibleCulturalProperty'" />
+							</xsl:when>
+							<xsl:otherwise>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<xsl:if test="string-length($type)>0"><rdf:type rdf:resource="{$type}"/></xsl:if>
 				</xsl:if>
 				<!-- related work situation -->
 				<xsl:for-each select="record/metadata/schede/*/*/RSE">
@@ -3802,8 +3764,8 @@
 			<rdf:Description>
 				<xsl:attribute name="rdf:about">
 					<xsl:value-of select="$culturalProperty" />
-                </xsl:attribute>
-                <rdf:type>
+				</xsl:attribute>
+				<rdf:type>
 					<xsl:attribute name="rdf:resource">
 						 <xsl:choose>
 							<xsl:when test="$sheetType='MODI'">
@@ -3813,54 +3775,23 @@
 								<xsl:value-of select="arco-fn:getPropertyType($sheetType)" />
 							</xsl:otherwise>
 						</xsl:choose>
-                    </xsl:attribute>
+					</xsl:attribute>
 				</rdf:type>
 				<!-- rdf:type of cultural property -->
 				<rdf:type>
 					<xsl:attribute name="rdf:resource">
-                        <xsl:choose>
+						<xsl:choose>
 							<xsl:when test="$sheetType='MODI'">
-								<xsl:value-of select="arco-fn:getSpecificPropertyType(record/metadata/schede/MODI/OG/AMB)" />
+								<xsl:value-of select="arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/MODI/OG/AMB)))" />
 							</xsl:when>
 							<xsl:when test="$sheetType='SCAN'">
-								<xsl:value-of select="arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/*/OG/SET)))" />
-								<!--
-								<xsl:choose>
-									<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni architettonici e paesaggistici'">
-										<xsl:value-of select="concat($NS, 'arco/ArchitecturalOrLandscapeHeritage')" />
-									</xsl:when>
-									<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni storici e artistici'">
-										<xsl:value-of select="concat($NS, 'arco/HistoricOrArtisticProperty')" />
-									</xsl:when>
-									<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni archeologici'">
-										<xsl:value-of select="concat($NS, 'arco/ArchaeologicalProperty')" />
-									</xsl:when>
-									<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni demoetnoantopologici'">
-										<xsl:value-of select="concat($NS, 'arco/DemoEthnoAnthropologicalHeritage')" />
-									</xsl:when>
-									<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni fotografici'">
-										<xsl:value-of select="concat($NS, 'arco/PhotographicHeritage')" />
-									</xsl:when>
-									<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni musicali'">
-										<xsl:value-of select="concat($NS, 'arco/MusicHeritage')" />
-									</xsl:when>
-									<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni naturalistici'">
-										<xsl:value-of select="concat($NS, 'arco/NaturalHeritage')" />
-									</xsl:when>
-									<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni numismatici'">
-										<xsl:value-of select="concat($NS, 'arco/NumismaticProperty')" />
-									</xsl:when>
-									<xsl:when test="lower-case(normalize-space(record/metadata/schede/*/OG/SET))='beni scientifici e tecnologici'">
-										<xsl:value-of select="concat($NS, 'arco/ScientificOrTechnologicalHeritage')" />
-									</xsl:when>
-								</xsl:choose>
-								-->
+								<xsl:value-of select="arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/SCAN/OG/SET)))" />
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="arco-fn:getSpecificPropertyType($sheetType)" />
 							</xsl:otherwise>
 						</xsl:choose>
-                    </xsl:attribute>
+					</xsl:attribute>
 				</rdf:type>
 				<!-- rdfs:comment of cultural property -->
 				<xsl:variable name="comment"><xsl:call-template name="comment"/></xsl:variable>
