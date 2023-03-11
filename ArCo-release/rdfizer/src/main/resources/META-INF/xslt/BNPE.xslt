@@ -148,7 +148,10 @@
 		<xsl:variable name="culturalProperty">
 			<xsl:choose>
 				<xsl:when test="$sheetType='MODI'">
-					<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(record/metadata/schede/MODI/OG/AMB)), '/', $itemURI)" />
+					<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/MODI/OG/AMB)))), '/', $itemURI)" />
+				</xsl:when>
+				<xsl:when test="$sheetType='SCAN'">
+					<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType(lower-case(normalize-space(record/metadata/schede/SCAN/OG/SET)))), '/', $itemURI)" />
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI)" />
