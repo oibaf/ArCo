@@ -38,6 +38,12 @@ public class LinkEMMFinder implements ExtensionFunction {
 		return instance;
 	}
 
+	public String findLinkEmm(String id) {
+		String url = ftan2linkEMM.get(id);
+		if (url == null || url.length() == 0) return null;
+		return pe.escape(url);
+	}
+
 	@Override
 	public XdmValue call(XdmValue[] arguments) throws SaxonApiException {
 		String arg = ((XdmAtomicValue) arguments[0].itemAt(0)).getStringValue();
