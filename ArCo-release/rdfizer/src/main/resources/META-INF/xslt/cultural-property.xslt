@@ -370,7 +370,7 @@
 				<xsl:for-each select="record/metadata/schede/*/*/RSE">
 					<xsl:if test="./RSEC and not(lower-case(normalize-space(./RSER))='scheda storica')"><!-- e.g.ICCD2284134  -->
 						<!-- Rule #RWS -->
-						<xsl:variable name="rels" select="arco-fn:related-property(normalize-space(./RSEC),'')" />
+						<xsl:variable name="rels" select="arco-fn:related-property(normalize-space(translate(./RSEC,' ','')),'')" />
 						<xsl:if test="count($rels)">
 							<xsl:variable name="create-rel-work-situation">
 								<xsl:choose>
