@@ -4509,11 +4509,13 @@
 			<xsl:attribute name="rdf:about">
                <xsl:value-of select="concat($NS,'BiologicalTaxon/', arco-fn:urify(record/metadata/schede/BNB/SB/NAA/NAAA))" />
             </xsl:attribute>
+            <xsl:for-each select="record/metadata/schede/BNB/SB/SBS/SBSF">
             <arco-mp:hasDirectHigherRank>
             <xsl:attribute name="rdf:resource">
-            		 <xsl:value-of select="concat($NS,'BiologicalTaxon/', arco-fn:urify(record/metadata/schede/BNB/SB/SBS/SBSF))" />
+            		 <xsl:value-of select="concat($NS,'BiologicalTaxon/', arco-fn:urify(.))" />
             </xsl:attribute>
             </arco-mp:hasDirectHigherRank>
+            </xsl:for-each>
             <rdf:type>
             <xsl:attribute name="rdf:resource">
             	<xsl:value-of select="'https://w3id.org/arco/ontology/movable-property/Genus'" />
