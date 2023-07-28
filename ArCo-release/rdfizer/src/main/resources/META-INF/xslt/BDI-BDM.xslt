@@ -15937,11 +15937,9 @@
 							<xsl:value-of select="concat($NS, 'Role/Informant')" />
 						</xsl:attribute>
 					</arco-core:hasRole>
-					<arco-core:hasAgent>
-						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./FIED))" />
-						</xsl:attribute>
-					</arco-core:hasAgent>
+					<xsl:if test="FIED">
+						<arco-core:hasAgent rdf:resource="{concat($NS, 'Agent/', arco-fn:arcofy(./FIED))}"/>
+					</xsl:if>
 				</rdf:Description>
 				<rdf:Description>
 					<xsl:attribute name="rdf:about">
@@ -15959,32 +15957,34 @@
 						<xsl:value-of select="'Informant'" />
 					</rdfs:label>
 				</rdf:Description>
-				<rdf:Description>
-					<xsl:attribute name="rdf:about">
-						<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./FIED))" />
-					</xsl:attribute>
-					<rdf:type>
-						<xsl:attribute name="rdf:resource">
-							<xsl:value-of select="'https://w3id.org/italia/onto/COV/Group'" />
+				<xsl:if test="FIED">
+					<rdf:Description>
+						<xsl:attribute name="rdf:about">
+							<xsl:value-of select="concat($NS, 'Agent/', arco-fn:arcofy(./FIED))" />
 						</xsl:attribute>
-					</rdf:type>
-					<rdfs:label>
-						<xsl:value-of select="./FIED" />
-					</rdfs:label>
-					<l0:name>
-						<xsl:value-of select="./FIED" />
-					</l0:name>
-					<xsl:if test="./FIES">
-						<arco-cd:contacts>
-							<xsl:value-of select="./FIES" />
-						</arco-cd:contacts>
-					</xsl:if>
-					<xsl:if test="./FIEX">
-						<arco-core:note>
-							<xsl:value-of select="./FIEX" />
-						</arco-core:note>
-					</xsl:if>
-				</rdf:Description>
+						<rdf:type>
+							<xsl:attribute name="rdf:resource">
+								<xsl:value-of select="'https://w3id.org/italia/onto/COV/Group'" />
+							</xsl:attribute>
+						</rdf:type>
+						<rdfs:label>
+							<xsl:value-of select="./FIED" />
+						</rdfs:label>
+						<l0:name>
+							<xsl:value-of select="./FIED" />
+						</l0:name>
+						<xsl:if test="./FIES">
+							<arco-cd:contacts>
+								<xsl:value-of select="./FIES" />
+							</arco-cd:contacts>
+						</xsl:if>
+						<xsl:if test="./FIEX">
+							<arco-core:note>
+								<xsl:value-of select="./FIEX" />
+							</arco-core:note>
+						</xsl:if>
+					</rdf:Description>
+				</xsl:if>
 			</xsl:for-each>
 			<!-- rilevatore -->
 			<xsl:for-each select="./FID/FIDR">
