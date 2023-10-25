@@ -125,11 +125,25 @@
 	<xsl:variable name="cp-name" select="''" />
 	<xsl:variable name="itemURI">
 		<xsl:choose>
+			<xsl:when test="record/metadata/schede/EVE/CD/NCU">
+				<xsl:value-of select="arco-fn:urify(record/metadata/schede/EVE/CD/NCU)" />
+			</xsl:when>
+					<xsl:when test="record/metadata/schede/EVE/EV/EVE/EVEH">
+						<xsl:value-of select="arco-fn:urify(concat('eve-', record/metadata/schede/EVE/CD/ESC, '-', record/metadata/schede/EVE/EV/EVE/EVEH))" />
+					</xsl:when>
+					<xsl:when test="record/metadata/schede/DSC/*/*/DSCH"><!--
+						<xsl:value-of select="arco-fn:urify(record/metadata/schede/DSC/*/*/DSCH)" /> -->
+						<xsl:value-of select="arco-fn:urify(concat('dsc-', record/metadata/schede/DSC/CD/ESC,'-', record/metadata/schede/DSC/*/*/DSCH))" />
+					</xsl:when>
+					<xsl:when test="record/metadata/schede/RCG/*/*/RCGH"><!--
+						<xsl:value-of select="arco-fn:urify(record/metadata/schede/RCG/*/*/RCGH)" /> -->
+						<xsl:value-of select="arco-fn:urify(concat('rcg-', record/metadata/schede/RCG/CD/ESC,'-', record/metadata/schede/RCG/*/*/RCGH))" />
+					</xsl:when>
 			<xsl:when test="record/metadata/schede/*/CD/NCT/NCTN">
 				<xsl:choose>
 					<xsl:when test="record/metadata/schede/*/RV/RVE/RVEL">
 						<xsl:variable name="rvel-punto" select="lower-case(normalize-space(record/metadata/schede/*/RV/RVE/RVEL))" />
-								<xsl:variable name="rvel" select="translate($rvel-punto, '.', '_')" />
+						<xsl:variable name="rvel" select="translate($rvel-punto, '.', '_')" />
 						<xsl:value-of select="concat(record/metadata/schede/*/CD/NCT/NCTR, record/metadata/schede/*/CD/NCT/NCTN, record/metadata/schede/*/CD/NCT/NCTS, '-', arco-fn:urify($rvel))" />
 					</xsl:when>
 					<xsl:otherwise>
@@ -137,11 +151,18 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
-			<xsl:when test="record/metadata/schede/MODI/CD/CDM">
-				<xsl:value-of select="concat(arco-fn:urify(record/metadata/schede/*/CD/CDR), arco-fn:urify(record/metadata/schede/*/CD/CDM))" />
-			</xsl:when>
-			<xsl:when test="record/metadata/schede/*/CD/CBC">
-				<xsl:value-of select="record/metadata/schede/*/CD/CBC" />
+			<xsl:when test="record/metadata/schede/*/CD/CDM">
+				<xsl:choose>
+					<xsl:when test="record/metadata/schede/*/CD/CBC">
+						<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/CD/CBC)" />
+					</xsl:when>
+					<xsl:when test="record/metadata/schede/*/CD/CDR">
+						<xsl:value-of select="concat(arco-fn:urify(record/metadata/schede/*/CD/CDR), arco-fn:urify(record/metadata/schede/*/CD/CDM))" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/CD/CDM)" />
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:variable name="accc-space" >
@@ -156,7 +177,7 @@
 				</xsl:variable>
 				<xsl:variable name="accc-nospace" select="translate($accc-space, ' ', '')" />
 				<xsl:variable name="accc" select="translate($accc-nospace, '/', '_')" />
-				<xsl:variable name="acc-space" select="record/metadata/schede/*/AC/ACC[1]" />
+				<xsl:variable name="acc-space" select="record/metadata/schede/*/*/ACC[1]" />
 				<xsl:variable name="acc-nospace" select="translate($acc-space, ' ', '')" />
 				<xsl:variable name="acc" select="translate($acc-nospace, '/', '_')" />
 				<xsl:choose>

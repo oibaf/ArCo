@@ -215,7 +215,7 @@ public class Preprocessor {
 			String dran = getFieldFromEMM(xpath, xml, "DRAN"); if (validateField(dran)) {logger.trace(syscode + " - " + dran + " - " + link); this.ftan2URL.put(dran, link);}
 			String vdcn = getFieldFromEMM(xpath, xml, "VDCN"); if (validateField(vdcn)) {logger.trace(syscode + " - " + vdcn + " - " + link); this.ftan2URL.put(vdcn, link);}
 			String fnti = getFieldFromEMM(xpath, xml, "FNTI"); if (validateField(fnti)) {logger.trace(syscode + " - " + fnti + " - " + link); this.ftan2URL.put(fnti, link);}
-			String dcmn = getFieldFromEMM(xpath, xml, "DCMN"); if (validateField(dcmn)) {logger.trace(syscode + " - " + dcmn + " - " + link); this.ftan2URL.put(dcmn, link);}
+			String dcmn = getFieldFromEMM(xpath, xml, "DCMN"); if (validateField(dcmn)) {logger.trace(syscode + " - " + dcmn + " - " + link); this.ftan2URL.put(dcmn, link); this.ftan2URL.put(syscode, link);}
 		}
 	}
 	private void preprocessMultimediaRecord(Path f) {
@@ -446,11 +446,11 @@ public class Preprocessor {
 			logger.info("Error while processing " + f.toFile().getAbsolutePath() + " " + e.getMessage());
 		}
 	}
-
+    /*
 	private String getFTANFromEMM(XPath xpath, Document xml) throws XPathExpressionException {
 		return (String) xpath.evaluate("//FTAN", xml, XPathConstants.STRING);
 	}
-
+    */
 	private String getFieldFromEMM(XPath xpath, Document xml, String field) throws XPathExpressionException {
 		return (String) xpath.evaluate("//" + field, xml, XPathConstants.STRING);
 	}

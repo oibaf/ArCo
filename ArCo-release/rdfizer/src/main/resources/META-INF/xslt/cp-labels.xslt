@@ -17,6 +17,20 @@
 
 	<xsl:variable name="itemURI">
 		<xsl:choose>
+			<xsl:when test="record/metadata/schede/EVE/CD/NCU">
+				<xsl:value-of select="arco-fn:urify(record/metadata/schede/EVE/CD/NCU)" />
+			</xsl:when>
+					<xsl:when test="record/metadata/schede/EVE/EV/EVE/EVEH">
+						<xsl:value-of select="arco-fn:urify(concat('eve-', record/metadata/schede/EVE/CD/ESC, '-', record/metadata/schede/EVE/EV/EVE/EVEH))" />
+					</xsl:when>
+					<xsl:when test="record/metadata/schede/DSC/*/*/DSCH"><!--
+						<xsl:value-of select="arco-fn:urify(record/metadata/schede/DSC/*/*/DSCH)" /> -->
+						<xsl:value-of select="arco-fn:urify(concat('dsc-', record/metadata/schede/DSC/CD/ESC,'-', record/metadata/schede/DSC/*/*/DSCH))" />
+					</xsl:when>
+					<xsl:when test="record/metadata/schede/RCG/*/*/RCGH"><!--
+						<xsl:value-of select="arco-fn:urify(record/metadata/schede/RCG/*/*/RCGH)" /> -->
+						<xsl:value-of select="arco-fn:urify(concat('rcg-', record/metadata/schede/RCG/CD/ESC,'-', record/metadata/schede/RCG/*/*/RCGH))" />
+					</xsl:when>
 			<xsl:when test="record/metadata/schede/*/CD/NCT/NCTN">
 				<xsl:choose>
 					<xsl:when test="record/metadata/schede/*/RV/RVE/RVEL">
@@ -42,9 +56,6 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
-			<xsl:when test="record/metadata/schede/*/CD/CBC">
-				<xsl:value-of select="record/metadata/schede/*/CD/CBC" />
-			</xsl:when>
 			<xsl:otherwise>
 			<xsl:variable name="accc-space" >
 				<xsl:choose>
@@ -58,7 +69,7 @@
 			</xsl:variable>
 			<xsl:variable name="accc-nospace" select="translate($accc-space, ' ', '')" />
 			<xsl:variable name="accc" select="translate($accc-nospace, '/', '_')" />
-			<xsl:variable name="acc-space" select="record/metadata/schede/*/AC/ACC[1]" />
+			<xsl:variable name="acc-space" select="record/metadata/schede/*/*/ACC[1]" />
 			<xsl:variable name="acc-nospace" select="translate($acc-space, ' ', '')" />
 			<xsl:variable name="acc" select="translate($acc-nospace, '/', '_')" />
 				<xsl:choose>
@@ -78,10 +89,15 @@
 	<xsl:variable name="sheetType" select="name(record/metadata/schede/*[1])"></xsl:variable>
 				  <!-- variable culturalPropertyComponent -->	
 	<xsl:variable name="culturalPropertyComponent" select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI, '-component')" />     
+	<!-- variable culturalPropertyResidual -->
+	<xsl:variable name="culturalPropertyResidual" select="concat($NS, arco-fn:local-name(arco-fn:getSpecificPropertyType($sheetType)), '/', $itemURI, '-residual')" />		
 	<xsl:variable name="objectOfDescription">
 		<xsl:choose>
 			<xsl:when test="record/metadata/schede/*/OG/OGT/OGTP and ($sheetVersion='4.00_ICCD0' or $sheetVersion='4.00')">
 				<xsl:value-of select="$culturalPropertyComponent" />
+			</xsl:when>
+			<xsl:when test="record/metadata/schede/*/OG/OGT/OGTW and ($sheetVersion='4.00_ICCD0' or $sheetVersion='4.00')">
+				<xsl:value-of select="$culturalPropertyResidual" />
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$culturalProperty" />

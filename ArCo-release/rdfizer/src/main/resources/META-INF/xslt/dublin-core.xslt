@@ -65,12 +65,26 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 		
 <xsl:template match="/">
 	<rdf:RDF>
-	<xsl:if test="not($sheetType='CF' or $sheetType='CG' or $sheetType='AUT' or $sheetType='DSC' or $sheetType='BIB' or $sheetType='RCG') and not(administrativeDataRecord/metadata)" >
+	<xsl:if test="not($sheetType='EVE' or $sheetType='CF' or $sheetType='CG' or $sheetType='AUT' or $sheetType='DSC' or $sheetType='BIB' or $sheetType='RCG') and not(administrativeDataRecord/metadata)" >
 	
 	<xsl:variable name="sheetVersion" select="record/metadata/schede/*/@version" />
 	<xsl:variable name="cp-name" select="''" />
 	<xsl:variable name="itemURI">
 		<xsl:choose>
+			<xsl:when test="record/metadata/schede/EVE/CD/NCU">
+				<xsl:value-of select="arco-fn:urify(record/metadata/schede/EVE/CD/NCU)" />
+			</xsl:when>
+					<xsl:when test="record/metadata/schede/EVE/EV/EVE/EVEH">
+						<xsl:value-of select="arco-fn:urify(concat('eve-', record/metadata/schede/EVE/CD/ESC, '-', record/metadata/schede/EVE/EV/EVE/EVEH))" />
+					</xsl:when>
+					<xsl:when test="record/metadata/schede/DSC/*/*/DSCH"><!--
+						<xsl:value-of select="arco-fn:urify(record/metadata/schede/DSC/*/*/DSCH)" /> -->
+						<xsl:value-of select="arco-fn:urify(concat('dsc-', record/metadata/schede/DSC/CD/ESC,'-', record/metadata/schede/DSC/*/*/DSCH))" />
+					</xsl:when>
+					<xsl:when test="record/metadata/schede/RCG/*/*/RCGH"><!--
+						<xsl:value-of select="arco-fn:urify(record/metadata/schede/RCG/*/*/RCGH)" /> -->
+						<xsl:value-of select="arco-fn:urify(concat('rcg-', record/metadata/schede/RCG/CD/ESC,'-', record/metadata/schede/RCG/*/*/RCGH))" />
+					</xsl:when>
 			<xsl:when test="record/metadata/schede/*/CD/NCT/NCTN">
 				<xsl:choose>
 					<xsl:when test="record/metadata/schede/*/RV/RVE/RVEL">
@@ -85,11 +99,9 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 			</xsl:when>
 			<xsl:when test="record/metadata/schede/*/CD/CDM">
 				<xsl:choose>
-    <!--
 					<xsl:when test="record/metadata/schede/*/CD/CBC">
 						<xsl:value-of select="arco-fn:urify(record/metadata/schede/*/CD/CBC)" />
 					</xsl:when>
-     -->
 					<xsl:when test="record/metadata/schede/*/CD/CDR">
 						<xsl:value-of select="concat(arco-fn:urify(record/metadata/schede/*/CD/CDR), arco-fn:urify(record/metadata/schede/*/CD/CDM))" />
 					</xsl:when>
@@ -111,7 +123,7 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 			</xsl:variable>
 			<xsl:variable name="accc-nospace" select="translate($accc-space, ' ', '')" />
 			<xsl:variable name="accc" select="translate($accc-nospace, '/', '_')" />
-			<xsl:variable name="acc-space" select="record/metadata/schede/*/AC/ACC[1]" />
+			<xsl:variable name="acc-space" select="record/metadata/schede/*/*/ACC[1]" />
 			<xsl:variable name="acc-nospace" select="translate($acc-space, ' ', '')" />
 			<xsl:variable name="acc" select="translate($acc-nospace, '/', '_')" />
 				<xsl:choose>

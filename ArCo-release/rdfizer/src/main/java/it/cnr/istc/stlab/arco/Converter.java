@@ -228,6 +228,7 @@ public class Converter {
 						exps.add(new XSLTConverter(path.toString(), exp));
 					} catch (Exception e) {
 						e.printStackTrace();
+						logger.error(path.getFileName().toString());
 					}
 				}
 			});
@@ -247,6 +248,7 @@ public class Converter {
 			exps.add(new XSLTConverter(path.toString(), exp));
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error(path.getFileName().toString());
 		}
 	}
 	public void prepareTransformer(XsltTransformer trans, String name) {}
