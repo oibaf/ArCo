@@ -87,7 +87,30 @@
 			<xsl:value-of select="concat(' ', string-join(record/metadata/schede/*/OG/SGT/SGTI,', '))" />
 		</xsl:if>
 	</xsl:template>
-    
+
+	<xsl:template name="key2emm"> <!-- context @parent -->
+		<xsl:param name="field" select="''"/>
+		<xsl:variable name="v" select="./*[name()=$field]"/>
+		<xsl:if test="not(starts-with(lower-case(normalize-space($v)), 'nr')) and not(starts-with(lower-case(normalize-space($v)), 'n.r'))">
+			<xsl:variable name="posizione" select="string(position())"/>
+			<xsl:variable name="sheetType" select="name(/record/metadata/schede/*[1])"/>
+			<xsl:variable name="mkc" select="/record/metadata/schede/harvesting/emm[posizione=$posizione and campo=$field]/keycode"/>
+			<xsl:variable name="k">
+				<xsl:choose>
+					<xsl:when test="string-length($mkc) or ($sheetType='EVE' and $field='DCMN')">
+						<xsl:value-of select="$mkc"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$v" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:if test="string-length($k)">
+				<xsl:value-of select="arco-fn:find-link-emm($k)" />
+			</xsl:if>
+		</xsl:if>
+	</xsl:template>
+
 	<xsl:template match="/">
 
 		<rdf:RDF>
@@ -375,7 +398,7 @@
 							<xsl:when test="lower-case(normalize-space(record/metadata/schede/SCAN/OG/CTB))='beni mobili'">
 								<xsl:value-of select="'https://w3id.org/arco/ontology/arco/MovableCulturalProperty'" />
 							</xsl:when>
-							<xsl:when test="lower-case(normalize-space(record/metadata/schede/MODI/OG/CTB))='beni immateriali'">
+							<xsl:when test="lower-case(normalize-space(record/metadata/schede/SCAN/OG/CTB))='beni immateriali'">
 								<xsl:value-of select="'https://w3id.org/arco/ontology/arco/IntangibleCulturalProperty'" />
 							</xsl:when>
 							<xsl:otherwise>
@@ -590,21 +613,25 @@
 				<!--
 				<xsl:for-each select="(record/metadata/schede/*/*/FTA/FTAN[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])|(record/metadata/schede/SCAN/DO/DCM/DCMN[../DCMP='NR (recupero VIR)' or ../DCMP='fotografia digitale (file)'][not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])">
 				-->
-    <xsl:if test="not($sheetType='MODI' or $sheetType='MINP')">
-				<xsl:for-each select="(record/metadata/schede/*/*/FTA/FTAN[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])|(record/metadata/schede/SCAN/DO/DCM/DCMN[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])"><!-- xslt2 multiple nodes normalize-space exception  -->
-					<xsl:variable name="url" select="arco-fn:find-link-emm(.)" />
-					<xsl:for-each select="$url">
-						<foaf:depiction>
-							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="." />
-							</xsl:attribute>
-						</foaf:depiction>
-						<pico:preview>
-							<xsl:attribute name="rdf:resource">
-								<xsl:value-of select="." />
-							</xsl:attribute>
-						</pico:preview>
-					</xsl:for-each>
+    <xsl:if test="not($sheetType='MODI' or $sheetType='MINP')"><!--
+				<xsl:for-each select="(record/metadata/schede/*/*/FTA/FTAN[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])|(record/metadata/schede/SCAN/DO/DCM/DCMN[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])"> --><!-- xslt2 multiple nodes normalize-space exception  -->
+				<xsl:for-each select="record/metadata/schede/SCAN/DO/DCM">
+					<xsl:variable name="emm">
+						<xsl:call-template name="key2emm"><xsl:with-param name="field" select="'DCMN'"/></xsl:call-template>
+					</xsl:variable>
+					<xsl:if test="string-length($emm)">
+						<foaf:depiction rdf:resource="{$emm}"/>
+						<pico:preview rdf:resource="{$emm}"/>
+					</xsl:if>
+				</xsl:for-each>
+				<xsl:for-each select="record/metadata/schede/*/*/FTA">
+					<xsl:variable name="emm">
+						<xsl:call-template name="key2emm"><xsl:with-param name="field" select="'FTAN'"/></xsl:call-template>
+					</xsl:variable>
+					<xsl:if test="string-length($emm)">
+						<foaf:depiction rdf:resource="{$emm}"/>
+						<pico:preview rdf:resource="{$emm}"/>
+					</xsl:if>
 				</xsl:for-each>
     </xsl:if>
 				<xsl:if test="($sheetType='MODI' or $sheetType='MINP') and string-length(record/metadata/schede/harvesting/idAttivita)>0">
@@ -903,19 +930,19 @@
 					</arco-arco:hasAlternativeDiscipline>
 				</xsl:for-each>
 				<!-- archaeological material (TMA) -->
-				<xsl:for-each select="record/metadata/schede/TMA/MA">
-					<xsl:if test="(not(starts-with(lower-case(normalize-space(./MAC/MACC)), 'nr')) and not(starts-with(lower-case(normalize-space(./MAC/MACC)), 'n.r')))">
+				<xsl:for-each select="record/metadata/schede/TMA/MA/MAC">
+					<xsl:if test="(not(starts-with(lower-case(normalize-space(./MACC)), 'nr')) and not(starts-with(lower-case(normalize-space(./MACC)), 'n.r')))">
 						<arco-core:hasPart>
 							<xsl:attribute name="rdf:resource">
 								<xsl:choose>
-									<xsl:when test="./MAC/MACD">
-										<xsl:value-of select="concat($NS, 'ArchaeologicalMaterial/', $itemURI, '-', position(), arco-fn:urify(normalize-space(./MAC/MACC)), arco-fn:urify(normalize-space(./MAC/MACD)))" />
+									<xsl:when test="./MACD">
+										<xsl:value-of select="concat($NS, 'ArchaeologicalMaterial/', $itemURI, '-', position(), arco-fn:urify(normalize-space(./MACC)), arco-fn:urify(normalize-space(./MACD)))" />
 									</xsl:when>
-									<xsl:when test="./MAC/MACL">
-										<xsl:value-of select="concat($NS, 'ArchaeologicalMaterial/', $itemURI, '-', position(), arco-fn:urify(normalize-space(./MAC/MACL)))" />
+									<xsl:when test="./MACL">
+										<xsl:value-of select="concat($NS, 'ArchaeologicalMaterial/', $itemURI, '-', position(), arco-fn:urify(normalize-space(./MACL)))" />
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:value-of select="concat($NS, 'ArchaeologicalMaterial/', $itemURI, '-', position(), arco-fn:urify(normalize-space(./MAC/MACC)))" />
+										<xsl:value-of select="concat($NS, 'ArchaeologicalMaterial/', $itemURI, '-', position(), arco-fn:urify(normalize-space(./MACC)))" />
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:attribute>

@@ -113,8 +113,30 @@
 		<xsl:value-of select="translate(substring($text,1,1),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
 		<xsl:value-of select="translate(substring($text,2,string-length($text)-1),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
 	</xsl:template>
-		
 	
+	<xsl:template name="key2emm"> <!-- context @parent -->
+		<xsl:param name="field" select="''"/>
+		<xsl:variable name="v" select="./*[name()=$field]"/>
+		<xsl:if test="not(starts-with(lower-case(normalize-space($v)), 'nr')) and not(starts-with(lower-case(normalize-space($v)), 'n.r'))">
+			<xsl:variable name="posizione" select="string(position())"/>
+			<xsl:variable name="sheetType" select="name(/record/metadata/schede/*[1])"/>
+			<xsl:variable name="mkc" select="/record/metadata/schede/harvesting/emm[posizione=$posizione and campo=$field]/keycode"/>
+			<xsl:variable name="k">
+				<xsl:choose>
+					<xsl:when test="string-length($mkc) or ($sheetType='EVE' and $field='DCMN')">
+						<xsl:value-of select="$mkc"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$v" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:if test="string-length($k)">
+				<xsl:value-of select="arco-fn:find-link-emm($k)" />
+			</xsl:if>
+		</xsl:if>
+	</xsl:template>
+
 <xsl:template match="/">
 	<rdf:RDF>
 	<xsl:variable name="sheetType" select="name(record/metadata/schede/*[1])" />
@@ -721,7 +743,7 @@
 			<xsl:if test="contains(record/metadata/schede/*/CD/CCF/text(), 'DBunico')">
 				<rdfs:seeAlso>
 					<xsl:attribute name="rdf:resource">
-						<xsl:value-of select="concat('http://dati.beniculturali.it/mibact/luoghi/resource/CulturalInstituteOrSite/', substring-after(record/metadata/schede/*/CD/CCF,'DBunicoCF') )"/>
+						<xsl:value-of select="concat('http://dati.beniculturali.it/mibact/luoghi/resource/CulturalInstituteOrSite/', substring-after(record/metadata/schede/*/CD/CCF,'DBunico') )"/>
 					</xsl:attribute>
 				</rdfs:seeAlso>
 			</xsl:if>
@@ -760,7 +782,7 @@
 					<xsl:attribute name="rdf:resource">
 						<xsl:value-of select="concat($NS, 'PhotographicDocumentation/', $idCF, '-photographic-documentation-', position())" />
 					</xsl:attribute>
-				</arco-cd:hasDocumentation>
+				</arco-cd:hasDocumentation><!--
 				<xsl:for-each select="./FTAN[not(starts-with(lower-case(normalize-space()), 'nr') or starts-with(lower-case(normalize-space()), 'n.r'))]">
 					<xsl:variable name="url" select="arco-fn:find-link-emm(.)" />
 						<xsl:for-each select="$url">
@@ -775,7 +797,14 @@
 								</xsl:attribute>
 							</pico:preview>
 						</xsl:for-each>
-				</xsl:for-each>
+				</xsl:for-each> -->
+				<xsl:variable name="emm">
+					<xsl:call-template name="key2emm"><xsl:with-param name="field" select="'FTAN'"/></xsl:call-template>
+				</xsl:variable>
+				<xsl:if test="string-length($emm)">
+					<foaf:depiction rdf:resource="{$emm}"/>
+					<pico:preview rdf:resource="{$emm}"/>
+				</xsl:if>
 			</xsl:for-each>
 			<xsl:if test="record/metadata/schede/*/LC/PVC">
 				<cis:siteAddress>
@@ -1511,7 +1540,8 @@
 					</rdf:Description>
 				</xsl:if>
 					<!-- altitude for GE as an individual -->
-				<xsl:if test="./GEC/GECZ">
+				<xsl:for-each select="./GEC/GECZ">
+					<xsl:if test="(not(starts-with(lower-case(normalize-space(.)), 'nr')) and not(starts-with(lower-case(normalize-space(.)), 'n.r')))">
 					<rdf:Description>
 						<xsl:attribute name="rdf:about">
             				<xsl:value-of select="concat($NS, 'Altitude/', $idCF, '-geometry-', $geometry-position, '-altitude')" />
@@ -1529,19 +1559,18 @@
 						<l0:name xml:lang="en">
 							<xsl:value-of select="concat('Altitude of site: ', $idCF)" />
 						</l0:name>
-						<xsl:if test="./GEC/GECZ and (not(starts-with(lower-case(normalize-space(./GEC/GECZ)), 'nr')) and not(starts-with(lower-case(normalize-space(./GEC/GECZ)), 'n.r')))">
-							<arco-location:alt>
-								<xsl:value-of select="normalize-space(./GEC/GECZ)" />
-							</arco-location:alt>
-						</xsl:if>
+						<arco-location:alt>
+							<xsl:value-of select="normalize-space(.)" />
+						</arco-location:alt>
 					</rdf:Description>
-				</xsl:if>
+					</xsl:if>
+				</xsl:for-each>
 			</xsl:for-each>
 		</xsl:if>
 		
 		<!-- Geometry of site as an individual for geocoding|puntoPrincipale -->
 		<xsl:if test="record/metadata/schede/harvesting/*[name()='geocoding' or name()='puntoPrincipale']/*">
-			<xsl:variable name="xy" select="record/metadata/schede/harvesting/puntoPrincipale|record/metadata/schede/harvesting[not(puntoPrincipale)]/geocoding"/>
+			<xsl:variable name="xy" select="(record/metadata/schede/harvesting/puntoPrincipale|record/metadata/schede/harvesting[not(puntoPrincipale)]/geocoding)[1]"/>
 		    <rdf:Description>
 		        <xsl:attribute name="rdf:about">
 		            <xsl:value-of select="concat($NS, 'Geometry/', $idCF, '-geometry-point')" />
@@ -1583,7 +1612,7 @@
 		        <clvapit:serialization rdf:datatype= "http://www.openlinksw.com/schemas/virtrdf#Geometry">
 		            <!-- xsl:text disable-output-escaping="yes">&lt;![CDATA[ &lt;http://www.opengis.net/def/crs/OGC/1.3/CRS84&gt; </xsl:text-->
 		            <xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
-		            <xsl:value-of select="normalize-space(concat('POINT(', $xy/x, ' ', $xy/y, ')'))" />
+		            <xsl:value-of select="normalize-space(concat('POINT(', $xy/x[1], ' ', $xy/y[1], ')'))" />
 		            <xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 		        </clvapit:serialization>
 		        <arco-location:hasCoordinates>
@@ -1650,7 +1679,7 @@
 						<xsl:value-of select="normalize-space(./FTAN)" />
 					</arco-cd:documentationIdentifier>
 				</xsl:if>
-				<xsl:if test="./FTAN and (not(starts-with(lower-case(normalize-space(./FTAN)), 'nr')) and not(starts-with(lower-case(normalize-space(./FTAN)), 'n.r')))">
+				<xsl:if test="./FTAN and (not(starts-with(lower-case(normalize-space(./FTAN)), 'nr')) and not(starts-with(lower-case(normalize-space(./FTAN)), 'n.r')))"><!--
 					<xsl:for-each select="./FTAN">
 						<xsl:variable name="url" select="arco-fn:find-link-emm(.)" />
 						<xsl:for-each select="$url">
@@ -1660,7 +1689,13 @@
                         		</xsl:attribute>
 							</foaf:depiction>
 						</xsl:for-each>
-					</xsl:for-each>
+					</xsl:for-each> -->
+					<xsl:variable name="emm">
+						<xsl:call-template name="key2emm"><xsl:with-param name="field" select="'FTAN'"/></xsl:call-template>
+					</xsl:variable>
+					<xsl:if test="string-length($emm)">
+						<foaf:depiction rdf:resource="{$emm}"/>
+					</xsl:if>
 				</xsl:if>
 				<xsl:if test="./FTAK and (not(starts-with(lower-case(normalize-space(./FTAK)), 'nr')) and not(starts-with(lower-case(normalize-space(./FTAK)), 'n.r')))">
 					<arco-cd:digitalFileName>
