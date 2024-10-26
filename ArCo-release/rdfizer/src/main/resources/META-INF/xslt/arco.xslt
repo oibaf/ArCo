@@ -6860,8 +6860,8 @@
 				<xsl:if test="record/metadata/schede/*/OG/OGT">
 					<rdf:Description>
 						<xsl:attribute name="rdf:about">
-	                        <xsl:value-of select="concat($NS,'CulturalPropertySpecification/', arco-fn:urify(normalize-space(record/metadata/schede/*/OG/OGT)))" />
-	                    </xsl:attribute>
+							<xsl:value-of select="concat($NS,'CulturalPropertySpecification/', arco-fn:urify(normalize-space(record/metadata/schede/*/OG/OGT)))" />
+						</xsl:attribute>
 						<rdf:type>
 							<xsl:attribute name="rdf:resource">
 								<xsl:value-of select="'https://w3id.org/arco/ontology/denotative-description/CulturalPropertySpecification'" />
@@ -7881,7 +7881,9 @@
 							<xsl:value-of select="normalize-space(./FTAK)" />
 						</arco-cd:digitalFileName>
 						<xsl:if test="($sheetType='MODI' or $sheetType='MINP') and string-length(/record/metadata/schede/harvesting/idAttivita)>0">
-							<foaf:depiction rdf:resource="{concat('https://sigecweb.beniculturali.it/images/fullsize/',/record/metadata/schede/harvesting/idAttivita,'/',$item,'_',encode-for-uri(./FTAK))}"/>
+							<xsl:variable name="pic" select="concat('https://sigecweb.beniculturali.it/images/fullsize/',/record/metadata/schede/harvesting/idAttivita,'/',$item,'_',encode-for-uri(./FTAK))"/>
+							<foaf:depiction rdf:resource="{$pic}"/>
+							<pico:preview rdf:resource="{$pic}"/>
 						</xsl:if>
 					</xsl:if>
 					<xsl:if test="./FTAT and (not(starts-with(lower-case(normalize-space(./FTAT)), 'nr')) and not(starts-with(lower-case(normalize-space(./FTAT)), 'n.r')))">
@@ -9414,6 +9416,11 @@
 						<arco-cd:digitalFileName>
 							<xsl:value-of select="normalize-space(./FNTK)" />
 						</arco-cd:digitalFileName>
+						<xsl:if test="($sheetType='MODI' or $sheetType='MINP') and string-length(/record/metadata/schede/harvesting/idAttivita)>0">
+							<xsl:variable name="pic" select="concat('https://sigecweb.beniculturali.it/images/fullsize/',/record/metadata/schede/harvesting/idAttivita,'/',$item,'_',encode-for-uri(./FNTK))"/>
+							<foaf:depiction rdf:resource="{$pic}"/>
+							<pico:preview rdf:resource="{$pic}"/>
+						</xsl:if>
 					</xsl:if>
 					<xsl:if test="./FNTO">
 						<arco-core:note>
@@ -23187,13 +23194,15 @@
 								<xsl:value-of select="normalize-space(./AATY)" />
 							</arco-core:note>
 						</xsl:if>
-						<xsl:if test="./AATM and (not(starts-with(lower-case(normalize-space(./AATM)), 'nr')) and not(starts-with(lower-case(normalize-space(./AATM)), 'n.r')))">
+      <xsl:for-each select="./AATM">
+						<xsl:if test=". and (not(starts-with(lower-case(normalize-space(.)), 'nr')) and not(starts-with(lower-case(normalize-space(.)), 'n.r')))">
 							<arco-cd:hasInterpretationCriterion>
 								<xsl:attribute name="rdf:resource">
-									<xsl:value-of select="concat($NS, 'InterpretationCriterion/', arco-fn:urify(normalize-space(./AATM)))" />
-                            	</xsl:attribute>
+									<xsl:value-of select="concat($NS, 'InterpretationCriterion/', arco-fn:urify(normalize-space(.)))" />
+								</xsl:attribute>
 							</arco-cd:hasInterpretationCriterion>
 						</xsl:if>
+      </xsl:for-each>
 					</rdf:Description>
 					<rdf:Description>
 						<xsl:attribute name="rdf:about">
@@ -23251,24 +23260,26 @@
 						</xsl:if>
 					</rdf:Description>
 				</xsl:if>
-				<xsl:if test="./AATM and (not(starts-with(lower-case(normalize-space(./AATM)), 'nr')) and not(starts-with(lower-case(normalize-space(./AATM)), 'n.r')))">
+    <xsl:for-each select="./AATM">
+				<xsl:if test=". and (not(starts-with(lower-case(normalize-space(.)), 'nr')) and not(starts-with(lower-case(normalize-space(.)), 'n.r')))">
 					<rdf:Description>
 						<xsl:attribute name="rdf:about">
-                       	 	<xsl:value-of select="concat($NS, 'InterpretationCriterion/', arco-fn:urify(normalize-space(./AATM)))" />
-                        </xsl:attribute>
+							<xsl:value-of select="concat($NS, 'InterpretationCriterion/', arco-fn:urify(normalize-space(.)))" />
+						</xsl:attribute>
 						<rdf:type>
 							<xsl:attribute name="rdf:resource">
-                                <xsl:value-of select="'https://w3id.org/arco/ontology/context-description/InterpretationCriterion'" />
-                            </xsl:attribute>
+								<xsl:value-of select="'https://w3id.org/arco/ontology/context-description/InterpretationCriterion'" />
+							</xsl:attribute>
 						</rdf:type>
 						<rdfs:label>
-							<xsl:value-of select="normalize-space(./AATM)" />
+							<xsl:value-of select="normalize-space(.)" />
 						</rdfs:label>
 						<l0:name>
-							<xsl:value-of select="normalize-space(./AATM)" />
+							<xsl:value-of select="normalize-space(.)" />
 						</l0:name>
 					</rdf:Description>
 				</xsl:if>
+    </xsl:for-each>
 			</xsl:for-each>
 			<xsl:for-each select="record/metadata/schede/*/AU/AAF">
 				<xsl:if test="(./AAFN and (not(starts-with(lower-case(normalize-space(./AAFN)), 'nr')) and not(starts-with(lower-case(normalize-space(./AAFN)), 'n.r')))) or
@@ -23644,7 +23655,7 @@
 				<xsl:if test="./*">
 					<rdf:Description>
 						<xsl:attribute name="rdf:about">
-		            		<xsl:value-of select="concat($NS, 'InventorySistuation/', $itemURI, '-current')" />
+		            		<xsl:value-of select="concat($NS, 'InventorySituation/', $itemURI, '-current')" />
 		            	</xsl:attribute>
 						<rdf:type>
 							<xsl:attribute name="rdf:resource">
