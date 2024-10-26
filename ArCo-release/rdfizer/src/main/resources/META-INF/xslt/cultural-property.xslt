@@ -26,6 +26,7 @@
 	xmlns:arco-cd="https://w3id.org/arco/ontology/context-description/"
 	xmlns:pico="http://data.cochrane.org/ontologies/pico/"
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:arco-lite="https://w3id.org/arco/ontology/arco-lite/"
 	exclude-result-prefixes="xsl php">
 
 	<xsl:output method="xml" encoding="utf-8" indent="yes" />
@@ -1493,6 +1494,13 @@
 				                		<xsl:value-of select="concat($NS, 'InventorySituation/', $itemURI, '-', position())" />
 		        		        	</xsl:attribute>
 								</arco-cd:hasInventorySituation>
+        
+								<xsl:if test="./INVN and (not(starts-with(lower-case(normalize-space(./INVN)), 'nr')) and not(starts-with(lower-case(normalize-space(./INVN)), 'n.r')))">
+									<arco-lite:alternativeInventoryNumber>
+										<xsl:value-of select="normalize-space(./INVN)" />
+									</arco-lite:alternativeInventoryNumber>
+								</xsl:if>
+        
 							</xsl:when>
 							<xsl:otherwise>
 								<arco-core:hasPart>
@@ -1504,11 +1512,12 @@
 						</xsl:choose>
 					</xsl:if>
 				</xsl:for-each>
+    
 				<xsl:if test="record/metadata/schede/*/UB/INP">
 					<xsl:if test="record/metadata/schede/*/UB/INP/*">
 						<arco-cd:hasInventorySituation>
 							<xsl:attribute name="rdf:resource">
-		                		<xsl:value-of select="concat($NS, 'InventorySistuation/', $itemURI, '-current')" />
+		                		<xsl:value-of select="concat($NS, 'InventorySituation/', $itemURI, '-current')" />
 		                	</xsl:attribute>
 						</arco-cd:hasInventorySituation>
 					</xsl:if>
@@ -1518,10 +1527,11 @@
 						</arco-cd:inventoryIdentifier>
 					</xsl:if>
 				</xsl:if>
+    
 				<xsl:if test="record/metadata/schede/SCAN/CD/INP">
 					<arco-cd:hasInventorySituation>
 						<xsl:attribute name="rdf:resource">
-		               		<xsl:value-of select="concat($NS, 'InventorySistuation/', $itemURI, '-current')" />
+		               		<xsl:value-of select="concat($NS, 'InventorySituation/', $itemURI, '-current')" />
 		               	</xsl:attribute>
 					</arco-cd:hasInventorySituation>
 					<arco-cd:inventoryIdentifier>
