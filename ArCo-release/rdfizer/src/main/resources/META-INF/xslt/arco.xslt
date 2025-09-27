@@ -132,14 +132,15 @@
 	<xsl:template name="key2emm"> <!-- context @parent -->
 		<xsl:param name="field" select="''"/>
 		<xsl:variable name="v" select="./*[name()=$field]"/>
-		<xsl:if test="not(starts-with(lower-case(normalize-space($v)), 'nr')) and not(starts-with(lower-case(normalize-space($v)), 'n.r'))">
-			<xsl:variable name="posizione" select="string(position())"/>
+		<xsl:if test="not(starts-with(lower-case(normalize-space($v)), 'nr')) and not(starts-with(lower-case(normalize-space($v)), 'n.r'))"><!--
+			<xsl:variable name="posizione" select="string(position())"/> -->
+			<xsl:variable name="posizione" select="string(1 + count(preceding-sibling::*/*[name()=$field]))"/>
 			<xsl:variable name="sheetType" select="name(/record/metadata/schede/*[1])"/>
 			<xsl:variable name="mkc" select="/record/metadata/schede/harvesting/emm[posizione=$posizione and campo=$field]/keycode"/>
 			<xsl:variable name="k">
 				<xsl:choose>
-					<xsl:when test="string-length($mkc) or ($sheetType='EVE' and $field='DCMN')">
-						<xsl:message>reading @harvesting/emm</xsl:message>
+					<xsl:when test="string-length($mkc) or ($sheetType='EVE' and $field='DCMN')"><!--
+						<xsl:message><xsl:value-of select="concat('got ',$mkc,' reading @harvesting/emm posizione:',$posizione,' @arco')"/></xsl:message> -->
 						<xsl:value-of select="$mkc"/>
 					</xsl:when>
 					<xsl:otherwise>
@@ -7858,6 +7859,7 @@
 							</xsl:variable>
 							<xsl:if test="string-length($emm)">
 								<foaf:depiction rdf:resource="{$emm}"/>
+								<pico:preview rdf:resource="{$emm}"/>
 							</xsl:if>
 						</xsl:if>
 					</xsl:if>
@@ -8169,6 +8171,7 @@
 							</xsl:variable>
 							<xsl:if test="string-length($emm)">
 								<foaf:depiction rdf:resource="{$emm}"/>
+								<pico:preview rdf:resource="{$emm}"/>
 							</xsl:if>
 						</xsl:if>
 					</xsl:if>
@@ -24781,7 +24784,7 @@
 										<xsl:value-of select="concat($NS, 'CollectionCulEnt/', $ldcm, '-', $pvcc, '-', arco-fn:urify(normalize-space(./COLD)))" />
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:value-of select="concat($NS, 'CollectionCulEnt/', $ldcm, '-', $pvcc, '-',  $collection-membership-position)" />
+										<xsl:value-of select="concat($NS, 'CollectionCulEnt/', $ldcm, '-', $pvcc, '-', $collection-membership-position)" />
 									</xsl:otherwise>
 								</xsl:choose>
                         	</xsl:attribute>
@@ -24956,10 +24959,10 @@
 								<xsl:attribute name="rdf:resource">
 								<xsl:choose>
 									<xsl:when test="./COLD">
-										<xsl:value-of select="concat($NS, 'CollectionCulEnt/', arco-fn:urify(normalize-space(./COLD)))" />
+										<xsl:value-of select="concat($NS, 'CollectionCulEnt/', $ldcm, '-', $pvcc, '-', arco-fn:urify(normalize-space(./COLD)))" />
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:value-of select="concat($NS, 'CollectionCulEnt/', $itemURI, '-', $collection-membership-position)" />
+										<xsl:value-of select="concat($NS, 'CollectionCulEnt/', $ldcm, '-', $pvcc, '-', $collection-membership-position)" />
 									</xsl:otherwise>
 								</xsl:choose>
 								</xsl:attribute>
@@ -24988,10 +24991,10 @@
 								<xsl:attribute name="rdf:resource">
 								<xsl:choose>
 									<xsl:when test="./COLD">
-										<xsl:value-of select="concat($NS, 'CollectionCulEnt/', arco-fn:urify(normalize-space(./COLD)))" />
+										<xsl:value-of select="concat($NS, 'CollectionCulEnt/', $ldcm, '-', $pvcc, '-', arco-fn:urify(normalize-space(./COLD)))" />
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:value-of select="concat($NS, 'CollectionCulEnt/', $itemURI, '-', $collection-membership-position)" />
+										<xsl:value-of select="concat($NS, 'CollectionCulEnt/', $ldcm, '-', $pvcc, '-', $collection-membership-position)" />
 									</xsl:otherwise>
 								</xsl:choose>
 								</xsl:attribute>

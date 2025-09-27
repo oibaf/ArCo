@@ -81,13 +81,38 @@
 	xmlns:ar-CISNameInTime="https://w3id.org/arco/resource/CISNameInTime/"
 	xmlns:ar-Measurement="https://w3id.org/arco/resource/Measurement/"
 	xmlns:arco-con="https://w3id.org/arco/ontology/construction-description/"
-
+	xmlns:arco-lite="https://w3id.org/arco/ontology/arco-lite/"
 	xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0"
 	exclude-result-prefixes="xsl php">
 	<xsl:output method="xml" encoding="utf-8" indent="yes" />
 	
 	<!-- xsl:variable name="NS" select="'https://w3id.org/arco/resource/'" /-->
 	<xsl:param name="NS" />
+
+	<xsl:template name="key2emm"> <!-- context @field -->
+		<xsl:param name="field" select="''"/>
+		<xsl:variable name="v" select="."/>
+		<xsl:if test="not(starts-with(lower-case(normalize-space($v)), 'nr')) and not(starts-with(lower-case(normalize-space($v)), 'n.r'))"><!--
+			<xsl:variable name="posizione" select="string(position())"/> -->
+			<xsl:variable name="posizione" select="string(position() + count(../preceding-sibling::*/*[name()=$field]))"/>
+			<xsl:variable name="sheetType" select="name(/record/metadata/schede/*[1])"/>
+			<xsl:variable name="mkc" select="/record/metadata/schede/harvesting/emm[posizione=$posizione and campo=$field]/keycode"/>
+			<xsl:variable name="k">
+				<xsl:choose>
+					<xsl:when test="string-length($mkc) or ($sheetType='EVE' and $field='DCMN')"><!--
+						<xsl:message><xsl:value-of select="concat('got ',$mkc,' reading @harvesting/emm posizione:',$posizione,' @MA-CA-SI-SAS')"/></xsl:message> -->
+						<xsl:value-of select="$mkc"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$v" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:if test="string-length($k)">
+				<xsl:value-of select="arco-fn:find-link-emm($k)" />
+			</xsl:if>
+		</xsl:if>
+	</xsl:template>
 		
 <xsl:template match="/">
 	<rdf:RDF>
@@ -1357,7 +1382,7 @@
 				<l0:name  xml:lang="it">
 					<xsl:value-of select="concat('Schema iconografico ', position(), ' del bene culturale ', $itemURI)" />
 				</l0:name>
-				<xsl:for-each select="./PNTD"><!-- e.g.ICCD12003510  -->
+				<xsl:for-each select="./PNTD"><!-- e.g.ICCD12003510  --><!--
 					<xsl:variable name="url" select="arco-fn:find-link-emm(.)" />
 					<xsl:for-each select="$url">
 						<foaf:depiction>
@@ -1368,9 +1393,17 @@
 						<pico:preview>
 							<xsl:attribute name="rdf:resource">
 								<xsl:value-of select="." />
-	                       	</xsl:attribute>
+							</xsl:attribute>
 						</pico:preview>
-					</xsl:for-each>	
+					</xsl:for-each>	-->
+					<xsl:variable name="emm">
+						<xsl:call-template name="key2emm"><xsl:with-param name="field" select="'PNTD'"/></xsl:call-template>
+					</xsl:variable>
+					<xsl:if test="string-length($emm)">
+						<arco-lite:depiction rdf:resource="{$emm}"/>
+						<foaf:depiction rdf:resource="{$emm}"/>
+						<pico:preview rdf:resource="{$emm}"/>
+					</xsl:if>
 				</xsl:for-each>
 				<xsl:if test="./PNTO">
 					<arco-core:description>

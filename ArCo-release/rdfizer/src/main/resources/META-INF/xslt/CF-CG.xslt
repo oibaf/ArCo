@@ -117,13 +117,15 @@
 	<xsl:template name="key2emm"> <!-- context @parent -->
 		<xsl:param name="field" select="''"/>
 		<xsl:variable name="v" select="./*[name()=$field]"/>
-		<xsl:if test="not(starts-with(lower-case(normalize-space($v)), 'nr')) and not(starts-with(lower-case(normalize-space($v)), 'n.r'))">
-			<xsl:variable name="posizione" select="string(position())"/>
+		<xsl:if test="not(starts-with(lower-case(normalize-space($v)), 'nr')) and not(starts-with(lower-case(normalize-space($v)), 'n.r'))"><!--
+			<xsl:variable name="posizione" select="string(position())"/> -->
+			<xsl:variable name="posizione" select="string(1 + count(preceding-sibling::*/*[name()=$field]))"/>
 			<xsl:variable name="sheetType" select="name(/record/metadata/schede/*[1])"/>
 			<xsl:variable name="mkc" select="/record/metadata/schede/harvesting/emm[posizione=$posizione and campo=$field]/keycode"/>
 			<xsl:variable name="k">
 				<xsl:choose>
-					<xsl:when test="string-length($mkc) or ($sheetType='EVE' and $field='DCMN')">
+					<xsl:when test="string-length($mkc) or ($sheetType='EVE' and $field='DCMN')"><!--
+						<xsl:message><xsl:value-of select="concat('got ',$mkc,' reading @harvesting/emm posizione:',$posizione,' @CF-CG')"/></xsl:message> -->
 						<xsl:value-of select="$mkc"/>
 					</xsl:when>
 					<xsl:otherwise>
@@ -798,12 +800,14 @@
 							</pico:preview>
 						</xsl:for-each>
 				</xsl:for-each> -->
+				<xsl:if test="FTAN">
 				<xsl:variable name="emm">
 					<xsl:call-template name="key2emm"><xsl:with-param name="field" select="'FTAN'"/></xsl:call-template>
 				</xsl:variable>
 				<xsl:if test="string-length($emm)">
 					<foaf:depiction rdf:resource="{$emm}"/>
 					<pico:preview rdf:resource="{$emm}"/>
+				</xsl:if>
 				</xsl:if>
 			</xsl:for-each>
 			<xsl:if test="record/metadata/schede/*/LC/PVC">
@@ -1695,6 +1699,7 @@
 					</xsl:variable>
 					<xsl:if test="string-length($emm)">
 						<foaf:depiction rdf:resource="{$emm}"/>
+      <pico:preview rdf:resource="{$emm}"/>
 					</xsl:if>
 				</xsl:if>
 				<xsl:if test="./FTAK and (not(starts-with(lower-case(normalize-space(./FTAK)), 'nr')) and not(starts-with(lower-case(normalize-space(./FTAK)), 'n.r')))">

@@ -92,13 +92,15 @@
 	<xsl:template name="key2emm"> <!-- context @parent -->
 		<xsl:param name="field" select="''"/>
 		<xsl:variable name="v" select="./*[name()=$field]"/>
-		<xsl:if test="not(starts-with(lower-case(normalize-space($v)), 'nr')) and not(starts-with(lower-case(normalize-space($v)), 'n.r'))">
-			<xsl:variable name="posizione" select="string(position())"/>
+		<xsl:if test="not(starts-with(lower-case(normalize-space($v)), 'nr')) and not(starts-with(lower-case(normalize-space($v)), 'n.r'))"><!--
+			<xsl:variable name="posizione" select="string(position())"/> -->
+			<xsl:variable name="posizione" select="string(1 + count(preceding-sibling::*/*[name()=$field]))"/>
 			<xsl:variable name="sheetType" select="name(/record/metadata/schede/*[1])"/>
 			<xsl:variable name="mkc" select="/record/metadata/schede/harvesting/emm[posizione=$posizione and campo=$field]/keycode"/>
 			<xsl:variable name="k">
 				<xsl:choose>
-					<xsl:when test="string-length($mkc) or ($sheetType='EVE' and $field='DCMN')">
+					<xsl:when test="string-length($mkc) or ($sheetType='EVE' and $field='DCMN')"><!--
+						<xsl:message><xsl:value-of select="concat('got ',$mkc,' reading @harvesting/emm posizione:',$posizione,' @cultural-property')"/></xsl:message> -->
 						<xsl:value-of select="$mkc"/>
 					</xsl:when>
 					<xsl:otherwise>
@@ -616,7 +618,7 @@
 				-->
     <xsl:if test="not($sheetType='MODI' or $sheetType='MINP')"><!--
 				<xsl:for-each select="(record/metadata/schede/*/*/FTA/FTAN[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])|(record/metadata/schede/SCAN/DO/DCM/DCMN[not(starts-with(lower-case(normalize-space()), 'nr')) and not(starts-with(lower-case(normalize-space()), 'n.r'))])"> --><!-- xslt2 multiple nodes normalize-space exception  -->
-				<xsl:for-each select="record/metadata/schede/SCAN/DO/DCM">
+				<xsl:for-each select="record/metadata/schede/SCAN/DO/DCM[DCMN]">
 					<xsl:variable name="emm">
 						<xsl:call-template name="key2emm"><xsl:with-param name="field" select="'DCMN'"/></xsl:call-template>
 					</xsl:variable>
@@ -625,7 +627,7 @@
 						<pico:preview rdf:resource="{$emm}"/>
 					</xsl:if>
 				</xsl:for-each>
-				<xsl:for-each select="record/metadata/schede/*/*/FTA">
+				<xsl:for-each select="record/metadata/schede/*/*/FTA[FTAN]">
 					<xsl:variable name="emm">
 						<xsl:call-template name="key2emm"><xsl:with-param name="field" select="'FTAN'"/></xsl:call-template>
 					</xsl:variable>
