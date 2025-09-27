@@ -44,6 +44,12 @@ xmlns:skos="http://www.w3.org/2004/02/skos/core#" version="2.0">
 					<xsl:with-param name="itemURI" select="$itemURI"/>
 				</xsl:call-template> 
 			</xsl:when>
+			<xsl:when test="contains($source,'$(NOTHING)')">
+				<xsl:call-template name="sourceParser">
+					<xsl:with-param name="source" select="concat(substring-before($source,'$(NOTHING)'),substring-after($source,'$(NOTHING)'))"/>
+					<xsl:with-param name="itemURI" select="$itemURI"/>
+				</xsl:call-template> 
+			</xsl:when>
 			<xsl:when test="contains($source,'$(PROPERTYTYPE)')">
 				<xsl:variable name="culturalProperty">
 					<xsl:choose>
