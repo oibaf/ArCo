@@ -96,15 +96,21 @@
 			<xsl:variable name="posizione" select="string(position())"/> -->
 			<xsl:variable name="posizione" select="string(position() + count(../preceding-sibling::*/*[name()=$field]))"/>
 			<xsl:variable name="sheetType" select="name(/record/metadata/schede/*[1])"/>
-			<xsl:variable name="mkc" select="/record/metadata/schede/harvesting/emm[posizione=$posizione and campo=$field]/keycode"/>
+			<xsl:variable name="mkc" select="(/record/metadata/schede/harvesting/emm[posizione=$posizione and campo=$field]/keycode)[last()]"/>
 			<xsl:variable name="k">
 				<xsl:choose>
 					<xsl:when test="string-length($mkc) or ($sheetType='EVE' and $field='DCMN')"><!--
 						<xsl:message><xsl:value-of select="concat('got ',$mkc,' reading @harvesting/emm posizione:',$posizione,' @MA-CA-SI-SAS')"/></xsl:message> -->
 						<xsl:value-of select="$mkc"/>
-					</xsl:when>
+					</xsl:when><!--
 					<xsl:otherwise>
 						<xsl:value-of select="$v" />
+					</xsl:otherwise> -->
+					<xsl:when test="not(count(/record/metadata/schede/harvesting/emm))">
+						<xsl:value-of select="$v" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="''" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
