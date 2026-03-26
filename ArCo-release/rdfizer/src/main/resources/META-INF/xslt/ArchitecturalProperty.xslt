@@ -2077,7 +2077,7 @@
 						<xsl:for-each select="$floorssplit">
 							<arco-con:hasConstructionSpace>
 								<xsl:attribute name="rdf:resource">
-    		    					<xsl:value-of select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(.))" />
+															<xsl:value-of select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(.))" />
 								</xsl:attribute>
 							</arco-con:hasConstructionSpace>
 						</xsl:for-each>
@@ -2089,8 +2089,9 @@
 					<xsl:variable name="floorssplit" select="arco-fn:split($siip)" />
 					<xsl:for-each select="$floorssplit">
 						<rdf:Description>
-							<xsl:attribute name="rdf:about">
-								<xsl:value-of select="concat($NS, 'CulturalPropertyPart/', arco-fn:urify(.), '-', arco-fn:urify($siir))" />
+							<xsl:attribute name="rdf:about"><!--
+								<xsl:value-of select="concat($NS, 'CulturalPropertyPart/', arco-fn:urify(.), '-', arco-fn:urify($siir))" /> -->
+								<xsl:value-of select="concat($NS, 'CulturalPropertyPart/', $itemURI, '-part-', arco-fn:urify(.))" />
 							</xsl:attribute>
 							<rdf:type>
 								<xsl:attribute name="rdf:resource">
