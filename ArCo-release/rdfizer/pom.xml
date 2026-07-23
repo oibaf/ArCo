@@ -11,6 +11,11 @@
 
 	<description>A tool for gathering RDF data from XML items coming from the DB of ICCD.</description>
 
+	<properties>
+		<java-version>1.8</java-version>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<build>
 		<plugins>
 			<!-- requires Java 8 -->
@@ -407,7 +412,19 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<!-- explicit version avoid java version compile conflict -->
+		<dependency>
+			<groupId>org.eclipse.collections</groupId>
+			<artifactId>eclipse-collections</artifactId>
+			<version>[8.2.0]</version>
+		</dependency>
 
+		<dependency>
+			<groupId>org.eclipse.collections</groupId>
+			<artifactId>eclipse-collections-api</artifactId>
+			<version>[8.2.0]</version>
+		</dependency>
 
 		<!-- dependency> <groupId>net.sourceforge.owlapi</groupId> <artifactId>owlapi-reasoner</artifactId> 
 			<version>3.3</version> </dependency> <dependency> <groupId>com.clarkparsia.pellet</groupId> 
