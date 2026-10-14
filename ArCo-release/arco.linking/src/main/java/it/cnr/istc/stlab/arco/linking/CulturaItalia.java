@@ -116,9 +116,13 @@ public class CulturaItalia {
 				while (rs.hasNext()) {
 					QuerySolution qs = rs.next();
 
-					String ui = qs.get("ui").asLiteral().getValue().toString();
-					Resource cp = qs.get("cp").asResource();
-					Resource cr = qs.get("cr").asResource();
+org.apache.jena.rdf.model.RDFNode
+n=qs.get("ui");if (n==null)continue;
+					String ui = n.asLiteral().getValue().toString();
+n=qs.get("cp");if (n==null)continue;
+					Resource cp = n.asResource();
+n=qs.get("cr");if (n==null)continue;
+					Resource cr = n.asResource();
 
 					arcoTable.column("cp").appendCell(cp.getURI());
 					arcoTable.column("cr").appendCell(cr.getURI());
